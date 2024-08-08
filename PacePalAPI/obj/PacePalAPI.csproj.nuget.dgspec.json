@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Informatica\\Licenta\\PacePalAPI\\PacePalAPI\\PacePalAPI.csproj": {}
+    "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\PacePalAPI.csproj": {}
   },
   "projects": {
-    "D:\\Informatica\\Licenta\\PacePalAPI\\PacePalAPI\\PacePalAPI.csproj": {
+    "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\PacePalAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Informatica\\Licenta\\PacePalAPI\\PacePalAPI\\PacePalAPI.csproj",
+        "projectUniqueName": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\PacePalAPI.csproj",
         "projectName": "PacePalAPI",
-        "projectPath": "D:\\Informatica\\Licenta\\PacePalAPI\\PacePalAPI\\PacePalAPI.csproj",
+        "projectPath": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\PacePalAPI.csproj",
         "packagesPath": "C:\\Users\\cosmi\\.nuget\\packages\\",
-        "outputPath": "D:\\Informatica\\Licenta\\PacePalAPI\\PacePalAPI\\obj\\",
+        "outputPath": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\cosmi\\AppData\\Roaming\\NuGet\\NuGet.Config",

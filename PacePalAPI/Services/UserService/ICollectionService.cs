@@ -3,15 +3,16 @@ using PacePalAPI.Utils;
 
 namespace PacePalAPI.Services.UserService
 {
-    public interface ICollectionService<UserModel>
+    public interface ICollectionService<T>
     {
-        public Task<bool> AddUser(UserModel user);
+        Task<List<T>?> GetAll();
 
-        public Task<List<UserModel>> GetAllUsers();
+        Task<T?> Get(int id);
 
-        public Task<UserModel?> GetUser(int id);
+        Task<bool> Create(T model);
 
-        public Task<UserModel?> LogUser(string username, string password);
+        Task<bool> Update(int id, T model);
 
+        Task<bool> Delete(int id);
     }
 }
