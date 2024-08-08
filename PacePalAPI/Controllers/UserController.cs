@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Hosting;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserService;
@@ -21,6 +22,9 @@ namespace PacePalAPI.Controllers
         public async Task<IActionResult> GetUsers()
         {
             List<UserModel>? users = await _userCollectionService.GetAll();
+
+            if (users == null) return BadRequest("There are no users available.");
+
             return Ok(users);
         }
 

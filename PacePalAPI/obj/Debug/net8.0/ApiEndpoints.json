@@ -1,5 +1,15 @@
 [
   {
+    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
+    "Method": "GetPosts",
+    "RelativePath": "SocialPost",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetUsers",
     "RelativePath": "User",

@@ -13,6 +13,16 @@ namespace PacePalAPI.Services.UserService
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public Task<bool> CommentPost(SocialPostModel post, CommentModel comment)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> LikePost(SocialPostModel post, LikeModel like)
+        {
+            throw new NotImplementedException();
+        }
+
         async Task<bool> ICollectionService<UserModel>.Create(UserModel model)
         {
             await _context.Users.AddAsync(model);

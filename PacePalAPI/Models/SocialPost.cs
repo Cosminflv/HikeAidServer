@@ -1,4 +1,6 @@
-﻿namespace PacePalAPI.Models
+﻿using System.Text.Json.Serialization;
+
+namespace PacePalAPI.Models
 {
     public class SocialPostModel
     {
@@ -20,8 +22,11 @@
         public SocialPostModel() { }
 
         // Navigation properties
-        public UserModel User { get; set; }
-        public List<CommentModel> Comments { get; set; }
-        public List<LikeModel> Likes { get; set; }
+        [JsonIgnore]
+        public UserModel? User { get; set; }
+        [JsonIgnore]
+        public List<CommentModel> Comments { get; set; } = new List<CommentModel>();
+        [JsonIgnore]
+        public List<LikeModel> Likes { get; set; } = new List<LikeModel>();
     }
 }

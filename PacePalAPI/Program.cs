@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
+using PacePalAPI.Services.SocialService;
 using PacePalAPI.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddScoped<IUserCollectionService, UserService>();
+builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

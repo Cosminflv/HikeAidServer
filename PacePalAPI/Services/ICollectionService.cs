@@ -1,7 +1,7 @@
 ﻿using PacePalAPI.Models;
 using PacePalAPI.Utils;
 
-namespace PacePalAPI.Services.UserService
+namespace PacePalAPI.Services
 {
     public interface ICollectionService<T>
     {
