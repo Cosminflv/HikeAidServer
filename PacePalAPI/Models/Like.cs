@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using System.Text.Json.Serialization;
 
 namespace PacePalAPI.Models
 {
@@ -15,8 +16,6 @@ namespace PacePalAPI.Models
             UserId = userId;
             Post = post;
             User = user;
-            Post = new SocialPostModel();
-            User = new UserModel();
         }
 
         public LikeModel()
@@ -25,7 +24,9 @@ namespace PacePalAPI.Models
         }
 
         // Navigation properties
+        [JsonIgnore]
         public SocialPostModel Post { get; set; }
+        [JsonIgnore]
         public UserModel User { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
+using System.Text.Json.Serialization;
 
 namespace PacePalAPI.Models
 {
@@ -8,14 +9,14 @@ namespace PacePalAPI.Models
         public int PostId { get; set; }  // Foreign key
         public int UserId { get; set; }  // Foreign key
         public string Content { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime TimeStamp { get; set; }
 
         public CommentModel(int id, int postId, int userId, string content, DateTime createdAt) {
             this.Id = id;
             this.PostId = postId;
             this.UserId = userId;
             this.Content = content;
-            this.CreatedAt = createdAt;
+            this.TimeStamp = createdAt;
             this.Post = new SocialPostModel();
             this.User = new UserModel();
         }
@@ -23,7 +24,9 @@ namespace PacePalAPI.Models
         public CommentModel() { }
 
         // Navigation properties
+        [JsonIgnore]
         public SocialPostModel Post { get; set; }
+        [JsonIgnore]
         public UserModel User { get; set; }
     }
 }
