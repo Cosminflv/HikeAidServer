@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
-using PacePalAPI.Utils;
 
 namespace PacePalAPI.Services.UserService
 {

@@ -14,17 +14,6 @@ namespace PacePalAPI.Models
         public string ProfilePictureUrl { get; set; }
         public string Bio { get; set; }
 
-        public UserModel(int Id, string Username, string FirstName, string LastName, string PasswordHash,  string ProfilePictureUrl, string Bio)
-        {
-            this.Id = Id;
-            this.Username = Username;
-            this.FirstName = FirstName;
-            this.LastName = LastName;
-            this.PasswordHash = PasswordHash;
-            this.ProfilePictureUrl = ProfilePictureUrl;
-            this.Bio = Bio;
-        }
-
         public UserModel() { }
 
         // Navigation properties

@@ -1,8 +1,18 @@
 [
   {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
+    "ContainingType": "SocialPostController",
+    "Method": "GetPosts",
+    "RelativePath": "api/SocialPost",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SocialPostController",
     "Method": "AddPost",
-    "RelativePath": "SocialPost/addPost",
+    "RelativePath": "api/SocialPost",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -16,13 +26,71 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
+    "ContainingType": "SocialPostController",
+    "Method": "GetPost",
+    "RelativePath": "api/SocialPost/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SocialPostController",
+    "Method": "UpdatePost",
+    "RelativePath": "api/SocialPost/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateInfo",
+        "Type": "PacePalAPI.Requests.SocialPostDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SocialPostController",
+    "Method": "DeletePost",
+    "RelativePath": "api/SocialPost/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SocialPostController",
     "Method": "CommentPost",
-    "RelativePath": "SocialPost/commentPost",
+    "RelativePath": "api/SocialPost/{postId}/comment",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "postId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "comment",
         "Type": "PacePalAPI.Requests.CommentDto",
@@ -32,73 +100,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "DeleteComment",
-    "RelativePath": "SocialPost/deleteComment/id",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "idToDelete",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "DeleteLike",
-    "RelativePath": "SocialPost/deleteLike/id",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "idToDelete",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "DeletePost",
-    "RelativePath": "SocialPost/deletePost/id",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "idToDelete",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "GetPost",
-    "RelativePath": "SocialPost/getPost/id",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
+    "ContainingType": "SocialPostController",
     "Method": "GetPostComments",
-    "RelativePath": "SocialPost/getPostComments/id",
+    "RelativePath": "api/SocialPost/{postId}/comments",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -106,55 +110,24 @@
       {
         "Name": "postId",
         "Type": "System.Int32",
-        "IsRequired": false
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "GetPosts",
-    "RelativePath": "SocialPost/getPosts",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "GetUserPosts",
-    "RelativePath": "SocialPost/getUserPosts",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Models.SocialPostModel, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
+    "ContainingType": "SocialPostController",
     "Method": "LikePost",
-    "RelativePath": "SocialPost/likePost",
+    "RelativePath": "api/SocialPost/{postId}/like",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
+      {
+        "Name": "postId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
       {
         "Name": "likeDto",
         "Type": "PacePalAPI.Requests.LikeDto",
@@ -164,16 +137,48 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "PacePalAPI.Controllers.SocialPostController",
-    "Method": "UpdatePost",
-    "RelativePath": "SocialPost/updatePost",
-    "HttpMethod": "POST",
+    "ContainingType": "SocialPostController",
+    "Method": "DeleteComment",
+    "RelativePath": "api/SocialPost/comments/{id}",
+    "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "updateInfo",
-        "Type": "PacePalAPI.Requests.UpdateSocialPostRequest",
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SocialPostController",
+    "Method": "DeleteLike",
+    "RelativePath": "api/SocialPost/likes/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SocialPostController",
+    "Method": "GetUserPosts",
+    "RelativePath": "api/SocialPost/user/{userId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

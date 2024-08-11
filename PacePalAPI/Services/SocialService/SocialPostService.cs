@@ -56,16 +56,14 @@ namespace PacePalAPI.Services.SocialService
                 .ToListAsync();
         }
 
-        public async Task<bool> Update(int id, SocialPostModel model)
+        public async Task<bool> Update(int id, string content, string imageUrl)
         {
             SocialPostModel? postToUpdate = await _context.SocialPosts.FirstOrDefaultAsync(post => post.Id == id);
 
             if (postToUpdate == null) return false;
 
-            postToUpdate.Content = model.Content;
-            postToUpdate.CreatedAt = model.CreatedAt;
-            postToUpdate.ImageUrl = model.ImageUrl;
-            postToUpdate.UserId = model.UserId;
+            postToUpdate.Content = content;
+            postToUpdate.ImageUrl = imageUrl;
 
             await _context.SaveChangesAsync();
 
@@ -130,6 +128,24 @@ namespace PacePalAPI.Services.SocialService
                 .ExecuteDeleteAsync ();
 
             return rowsAffected > 0;
+        }
+
+        public async Task<bool> UpdatePost(int id, string content, string imageUrl)
+        {
+            SocialPostModel? postToUpdate = await _context.SocialPosts.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (postToUpdate == null) return false;
+
+            postToUpdate.Content = content;
+            postToUpdate.ImageUrl = imageUrl;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public Task<bool> Update(int id, SocialPostModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }
