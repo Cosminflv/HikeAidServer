@@ -8,51 +8,54 @@ using PacePalAPI.Services.UserService;
 namespace PacePalAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        IUserCollectionService _userCollectionService;
+        private readonly IUserCollectionService _userCollectionService;
 
         public UserController(IUserCollectionService userService)
         {
-            _userCollectionService = userService ?? throw new ArgumentNullException(nameof(UserService));
+            _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
+        // Get all users
         [HttpGet]
         public async Task<IActionResult> GetUsers()
         {
-            List<UserModel>? users = await _userCollectionService.GetAll();
+            var users = await _userCollectionService.GetAll();
 
-            if (users == null) return BadRequest("There are no users available.");
+            if (users == null || !users.Any()) return NotFound("There are no users available.");
 
             return Ok(users);
         }
 
+        // Create a new user
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserModel user)
         {
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest("The user cannot be null.");
             }
 
             _userCollectionService.Create(user);
-            return Ok(user);
+            return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
         }
 
-        [HttpPost("login/")]
-        public async Task<IActionResult> LogUser([FromBody] LoginInformation loginInfo)
+        // Log in a user
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginInfo)
         {
             if (loginInfo == null || string.IsNullOrEmpty(loginInfo.Username) || string.IsNullOrEmpty(loginInfo.Password))
             {
                 return BadRequest("Username and password are required.");
             }
 
-            List<UserModel>? users = await _userCollectionService.GetAll();
+            var users = await _userCollectionService.GetAll();
 
-            if (users == null || users.Count == 0) return BadRequest("There are no users available.");
+            if (users == null || !users.Any()) return NotFound("There are no users available.");
 
-            UserModel? foundUser = users.FirstOrDefault(x => x.Username == loginInfo.Username && x.PasswordHash == loginInfo.Password);
+            var foundUser = users.FirstOrDefault(x => x.Username == loginInfo.Username && x.PasswordHash == loginInfo.Password);
 
             if (foundUser == null)
             {
