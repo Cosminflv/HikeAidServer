@@ -220,7 +220,7 @@
     "Parameters": [
       {
         "Name": "loginInfo",
-        "Type": "PacePalAPI.Requests.LoginInformation",
+        "Type": "PacePalAPI.Requests.LoginDto",
         "IsRequired": true
       }
     ],

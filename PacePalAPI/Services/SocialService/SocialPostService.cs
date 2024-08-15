@@ -77,6 +77,21 @@ namespace PacePalAPI.Services.SocialService
 
         public async Task<bool> Delete(int idToDelete)
         {
+            // Fetch and delete comments first
+            var commentsToDelete = await _context.Comments
+                .Where(comment => comment.PostId == idToDelete)
+                .ToListAsync();
+
+            _context.Comments.RemoveRange(commentsToDelete);
+            await _context.SaveChangesAsync();
+
+            var likesToDelete = await _context.Likes
+                    .Where(like => like.PostId == idToDelete)
+                    .ToListAsync();
+
+            _context.Likes.RemoveRange(likesToDelete);
+            await _context.SaveChangesAsync();
+
             int rowsAffected = await _context.SocialPosts
                                  .Where(post => post.Id == idToDelete)
                                  .ExecuteDeleteAsync();
@@ -125,7 +140,7 @@ namespace PacePalAPI.Services.SocialService
             int rowsAffected = await _context.SocialPosts
                 .SelectMany(p => p.Likes)
                 .Where(like => like.Id == likeId)
-                .ExecuteDeleteAsync ();
+                .ExecuteDeleteAsync();
 
             return rowsAffected > 0;
         }
