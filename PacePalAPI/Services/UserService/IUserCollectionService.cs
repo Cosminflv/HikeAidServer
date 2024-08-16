@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using PacePalAPI.Models;
+﻿using PacePalAPI.Models;
 
 namespace PacePalAPI.Services.UserService
 {
@@ -14,5 +13,11 @@ namespace PacePalAPI.Services.UserService
         Task<bool> DeclineFriendRequest(int requestId);
 
         Task<List<FriendshipModel>?> GetFriendshipRequests();
+
+        Task<bool> UploadProfilePicture(int userId, IFormFile file);
+
+        Task<byte[]?> GetProfilePicture(int userId);
+
+        Task<byte[]> GetDefaultUserPicture();
     }
 }

@@ -7,10 +7,12 @@ namespace PacePalAPI.Services.UserService
     public class UserService : IUserCollectionService
     {
         private readonly PacePalContext _context;
+        private readonly IWebHostEnvironment _environment;
 
-        public UserService(PacePalContext context)
+        public UserService(PacePalContext context, IWebHostEnvironment environment)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
+            _environment = environment ?? throw new ArgumentNullException(nameof(environment));
         }
 
         public async Task<bool> AcceptFriendRequest(int requestId)
@@ -43,9 +45,38 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
+        public async Task<byte[]> GetDefaultUserPicture()
+        {
+            string filePath = Path.Combine(_environment.WebRootPath, "uploads\\profile_pictures\\default.jpg");
+
+            if (!System.IO.File.Exists(filePath))
+            {
+                int x = 3;
+            }
+
+            return await System.IO.File.ReadAllBytesAsync(filePath);
+        }
+
         public async Task<List<FriendshipModel>?> GetFriendshipRequests()
         {
            return await _context.Friendships.ToListAsync();
+        }
+
+        public async Task<byte[]?> GetProfilePicture(int userId)
+        {
+            UserModel? userFound = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (userFound == null) return null;
+
+            // Ensure the profile picture URL is a relative path
+            var relativeProfilePictureUrl = userFound.ProfilePictureUrl.TrimStart('\\');
+
+
+            string filePath = Path.Combine(_environment.WebRootPath, relativeProfilePictureUrl);
+
+            if (!System.IO.File.Exists(filePath)) return null;
+
+            return await System.IO.File.ReadAllBytesAsync(filePath);
         }
 
         public async Task<bool> SendFriendRequest(int requesterId, int receiverId)
@@ -67,6 +98,51 @@ namespace PacePalAPI.Services.UserService
             };
 
             await _context.Friendships.AddAsync(friendshipRequest);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+        //TODO: REFACTOR IS UGLY AHH
+        public async Task<bool> UploadProfilePicture(int userId, IFormFile file)
+        {
+            if (file == null || file.Length == 0) return false;
+
+            // Ensure the file is an image
+            string fileExtension = Path.GetExtension(file.FileName);
+            if (!new[] { ".jpg", ".jpeg", ".png", ".gif" }.Contains(fileExtension.ToLower())) return false;
+
+            // Create a unique file name
+            string fileName = $"{userId}_{Guid.NewGuid()}{fileExtension}";
+
+            // Define the path where the file will be saved
+            var uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "profile_pictures");
+
+            if(!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+
+            string filePath = Path.Combine(uploadPath, fileName);
+
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+
+            var profilePictureUrl = $"\\uploads\\profile_pictures\\{fileName}";
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+            if(user == null) return false;
+
+            // If the user has an existing profile picture, delete it
+            if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
+            {
+                var existingFilePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl.TrimStart('/'));
+                if (System.IO.File.Exists(existingFilePath))
+                {
+                    System.IO.File.Delete(existingFilePath);
+                }
+            }
+
+            user.ProfilePictureUrl = profilePictureUrl;
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             return true;

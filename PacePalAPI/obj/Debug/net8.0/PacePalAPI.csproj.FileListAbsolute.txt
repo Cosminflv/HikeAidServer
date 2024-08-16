@@ -273,3 +273,4 @@ D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\refint\Pace
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\PacePalAPI.pdb
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\PacePalAPI.genruntimeconfig.cache
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\ref\PacePalAPI.dll
+D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.staticwebassets.runtime.json
