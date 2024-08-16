@@ -22,15 +22,15 @@ namespace PacePalAPI.Models
 
             // User and Friendships
             modelBuilder.Entity<FriendshipModel>()
-                .HasOne(f => f.User)
+                .HasOne(f => f.Requester)
                 .WithMany(u => u.Friendships)
-                .HasForeignKey(f => f.UserId)
+                .HasForeignKey(f => f.RequesterId)
                 .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
 
             modelBuilder.Entity<FriendshipModel>()
-                .HasOne(f => f.Friend)
+                .HasOne(f => f.Reciever)
                 .WithMany()
-                .HasForeignKey(f => f.FriendId)
+                .HasForeignKey(f => f.ReceiverId)
                 .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
 
             // User and Posts

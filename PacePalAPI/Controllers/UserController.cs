@@ -64,5 +64,45 @@ namespace PacePalAPI.Controllers
 
             return Ok(foundUser);
         }
+
+        [HttpGet("getFriendRequests")]
+        public async Task<List<FriendshipModel>> GetFriendshipRequests()
+        {
+            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests();
+
+            if(friendships == null) return new List<FriendshipModel>();
+
+            return friendships;
+        }
+
+        [HttpPost("sendFriendRequest")]
+        public async Task<IActionResult> SendFriendRequest(int requesterId, int receiverId)
+        {
+            bool result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
+
+            if (!result) return BadRequest("Friendship request already exists or you are already friends.");
+
+            return Ok(result);
+        }
+
+        [HttpPost("acceptFriendRequest")]
+        public async Task<IActionResult> AcceptFriendRequest(int requestId)
+        {
+            bool result = await _userCollectionService.AcceptFriendRequest(requestId);
+
+            if (!result) return BadRequest("Friendship request not found or already accepted.");
+
+            return Ok(result);
+        }
+
+        [HttpPost("declineFriendRequest")]
+        public async Task<IActionResult> DeclineFriendRequest(int requestId)
+        {
+            bool result = await _userCollectionService.DeclineFriendRequest(requestId);
+
+            if (!result) return BadRequest("Friendship request not found or already processed.");
+
+            return Ok(result);
+        }
     }
 }

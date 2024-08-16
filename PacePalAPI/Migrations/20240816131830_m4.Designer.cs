@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PacePalAPI.Models;
 
@@ -11,9 +12,11 @@ using PacePalAPI.Models;
 namespace PacePalAPI.Migrations
 {
     [DbContext(typeof(PacePalContext))]
-    partial class PacePalContextModelSnapshot : ModelSnapshot
+    [Migration("20240816131830_m4")]
+    partial class m4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,20 +66,20 @@ namespace PacePalAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequesterId")
+                    b.Property<int>("FriendId")
                         .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("ReceiverId");
+                    b.HasIndex("FriendId");
 
-                    b.HasIndex("RequesterId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Friendships");
                 });
@@ -193,13 +196,13 @@ namespace PacePalAPI.Migrations
                 {
                     b.HasOne("PacePalAPI.Models.UserModel", "Reciever")
                         .WithMany()
-                        .HasForeignKey("ReceiverId")
+                        .HasForeignKey("FriendId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("PacePalAPI.Models.UserModel", "Requester")
                         .WithMany("Friendships")
-                        .HasForeignKey("RequesterId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 

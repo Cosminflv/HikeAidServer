@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
 
 namespace PacePalAPI.Services.UserService
@@ -12,6 +13,65 @@ namespace PacePalAPI.Services.UserService
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        public async Task<bool> AcceptFriendRequest(int requestId)
+        {
+            FriendshipModel? friendshipRequest = await _context.Friendships
+                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == FriendshipStatus.Pending);
+
+            if (friendshipRequest == null) return false;
+
+            // Update status to accepted
+            friendshipRequest.Status = FriendshipStatus.Accepted;
+            _context.Friendships.Update(friendshipRequest);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeclineFriendRequest(int requestId)
+        {
+            FriendshipModel? friendshipRequest = await _context.Friendships
+                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == FriendshipStatus.Pending);
+
+            if (friendshipRequest == null) return false;
+
+            // Update status to accepted
+            friendshipRequest.Status = FriendshipStatus.Declined;
+            _context.Friendships.Update(friendshipRequest);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<List<FriendshipModel>?> GetFriendshipRequests()
+        {
+           return await _context.Friendships.ToListAsync();
+        }
+
+        public async Task<bool> SendFriendRequest(int requesterId, int receiverId)
+        {
+            // Check if the friendship already exists
+            var existingFriendship = await _context.Friendships
+                .FirstOrDefaultAsync(f => (f.RequesterId == requesterId && f.ReceiverId == receiverId) ||
+                                     (f.RequesterId == receiverId && f.ReceiverId == requesterId));
+
+            if (existingFriendship != null) return false;
+
+            // Create a new friendship request
+            var friendshipRequest = new FriendshipModel
+            {
+                RequesterId = requesterId,
+                ReceiverId = receiverId,
+                CreatedAt = DateTime.UtcNow,
+                Status = FriendshipStatus.Pending
+            };
+
+            await _context.Friendships.AddAsync(friendshipRequest);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         async Task<bool> ICollectionService<UserModel>.Create(UserModel model)
         {
             await _context.Users.AddAsync(model);
@@ -23,7 +83,8 @@ namespace PacePalAPI.Services.UserService
         {
             UserModel? userToDelete = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(userToDelete == null) return false;
+            if (userToDelete == null) return false;
+
             _context.Users.Remove(userToDelete);
             return true;
         }
@@ -35,36 +96,15 @@ namespace PacePalAPI.Services.UserService
 
         async Task<List<UserModel>?> ICollectionService<UserModel>.GetAll()
         {
-           return await _context.Users.ToListAsync();
+            return await _context.Users.ToListAsync();
         }
 
         async Task<bool> ICollectionService<UserModel>.Update(int id, UserModel model)
         {
             UserModel? userToUpdate = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if(userToUpdate == null) return false;
+            if (userToUpdate == null) return false;
             _context.Users.Update(userToUpdate);
             return true;
         }
-
-        //public async Task<List<UserModel>> GetAllUsers()
-        //{
-        //    return await _context.Users.ToListAsync();
-        //}
-
-        //public async Task<UserModel?> GetUser(int id)
-        //{
-        //    UserModel? foundUser = await _context.Users.FirstOrDefaultAsync(UserModel => UserModel.Id == id);
-
-        //    return foundUser;
-        //}
-
-        //public async Task<UserModel?> LogUser(string username, string password)
-        //{
-        //    List<UserModel> users = await GetAllUsers();
-
-        //    UserModel? foundUser = users.FirstOrDefault(user => user.Name == username && user.Password == password);
-
-        //    return foundUser;
-        //}
     }
 }
