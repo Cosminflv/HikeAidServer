@@ -114,28 +114,23 @@ namespace PacePalAPI.Services.UserService
 
             return true;
         }
-        //TODO REFACTOR ITS UGLY AAHH
+
         public async Task<bool> UploadProfilePicture(int userId, byte[] imageData)
         {
-            var (filePath, fileName) = _createFilePath(userId);
-
-            string base64String = Convert.ToBase64String(imageData);
-
-            File.WriteAllText(filePath, base64String);
-
-            var profilePictureUrl = $"uploads\\profile_pictures\\{fileName}";
-
             UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null) return false;
 
-            // If the user has an existing profile picture, delete it
-            if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
-            {
-                var existingFilePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
+            var (filePath, fileName) = _createFilePath(userId);
 
-                if (System.IO.File.Exists(existingFilePath)) System.IO.File.Delete(existingFilePath);
-            }
+            string base64String = Convert.ToBase64String(imageData);
+
+            // If the user has an existing profile picture, delete it
+            if (File.Exists(filePath) && !user.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(filePath);
+
+            File.WriteAllText(filePath, base64String);
+
+            var profilePictureUrl = $"uploads\\profile_pictures\\{fileName}";
 
             user.ProfilePictureUrl = profilePictureUrl;
             _context.Users.Update(user);
@@ -156,6 +151,10 @@ namespace PacePalAPI.Services.UserService
             UserModel? userToDelete = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (userToDelete == null) return false;
+
+            string filePath = Path.Combine(_environment.WebRootPath, userToDelete.ProfilePictureUrl);
+
+            if(File.Exists(filePath) && !userToDelete.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(filePath);
 
             _context.Users.Remove(userToDelete);
             return true;
