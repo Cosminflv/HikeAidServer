@@ -252,7 +252,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Byte[]",
+        "Type": "System.String",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -265,7 +265,7 @@
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "UploadProfilePicture",
-    "RelativePath": "api/User/{id}/uploadProfilePicture",
+    "RelativePath": "api/User/{id}/uploadProfilePictureBase64",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -277,8 +277,8 @@
       },
       {
         "Name": "file",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
-        "IsRequired": false
+        "Type": "System.Byte[]",
+        "IsRequired": true
       },
       {
         "Name": "id",

@@ -1,4 +1,5 @@
-﻿using PacePalAPI.Models;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PacePalAPI.Models;
 
 namespace PacePalAPI.Services.UserService
 {
@@ -14,12 +15,12 @@ namespace PacePalAPI.Services.UserService
 
         Task<List<FriendshipModel>?> GetFriendshipRequests();
 
-        Task<bool> UploadProfilePicture(int userId, IFormFile file);
+        Task<bool> UploadProfilePicture(int userId, byte[] imageData);
 
         Task<bool> DeleteProfilePicture(int userId);
 
-        Task<byte[]?> GetProfilePicture(int userId);
+        Task<string?> GetProfilePicture(int userId);
 
-        Task<byte[]> GetDefaultUserPicture();
+        Task<string> GetDefaultUserPicture();
     }
 }

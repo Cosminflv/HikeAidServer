@@ -105,8 +105,8 @@ namespace PacePalAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{id}/uploadProfilePicture")]
-        public async Task<IActionResult> UploadProfilePicture(int userId, IFormFile file)
+        [HttpPost("{id}/uploadProfilePictureBase64")]
+        public async Task<IActionResult> UploadProfilePicture(int userId, byte[] file)
         {
             bool result = await _userCollectionService.UploadProfilePicture(userId, file);
 
@@ -126,13 +126,13 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("{id}/getProfilePicture")]
-        public async Task<byte[]> GetProfilePicture(int userId)
+        public async Task<string> GetProfilePicture(int userId)
         {
-            byte[]? bytes = await _userCollectionService.GetProfilePicture(userId);
+            string? bytes = await _userCollectionService.GetProfilePicture(userId);
 
             if (bytes == null) return await _userCollectionService.GetDefaultUserPicture();
 
-            return bytes;
+            return bytes!;
         }
 
 

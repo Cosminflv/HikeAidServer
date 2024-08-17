@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
+using System.Collections;
 
 namespace PacePalAPI.Services.UserService
 {
@@ -51,7 +52,13 @@ namespace PacePalAPI.Services.UserService
 
             if (user == null) return false;
 
-            user.ProfilePictureUrl = "uploads\\profile_pictures\\default.jpg";
+            string filePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl.TrimStart('\\'));
+
+            if (!File.Exists(filePath)) return false;
+
+            System.IO.File.Delete(filePath);
+
+            user.ProfilePictureUrl = "\\uploads\\profile_pictures\\default.base64";
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
@@ -59,11 +66,11 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
-        public async Task<byte[]> GetDefaultUserPicture()
+        public async Task<string> GetDefaultUserPicture()
         {
-            string filePath = Path.Combine(_environment.WebRootPath, "uploads\\profile_pictures\\default.jpg");
+            string filePath = Path.Combine(_environment.WebRootPath, "uploads\\profile_pictures\\default.base64");
 
-            return await System.IO.File.ReadAllBytesAsync(filePath);
+            return await System.IO.File.ReadAllTextAsync(filePath);
         }
 
         public async Task<List<FriendshipModel>?> GetFriendshipRequests()
@@ -71,7 +78,7 @@ namespace PacePalAPI.Services.UserService
            return await _context.Friendships.ToListAsync();
         }
 
-        public async Task<byte[]?> GetProfilePicture(int userId)
+        public async Task<string?> GetProfilePicture(int userId)
         {
             UserModel? userFound = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -85,7 +92,7 @@ namespace PacePalAPI.Services.UserService
 
             if (!System.IO.File.Exists(filePath)) return null;
 
-            return await System.IO.File.ReadAllBytesAsync(filePath);
+            return await System.IO.File.ReadAllTextAsync(filePath);
         }
 
         public async Task<bool> SendFriendRequest(int requesterId, int receiverId)
@@ -111,34 +118,26 @@ namespace PacePalAPI.Services.UserService
 
             return true;
         }
-        //TODO: REFACTOR IS UGLY AHH
-        public async Task<bool> UploadProfilePicture(int userId, IFormFile file)
+        //TODO REFACTOR ITS UGLY AAHH
+        public async Task<bool> UploadProfilePicture(int userId, byte[] imageData)
         {
-            if (file == null || file.Length == 0) return false;
+            string fileName = $"{userId}_{Guid.NewGuid()}.base64";
 
-            // Ensure the file is an image
-            string fileExtension = Path.GetExtension(file.FileName);
-            if (!new[] { ".jpg", ".jpeg", ".png", ".gif" }.Contains(fileExtension.ToLower())) return false;
+            string uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "profile_pictures");
 
-            // Create a unique file name
-            string fileName = $"{userId}_{Guid.NewGuid()}{fileExtension}";
-
-            // Define the path where the file will be saved
-            var uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "profile_pictures");
-
-            if(!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+            if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
 
             string filePath = Path.Combine(uploadPath, fileName);
 
-            using (var fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await file.CopyToAsync(fileStream);
-            }
+            string base64String = Convert.ToBase64String(imageData);
+
+            File.WriteAllText(filePath, base64String);
 
             var profilePictureUrl = $"\\uploads\\profile_pictures\\{fileName}";
+
             UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
-            if(user == null) return false;
+            if (user == null) return false;
 
             // If the user has an existing profile picture, delete it
             if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
