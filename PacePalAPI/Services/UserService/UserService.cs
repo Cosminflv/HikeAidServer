@@ -45,14 +45,23 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
+        public async Task<bool> DeleteProfilePicture(int userId)
+        {
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id ==  userId);
+
+            if (user == null) return false;
+
+            user.ProfilePictureUrl = "uploads\\profile_pictures\\default.jpg";
+
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
         public async Task<byte[]> GetDefaultUserPicture()
         {
             string filePath = Path.Combine(_environment.WebRootPath, "uploads\\profile_pictures\\default.jpg");
-
-            if (!System.IO.File.Exists(filePath))
-            {
-                int x = 3;
-            }
 
             return await System.IO.File.ReadAllBytesAsync(filePath);
         }

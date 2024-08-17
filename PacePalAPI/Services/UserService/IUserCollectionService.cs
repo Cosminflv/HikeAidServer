@@ -16,6 +16,8 @@ namespace PacePalAPI.Services.UserService
 
         Task<bool> UploadProfilePicture(int userId, IFormFile file);
 
+        Task<bool> DeleteProfilePicture(int userId);
+
         Task<byte[]?> GetProfilePicture(int userId);
 
         Task<byte[]> GetDefaultUserPicture();

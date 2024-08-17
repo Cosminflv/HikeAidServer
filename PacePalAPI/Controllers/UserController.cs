@@ -115,6 +115,16 @@ namespace PacePalAPI.Controllers
             return Ok(result);
         }
 
+        [HttpPost("{id}/deleteProfilePicture")]
+        public async Task<IActionResult> DeleteProfilePicture(int userId)
+        {
+            bool result = await _userCollectionService.DeleteProfilePicture(userId);
+
+            if (!result) return BadRequest("Error while deleting picture.");
+
+            return Ok(result);
+        }
+
         [HttpGet("{id}/getProfilePicture")]
         public async Task<byte[]> GetProfilePicture(int userId)
         {
@@ -124,6 +134,8 @@ namespace PacePalAPI.Controllers
 
             return bytes;
         }
+
+
 
 
     }

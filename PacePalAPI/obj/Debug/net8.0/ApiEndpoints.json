@@ -212,6 +212,27 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "DeleteProfilePicture",
+    "RelativePath": "api/User/{id}/deleteProfilePicture",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetProfilePicture",
     "RelativePath": "api/User/{id}/getProfilePicture",
     "HttpMethod": "GET",
