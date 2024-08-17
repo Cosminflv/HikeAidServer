@@ -52,13 +52,13 @@ namespace PacePalAPI.Services.UserService
 
             if (user == null) return false;
 
-            string filePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl.TrimStart('\\'));
+            string filePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
 
-            if (!File.Exists(filePath)) return false;
+            if (!File.Exists(filePath) || user.ProfilePictureUrl.Contains("default")) return false;
 
             System.IO.File.Delete(filePath);
 
-            user.ProfilePictureUrl = "\\uploads\\profile_pictures\\default.base64";
+            user.ProfilePictureUrl = "uploads\\profile_pictures\\default.base64";
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
@@ -84,11 +84,7 @@ namespace PacePalAPI.Services.UserService
 
             if (userFound == null) return null;
 
-            // Ensure the profile picture URL is a relative path
-            var relativeProfilePictureUrl = userFound.ProfilePictureUrl.TrimStart('\\');
-
-
-            string filePath = Path.Combine(_environment.WebRootPath, relativeProfilePictureUrl);
+            string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
 
             if (!System.IO.File.Exists(filePath)) return null;
 
@@ -121,19 +117,13 @@ namespace PacePalAPI.Services.UserService
         //TODO REFACTOR ITS UGLY AAHH
         public async Task<bool> UploadProfilePicture(int userId, byte[] imageData)
         {
-            string fileName = $"{userId}_{Guid.NewGuid()}.base64";
-
-            string uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "profile_pictures");
-
-            if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
-
-            string filePath = Path.Combine(uploadPath, fileName);
+            var (filePath, fileName) = _createFilePath(userId);
 
             string base64String = Convert.ToBase64String(imageData);
 
             File.WriteAllText(filePath, base64String);
 
-            var profilePictureUrl = $"\\uploads\\profile_pictures\\{fileName}";
+            var profilePictureUrl = $"uploads\\profile_pictures\\{fileName}";
 
             UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
@@ -142,11 +132,9 @@ namespace PacePalAPI.Services.UserService
             // If the user has an existing profile picture, delete it
             if (!string.IsNullOrEmpty(user.ProfilePictureUrl))
             {
-                var existingFilePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl.TrimStart('/'));
-                if (System.IO.File.Exists(existingFilePath))
-                {
-                    System.IO.File.Delete(existingFilePath);
-                }
+                var existingFilePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
+
+                if (System.IO.File.Exists(existingFilePath)) System.IO.File.Delete(existingFilePath);
             }
 
             user.ProfilePictureUrl = profilePictureUrl;
@@ -189,6 +177,19 @@ namespace PacePalAPI.Services.UserService
             if (userToUpdate == null) return false;
             _context.Users.Update(userToUpdate);
             return true;
+        }
+
+        private (string, string) _createFilePath(int userId)
+        {
+            string fileName = $"{userId}_{Guid.NewGuid()}.base64";
+
+            string uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "profile_pictures");
+
+            if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+
+            string filePath = Path.Combine(uploadPath, fileName);
+
+            return (filePath, fileName);
         }
     }
 }

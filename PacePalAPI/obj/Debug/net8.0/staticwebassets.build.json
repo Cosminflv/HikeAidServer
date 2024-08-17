@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rYFOli0fIFatlgNfGCpPPs+zLWC3odIILVWqO2CzQDA=",
+  "Hash": "jkbdihCwNQZqrTonBbw0LOZUa2V8NJUIJtzWJykZTSA=",
   "Source": "PacePalAPI",
   "BasePath": "_content/PacePalAPI",
   "Mode": "Default",
@@ -16,25 +16,6 @@
     }
   ],
   "Assets": [
-    {
-      "Identity": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\uploads\\profile_pictures\\3_d7c0cc65-717f-4011-b173-c2c1eb0a4ff9.base64",
-      "SourceId": "PacePalAPI",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\",
-      "BasePath": "_content/PacePalAPI",
-      "RelativePath": "uploads/profile_pictures/3_d7c0cc65-717f-4011-b173-c2c1eb0a4ff9.base64",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\uploads\\profile_pictures\\3_d7c0cc65-717f-4011-b173-c2c1eb0a4ff9.base64"
-    },
     {
       "Identity": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\uploads\\profile_pictures\\5_2d10e9bf-4dd5-4356-8472-24bc16a31862.base64",
       "SourceId": "PacePalAPI",

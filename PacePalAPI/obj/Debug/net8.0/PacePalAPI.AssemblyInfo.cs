@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PacePalAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0d2d0f8fa72de7bb441158853de6bee6d131ffde")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+be712b6cf397a9086bae7b650c3b174d99fa155f")]
 [assembly: System.Reflection.AssemblyProductAttribute("PacePalAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PacePalAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
