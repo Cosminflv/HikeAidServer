@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
 using PacePalAPI.Services.SocialService;
+using PacePalAPI.Services.TrackService;
 using PacePalAPI.Services.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
+builder.Services.AddScoped<ITrackCollectionService, TrackService>();
 builder.Services.AddSingleton<IWebHostEnvironment>(builder.Environment);
 
 // Manually set the WebRootPath to ensure it's not null

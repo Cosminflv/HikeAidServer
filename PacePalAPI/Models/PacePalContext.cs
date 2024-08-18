@@ -10,6 +10,7 @@ namespace PacePalAPI.Models
         public DbSet<SocialPostModel> SocialPosts { get; set; }
         public DbSet<CommentModel> Comments { get; set; }
         public DbSet<LikeModel> Likes { get; set; }
+        public DbSet<TrackModel> RecordedTracks { get; set; }
 
         public PacePalContext(DbContextOptions options) : base(options)
         {
@@ -31,6 +32,13 @@ namespace PacePalAPI.Models
                 .HasOne(f => f.Reciever)
                 .WithMany()
                 .HasForeignKey(f => f.ReceiverId)
+                .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
+
+            // User and Tracks
+            modelBuilder.Entity<TrackModel>()
+                .HasOne(u => u.UserModel)
+                .WithMany(t => t.RecordedTracks)
+                .HasForeignKey(track => track.UserId)
                 .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
 
             // User and Posts

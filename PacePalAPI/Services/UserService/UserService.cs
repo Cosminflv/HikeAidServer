@@ -139,14 +139,14 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
-        async Task<bool> ICollectionService<UserModel>.Create(UserModel model)
+        public async Task<bool> Create(UserModel model)
         {
             await _context.Users.AddAsync(model);
             _context.SaveChanges();
             return true;
         }
 
-        async Task<bool> ICollectionService<UserModel>.Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             UserModel? userToDelete = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -160,17 +160,17 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
-        async Task<UserModel?> ICollectionService<UserModel>.Get(int id)
+        public async Task<UserModel?> Get(int id)
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        async Task<List<UserModel>?> ICollectionService<UserModel>.GetAll()
+        public async Task<List<UserModel>?> GetAll()
         {
             return await _context.Users.ToListAsync();
         }
 
-        async Task<bool> ICollectionService<UserModel>.Update(int id, UserModel model)
+        public async Task<bool> Update(int id, UserModel model)
         {
             UserModel? userToUpdate = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (userToUpdate == null) return false;

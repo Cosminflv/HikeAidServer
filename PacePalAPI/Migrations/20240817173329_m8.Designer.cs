@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PacePalAPI.Models;
 
@@ -11,9 +12,11 @@ using PacePalAPI.Models;
 namespace PacePalAPI.Migrations
 {
     [DbContext(typeof(PacePalContext))]
-    partial class PacePalContextModelSnapshot : ModelSnapshot
+    [Migration("20240817173329_m8")]
+    partial class m8
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

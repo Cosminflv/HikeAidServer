@@ -25,5 +25,7 @@ namespace PacePalAPI.Models
         public List<CommentModel> Comments { get; set; } = new List<CommentModel>();
         [JsonIgnore]
         public List<LikeModel> Likes { get; set; } = new List<LikeModel>();
+        [JsonIgnore]
+        public List<TrackModel> RecordedTracks { get; set; } = new List<TrackModel>();
     }
 }

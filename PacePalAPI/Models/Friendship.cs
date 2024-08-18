@@ -29,7 +29,7 @@
         public FriendshipModel() { }    
 
         // Navigation properties
-        public UserModel Requester { get; set; }
-        public UserModel Reciever { get; set; }
+        public UserModel? Requester { get; set; }
+        public UserModel? Reciever { get; set; }
     }
 }
