@@ -134,9 +134,5 @@ namespace PacePalAPI.Controllers
 
             return bytes!;
         }
-
-
-
-
     }
 }

@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vWaAh83dSrixmkxuG2J3n0hQWgPHAc6UcvyMScH6NN8=",
+  "Hash": "OFNx9G5jBgkwh4zx6DWN6Ot6CZS3wWMDwhvwGzt5NSI=",
   "Source": "PacePalAPI",
   "BasePath": "_content/PacePalAPI",
   "Mode": "Default",
@@ -34,6 +34,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\uploads\\profile_pictures\\5_2d10e9bf-4dd5-4356-8472-24bc16a31862.base64"
+    },
+    {
+      "Identity": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\uploads\\tracks\\3_0d73450f-7a81-433b-b8af-fe50ee6bcf17.base64",
+      "SourceId": "PacePalAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\",
+      "BasePath": "_content/PacePalAPI",
+      "RelativePath": "uploads/tracks/3_0d73450f-7a81-433b-b8af-fe50ee6bcf17.base64",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tracks\\3_0d73450f-7a81-433b-b8af-fe50ee6bcf17.base64"
+    },
+    {
+      "Identity": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\uploads\\tracks_logs\\3_7d56c67d-90af-41c9-82dc-848765f4587e.base64",
+      "SourceId": "PacePalAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\wwwroot\\",
+      "BasePath": "_content/PacePalAPI",
+      "RelativePath": "uploads/tracks_logs/3_7d56c67d-90af-41c9-82dc-848765f4587e.base64",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\tracks_logs\\3_7d56c67d-90af-41c9-82dc-848765f4587e.base64"
     }
   ]
 }

@@ -32,6 +32,15 @@ namespace PacePalAPI.Services.TrackService
 
             //TODO ALSO DELETE STORED FILES
 
+            string gpxFilePath = Path.Combine(_environment.WebRootPath, trackToDelete.GpxFilePath);
+            string logFilePath = Path.Combine(_environment.WebRootPath, trackToDelete.LogFilePath);
+
+            if (System.IO.File.Exists(gpxFilePath) && System.IO.File.Exists(logFilePath))
+            {
+                System.IO.File.Delete(gpxFilePath);
+                System.IO.File.Delete(logFilePath);
+            }
+
             _context.RecordedTracks.Remove(trackToDelete);
             return true;
         }

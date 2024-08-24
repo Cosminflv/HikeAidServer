@@ -34,7 +34,5 @@ namespace PacePalAPI.Controllers
 
             return Ok(true);  
         }
-
-
     }
 }
