@@ -31,12 +31,20 @@ namespace PacePalAPI.Controllers
 
         // Create a new user
         [HttpPost]
-        public IActionResult CreateUser([FromBody] UserModel user)
+        public IActionResult CreateUser([FromBody] UserDto userDto)
         {
-            if (user == null)
+            if (userDto == null)
             {
                 return BadRequest("The user cannot be null.");
             }
+
+            UserModel user = new UserModel();
+            user.Username = userDto.Username;
+            user.PasswordHash = userDto.PasswordHash;
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.Bio = "";
+            user.ProfilePictureUrl = "";
 
             _userCollectionService.Create(user);
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
@@ -59,7 +67,7 @@ namespace PacePalAPI.Controllers
 
             if (foundUser == null)
             {
-                return Unauthorized("Invalid username or password.");
+                return BadRequest("Invalid username or password.");
             }
 
             return Ok(foundUser);

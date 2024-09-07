@@ -255,8 +255,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "user",
-        "Type": "PacePalAPI.Models.UserModel",
+        "Name": "userDto",
+        "Type": "PacePalAPI.Requests.UserDto",
         "IsRequired": true
       }
     ],
