@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
 using System.Collections;
+using System.Runtime.ConstrainedExecution;
 
 namespace PacePalAPI.Services.UserService
 {
@@ -141,6 +142,10 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<bool> Create(UserModel model)
         {
+            UserModel? foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Username ==  model.Username);
+
+            if (foundUser != null) return false;
+
             await _context.Users.AddAsync(model);
             _context.SaveChanges();
             return true;

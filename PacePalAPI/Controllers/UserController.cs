@@ -46,7 +46,10 @@ namespace PacePalAPI.Controllers
             user.Bio = "";
             user.ProfilePictureUrl = "";
 
-            _userCollectionService.Create(user);
+           bool hasCreated = _userCollectionService.Create(user).Result;
+
+            if (!hasCreated) return BadRequest("Username already exists.");
+
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
         }
 
