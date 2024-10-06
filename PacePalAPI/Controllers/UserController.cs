@@ -30,7 +30,7 @@ namespace PacePalAPI.Controllers
         }
 
         // Get user by id
-        [HttpGet("{id}/getUserById")]
+        [HttpGet("{id}/getUser")]
         public async Task<IActionResult> GetUser(int id)
         {
             UserModel? user = await _userCollectionService.Get(id);
