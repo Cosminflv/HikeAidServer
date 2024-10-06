@@ -29,6 +29,17 @@ namespace PacePalAPI.Controllers
             return Ok(users);
         }
 
+        // Get user by id
+        [HttpGet("{id}/getUserById")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            UserModel? user = await _userCollectionService.Get(id);
+
+            if (user == null) return NotFound("User not found");
+
+            return Ok(user);
+        }
+
         // Create a new user
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto userDto)
