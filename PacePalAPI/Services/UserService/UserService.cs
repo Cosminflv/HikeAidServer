@@ -116,6 +116,15 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
+        public async Task<int> NumberOfFriends(int userId)
+        {
+            int number = await _context.Friendships
+                .Where(f => f.ReceiverId == userId && f.Status == FriendshipStatus.Accepted)
+                .CountAsync();
+
+            return number;
+        }
+
         public async Task<bool> UploadProfilePicture(int userId, byte[] imageData)
         {
             UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);

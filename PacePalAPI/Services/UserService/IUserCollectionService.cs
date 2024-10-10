@@ -15,6 +15,8 @@ namespace PacePalAPI.Services.UserService
 
         Task<List<FriendshipModel>?> GetFriendshipRequests();
 
+        Task<int> NumberOfFriends(int userId);
+
         Task<bool> UploadProfilePicture(int userId, byte[] imageData);
 
         Task<bool> DeleteProfilePicture(int userId);

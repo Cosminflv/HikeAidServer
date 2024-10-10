@@ -107,6 +107,14 @@ namespace PacePalAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}/friendsNumber")]
+        public async Task<int> GetFriendsNumber(int userId)
+        {
+            int number = await _userCollectionService.NumberOfFriends(userId);
+
+            return number;
+        }
+
         [HttpPost("acceptFriendRequest")]
         public async Task<IActionResult> AcceptFriendRequest(int requestId)
         {

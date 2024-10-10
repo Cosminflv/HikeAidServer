@@ -185,7 +185,6 @@ D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\System.Memo
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\System.Runtime.Caching.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\System.Security.Permissions.dll
-D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\System.Text.Json.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\System.Windows.Extensions.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll

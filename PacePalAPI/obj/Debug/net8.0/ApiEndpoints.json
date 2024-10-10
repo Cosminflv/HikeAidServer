@@ -285,6 +285,37 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "GetFriendsNumber",
+    "RelativePath": "api/User/{id}/friendsNumber",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Int32",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetProfilePicture",
     "RelativePath": "api/User/{id}/getProfilePicture",
     "HttpMethod": "GET",
@@ -313,6 +344,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "GetUser",
+    "RelativePath": "api/User/{id}/getUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
