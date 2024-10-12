@@ -264,6 +264,27 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "UpdateUser",
+    "RelativePath": "api/User/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "updateUserDto",
+        "Type": "PacePalAPI.Requests.UpdateUserDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "DeleteProfilePicture",
     "RelativePath": "api/User/{id}/deleteProfilePicture",
     "HttpMethod": "POST",

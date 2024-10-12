@@ -10,6 +10,7 @@ namespace PacePalAPI.Services.UserService
     {
         private readonly PacePalContext _context;
         private readonly IWebHostEnvironment _environment;
+        private static readonly object _fileLock = new object();
 
         public UserService(PacePalContext context, IWebHostEnvironment environment)
         {
@@ -49,22 +50,33 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<bool> DeleteProfilePicture(int userId)
         {
-            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id ==  userId);
+            UserModel? user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             if (user == null) return false;
 
             string filePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
 
-            if (!File.Exists(filePath) || user.ProfilePictureUrl.Contains("default")) return false;
+            lock (_fileLock)
+            {
+                if (!File.Exists(filePath) || user.ProfilePictureUrl.Contains("default")) return false;
 
-            System.IO.File.Delete(filePath);
+                try
+                {
+                    System.IO.File.Delete(filePath);
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine($"Error deleting the file: {ex.Message}");
+                    return false;
+                }
 
-            user.ProfilePictureUrl = "uploads\\profile_pictures\\default.base64";
+                user.ProfilePictureUrl = "uploads\\profile_pictures\\default.base64";
 
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+                _context.Users.Update(user);
+                _context.SaveChanges();
 
-            return true;
+                return true;
+            }
         }
 
         public async Task<string> GetDefaultUserPicture()
@@ -87,9 +99,25 @@ namespace PacePalAPI.Services.UserService
 
             string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
 
-            if (!System.IO.File.Exists(filePath)) return null;
+            lock (_fileLock)
+            {
+                try
+                {
+                    if (!System.IO.File.Exists(filePath)) return null;
 
-            return await System.IO.File.ReadAllTextAsync(filePath);
+                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (StreamReader reader = new StreamReader(fs))
+                    {
+                        return reader.ReadToEnd(); // Use synchronous read in the lock
+                    }
+                }
+                catch (IOException ex)
+                {
+                    // Log the exception for debugging
+                    Console.WriteLine($"Error reading the file: {ex.Message}");
+                    return null;
+                }
+            }
         }
 
         public async Task<bool> SendFriendRequest(int requesterId, int receiverId)
