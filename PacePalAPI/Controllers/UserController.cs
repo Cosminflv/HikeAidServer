@@ -40,6 +40,42 @@ namespace PacePalAPI.Controllers
             return Ok(user);
         }
 
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
+        {
+            try
+            {
+                // Validate the input DTO (for example, ensure required fields are present)
+                if (updateUserDto == null || updateUserDto.Id <= 0 ||
+                    string.IsNullOrWhiteSpace(updateUserDto.FirstName) ||
+                    string.IsNullOrWhiteSpace(updateUserDto.LastName))
+                {
+                    return BadRequest("Invalid input data");
+                }
+
+                UserModel? user = await _userCollectionService.Get(updateUserDto.Id);
+                if (user == null) return NotFound("User not found");
+
+                user.FirstName = updateUserDto.FirstName;
+                user.LastName = updateUserDto.LastName;
+                user.Bio = updateUserDto.Bio;
+
+                byte[] imageBytes = Convert.FromBase64String(updateUserDto.imageData);
+
+                bool result1 = await _userCollectionService.Update(updateUserDto.Id, user);
+                bool result2 = await _userCollectionService.UploadProfilePicture(updateUserDto.Id, imageBytes);
+
+                return Ok(result1 && result2);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+
+                
+
+        }
+
         // Create a new user
         [HttpPost]
         public IActionResult CreateUser([FromBody] UserDto userDto)
@@ -150,7 +186,7 @@ namespace PacePalAPI.Controllers
         {
             bool result = await _userCollectionService.DeleteProfilePicture(userId);
 
-            if (!result) return BadRequest("Error while deleting picture.");
+            if (!result) return NotFound("User not found.");
 
             return Ok(result);
         }
