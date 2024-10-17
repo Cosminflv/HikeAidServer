@@ -206,5 +206,15 @@ namespace PacePalAPI.Controllers
 
             return bytes!;
         }
+
+        [HttpGet("/getDefaultProfilePicture")]
+        public async Task<IActionResult> GetDefaultProfilePicture()
+        {
+            string? bytes = await _userCollectionService.GetDefaultUserPicture();
+
+            if (bytes == null) return NotFound("Default image not found.");
+
+            return Ok(bytes);
+        }
     }
 }

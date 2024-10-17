@@ -496,5 +496,15 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "GetDefaultProfilePicture",
+    "RelativePath": "getDefaultProfilePicture",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   }
 ]
