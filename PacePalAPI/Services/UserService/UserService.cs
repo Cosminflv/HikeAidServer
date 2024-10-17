@@ -56,8 +56,8 @@ namespace PacePalAPI.Services.UserService
 
             string filePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
 
-            lock (_fileLock)
-            {
+            //lock (_fileLock)
+            //{
                 if (!File.Exists(filePath) || user.ProfilePictureUrl.Contains("default")) return false;
 
                 try
@@ -76,7 +76,7 @@ namespace PacePalAPI.Services.UserService
                 _context.SaveChanges();
 
                 return true;
-            }
+            //}
         }
 
         public async Task<string> GetDefaultUserPicture()
@@ -99,8 +99,8 @@ namespace PacePalAPI.Services.UserService
 
             string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
 
-            lock (_fileLock)
-            {
+            //lock (_fileLock)
+            //{
                 try
                 {
                     if (!System.IO.File.Exists(filePath)) return null;
@@ -117,7 +117,7 @@ namespace PacePalAPI.Services.UserService
                     Console.WriteLine($"Error reading the file: {ex.Message}");
                     return null;
                 }
-            }
+            //}
         }
 
         public async Task<bool> SendFriendRequest(int requesterId, int receiverId)
@@ -164,7 +164,7 @@ namespace PacePalAPI.Services.UserService
             string base64String = Convert.ToBase64String(imageData);
 
             // If the user has an existing profile picture, delete it
-            if (File.Exists(filePath) && !user.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(filePath);
+            if (File.Exists(user.ProfilePictureUrl) && !user.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(user.ProfilePictureUrl);
 
             File.WriteAllText(filePath, base64String);
 

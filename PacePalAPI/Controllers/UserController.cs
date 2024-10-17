@@ -63,7 +63,16 @@ namespace PacePalAPI.Controllers
                 byte[] imageBytes = Convert.FromBase64String(updateUserDto.imageData);
 
                 bool result1 = await _userCollectionService.Update(updateUserDto.Id, user);
-                bool result2 = await _userCollectionService.UploadProfilePicture(updateUserDto.Id, imageBytes);
+                bool result2 = false;
+
+                if (updateUserDto.hasDeletedImage)
+                {
+                   result2 = await _userCollectionService.DeleteProfilePicture(updateUserDto.Id);
+                }
+                else
+                {
+                   result2 = await _userCollectionService.UploadProfilePicture(updateUserDto.Id, imageBytes);
+                }
 
                 return Ok(result1 && result2);
             }
@@ -71,9 +80,6 @@ namespace PacePalAPI.Controllers
             {
                 return StatusCode(500, "An error occurred while processing your request.");
             }
-
-                
-
         }
 
         // Create a new user

@@ -9,6 +9,8 @@
 
         public string Bio { get; set; }
 
+        public bool hasDeletedImage { get; set; }
+
         public string imageData { get; set; }
 
     }
