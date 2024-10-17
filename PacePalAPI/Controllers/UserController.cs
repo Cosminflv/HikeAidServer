@@ -59,6 +59,12 @@ namespace PacePalAPI.Controllers
                 user.FirstName = updateUserDto.FirstName;
                 user.LastName = updateUserDto.LastName;
                 user.Bio = updateUserDto.Bio;
+                user.Age = updateUserDto.Age;
+                user.Gender = updateUserDto.Gender;
+                user.BirthDate = updateUserDto.BirthDate;
+                user.City = updateUserDto.City;
+                user.Country = updateUserDto.Country;
+                user.Weight = updateUserDto.Weight;
 
                 byte[] imageBytes = Convert.FromBase64String(updateUserDto.imageData);
 
@@ -96,8 +102,15 @@ namespace PacePalAPI.Controllers
             user.PasswordHash = userDto.PasswordHash;
             user.FirstName = userDto.FirstName;
             user.LastName = userDto.LastName;
+            //TODO Add those into UserDto by collecting data when user signs up
             user.Bio = "";
             user.ProfilePictureUrl = "";
+            user.City = "";
+            user.Country = "";
+            user.Age = 0;
+            user.Weight = 0;
+            user.Gender = EGender.Man;
+            user.BirthDate = DateTime.MinValue;
 
            bool hasCreated = _userCollectionService.Create(user).Result;
 

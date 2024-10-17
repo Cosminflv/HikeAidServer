@@ -21,12 +21,12 @@ namespace PacePalAPI.Services.UserService
         public async Task<bool> AcceptFriendRequest(int requestId)
         {
             FriendshipModel? friendshipRequest = await _context.Friendships
-                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == FriendshipStatus.Pending);
+                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == EFriendshipStatus.Pending);
 
             if (friendshipRequest == null) return false;
 
             // Update status to accepted
-            friendshipRequest.Status = FriendshipStatus.Accepted;
+            friendshipRequest.Status = EFriendshipStatus.Accepted;
             _context.Friendships.Update(friendshipRequest);
             await _context.SaveChangesAsync();
 
@@ -36,12 +36,12 @@ namespace PacePalAPI.Services.UserService
         public async Task<bool> DeclineFriendRequest(int requestId)
         {
             FriendshipModel? friendshipRequest = await _context.Friendships
-                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == FriendshipStatus.Pending);
+                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == EFriendshipStatus.Pending);
 
             if (friendshipRequest == null) return false;
 
             // Update status to accepted
-            friendshipRequest.Status = FriendshipStatus.Declined;
+            friendshipRequest.Status = EFriendshipStatus.Declined;
             _context.Friendships.Update(friendshipRequest);
             await _context.SaveChangesAsync();
 
@@ -135,7 +135,7 @@ namespace PacePalAPI.Services.UserService
                 RequesterId = requesterId,
                 ReceiverId = receiverId,
                 CreatedAt = DateTime.UtcNow,
-                Status = FriendshipStatus.Pending
+                Status = EFriendshipStatus.Pending
             };
 
             await _context.Friendships.AddAsync(friendshipRequest);
@@ -147,7 +147,7 @@ namespace PacePalAPI.Services.UserService
         public async Task<int> NumberOfFriends(int userId)
         {
             int number = await _context.Friendships
-                .Where(f => f.ReceiverId == userId && f.Status == FriendshipStatus.Accepted)
+                .Where(f => f.ReceiverId == userId && f.Status == EFriendshipStatus.Accepted)
                 .CountAsync();
 
             return number;

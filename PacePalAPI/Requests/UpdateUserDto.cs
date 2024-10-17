@@ -1,4 +1,6 @@
-﻿namespace PacePalAPI.Requests
+﻿using PacePalAPI.Models;
+
+namespace PacePalAPI.Requests
 {
     public class UpdateUserDto
     {
@@ -8,6 +10,18 @@
         public string LastName { get; set; }
 
         public string Bio { get; set; }
+
+        public int Age {  get; set; }
+
+        public string Country { get; set; }
+
+        public string City { get; set; }
+
+        public EGender Gender { get; set; }
+
+        public DateTime BirthDate { get; set; }
+
+        public int Weight { get; set; }
 
         public bool hasDeletedImage { get; set; }
 

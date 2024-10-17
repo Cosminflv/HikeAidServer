@@ -1,6 +1,6 @@
 ﻿namespace PacePalAPI.Models
 {
-    public enum FriendshipStatus
+    public enum EFriendshipStatus
     {
         Pending,
         Accepted,
@@ -13,9 +13,9 @@
         public int RequesterId { get; set; }  // Foreign key
         public int ReceiverId { get; set; }  // Foreign key
         public DateTime CreatedAt { get; set; }
-        public FriendshipStatus Status { get; set; }
+        public EFriendshipStatus Status { get; set; }
 
-        public FriendshipModel(int id, int requesterId, int receiverId, DateTime createdAt, UserModel user, UserModel friend, FriendshipStatus status)
+        public FriendshipModel(int id, int requesterId, int receiverId, DateTime createdAt, UserModel user, UserModel friend, EFriendshipStatus status)
         {
             Id = id;
             RequesterId = requesterId;
