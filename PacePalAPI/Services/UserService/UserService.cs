@@ -163,8 +163,10 @@ namespace PacePalAPI.Services.UserService
 
             string base64String = Convert.ToBase64String(imageData);
 
+            string previousImageUrl = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
+
             // If the user has an existing profile picture, delete it
-            if (File.Exists(user.ProfilePictureUrl) && !user.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(user.ProfilePictureUrl);
+            if (File.Exists(previousImageUrl) && !user.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(previousImageUrl);
 
             File.WriteAllText(filePath, base64String);
 
