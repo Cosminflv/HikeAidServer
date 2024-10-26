@@ -1,19 +1,19 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Hosting;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserService;
 
 namespace PacePalAPI.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserCollectionService _userCollectionService;
 
-        public UserController(IUserCollectionService userService)
+        public UserController(IUserCollectionService userService, IConfiguration config)
         {
             _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
@@ -117,29 +117,6 @@ namespace PacePalAPI.Controllers
             if (!hasCreated) return BadRequest("Username already exists.");
 
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
-        }
-
-        // Log in a user
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginInfo)
-        {
-            if (loginInfo == null || string.IsNullOrEmpty(loginInfo.Username) || string.IsNullOrEmpty(loginInfo.Password))
-            {
-                return BadRequest("Username and password are required.");
-            }
-
-            var users = await _userCollectionService.GetAll();
-
-            if (users == null || !users.Any()) return NotFound("There are no users available.");
-
-            var foundUser = users.FirstOrDefault(x => x.Username == loginInfo.Username && x.PasswordHash == loginInfo.Password);
-
-            if (foundUser == null)
-            {
-                return BadRequest("Invalid username or password.");
-            }
-
-            return Ok(foundUser);
         }
 
         [HttpGet("getFriendRequests")]

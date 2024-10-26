@@ -137,6 +137,7 @@ D:\Informatica\Licenta\PacePalAPI\PacePalAPI\obj\Debug\net8.0\PacePalAPI.genrunt
 D:\Informatica\Licenta\PacePalAPI\PacePalAPI\obj\Debug\net8.0\ref\PacePalAPI.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\appsettings.Development.json
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\appsettings.json
+D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.staticwebassets.runtime.json
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.exe
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.deps.json
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.runtimeconfig.json
@@ -145,7 +146,9 @@ D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Azure.Core.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Azure.Identity.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Humanizer.dll
+D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
+D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Microsoft.Bcl.TimeProvider.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
@@ -272,4 +275,3 @@ D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\refint\Pace
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\PacePalAPI.pdb
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\PacePalAPI.genruntimeconfig.cache
 D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\obj\Debug\net8.0\ref\PacePalAPI.dll
-D:\Informatica\Licenta\PacePalServer.git\PacePalAPI\bin\Debug\net8.0\PacePalAPI.staticwebassets.runtime.json

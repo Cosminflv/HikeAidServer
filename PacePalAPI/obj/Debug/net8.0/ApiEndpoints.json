@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "PacePalAPI.Controllers.LoginController",
+    "Method": "Login",
+    "RelativePath": "api/Login/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginInfo",
+        "Type": "PacePalAPI.Requests.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SocialPostController",
     "Method": "GetPosts",
     "RelativePath": "api/SocialPost",
@@ -459,22 +475,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "Login",
-    "RelativePath": "api/User/login",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loginInfo",
-        "Type": "PacePalAPI.Requests.LoginDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
