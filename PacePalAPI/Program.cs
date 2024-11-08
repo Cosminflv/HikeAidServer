@@ -40,7 +40,10 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
     var dbContext = scope.ServiceProvider.GetRequiredService<PacePalContext>();
 
     // Retrieve the list of users from the database
-    var users = dbContext.Users.Include(u => u.Friendships).ToList();
+    var users = dbContext.Users
+        .Include(u => u.SentFriendships)
+        .Include(u => u.ReceivedFriendships)
+        .ToList();
 
     // Retrieve or initialize Radix Trees (if not registered as singletons separately)
     var usernamesRadixTree = new RadixTree();
@@ -56,6 +59,7 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
         fullNameRadixTree,
         users);
 });
+
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
 builder.Services.AddScoped<ITrackCollectionService, TrackService>();

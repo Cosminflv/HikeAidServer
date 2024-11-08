@@ -32,6 +32,11 @@ namespace PacePalAPI.Services.UserSearchService.Impl
 
             foreach (var user in users)
             {
+                // Combine the Sent and Received Friendships into a single list
+                var combinedFriendships = user.SentFriendships
+                    .Concat(user.ReceivedFriendships)
+                    .ToList();
+
                 var userSearchEntity = new UserSearchEntity
                 {
                     Id = user.Id,
@@ -40,7 +45,7 @@ namespace PacePalAPI.Services.UserSearchService.Impl
                     LastName = user.LastName,
                     City = user.City,
                     Country = user.Country,
-                    Friends = user.Friendships
+                    Friends = combinedFriendships
                         .Where(f => f.Status == EFriendshipStatus.Accepted)
                         .Select(f => f.ReceiverId == user.Id ? f.RequesterId : f.ReceiverId)
                         .ToList()

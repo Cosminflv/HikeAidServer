@@ -29,7 +29,10 @@ namespace PacePalAPI.Models
 
         // Navigation properties
         [JsonIgnore]
-        public List<FriendshipModel> Friendships { get; set; } = new List<FriendshipModel>();
+        public List<FriendshipModel> SentFriendships { get; set; } = new List<FriendshipModel>(); // Friendships where user is the requester
+
+        [JsonIgnore]
+        public List<FriendshipModel> ReceivedFriendships { get; set; } = new List<FriendshipModel>(); // Friendships where user is the receiver
         [JsonIgnore]
         public List<SocialPostModel> Posts { get; set; } = new List<SocialPostModel>();
         [JsonIgnore]

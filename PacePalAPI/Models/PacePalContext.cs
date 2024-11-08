@@ -20,18 +20,30 @@ namespace PacePalAPI.Models
         {
             base.OnModelCreating(modelBuilder);
 
-            // User and Friendships
+            //// User and Friendships
+            //modelBuilder.Entity<FriendshipModel>()
+            //    .HasOne(f => f.Requester)
+            //    .WithMany(u => u.Friendships)
+            //    .HasForeignKey(f => f.RequesterId)
+            //    .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
+
+            //modelBuilder.Entity<FriendshipModel>()
+            //    .HasOne(f => f.Receiver)
+            //    .WithMany()
+            //    .HasForeignKey(f => f.ReceiverId)
+            //    .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
+
             modelBuilder.Entity<FriendshipModel>()
                 .HasOne(f => f.Requester)
-                .WithMany(u => u.Friendships)
+                .WithMany(u => u.SentFriendships) // List of friendships where user is the requester
                 .HasForeignKey(f => f.RequesterId)
-                .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<FriendshipModel>()
                 .HasOne(f => f.Receiver)
-                .WithMany()
+                .WithMany(u => u.ReceivedFriendships) // List of friendships where user is the receiver
                 .HasForeignKey(f => f.ReceiverId)
-                .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
+                .OnDelete(DeleteBehavior.Restrict);
 
             // User and Tracks
             modelBuilder.Entity<TrackModel>()
