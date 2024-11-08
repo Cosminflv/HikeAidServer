@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 
 namespace PacePalAPI.Models
 {
@@ -29,7 +28,7 @@ namespace PacePalAPI.Models
                 .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
 
             modelBuilder.Entity<FriendshipModel>()
-                .HasOne(f => f.Reciever)
+                .HasOne(f => f.Receiver)
                 .WithMany()
                 .HasForeignKey(f => f.ReceiverId)
                 .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete

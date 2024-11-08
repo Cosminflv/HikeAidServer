@@ -478,6 +478,37 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "SearchUser",
+    "RelativePath": "api/User/searchUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "querry",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "userSearchingId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.SearchUserDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "SendFriendRequest",
     "RelativePath": "api/User/sendFriendRequest",
     "HttpMethod": "POST",

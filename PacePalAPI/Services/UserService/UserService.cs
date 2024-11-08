@@ -1,8 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
-using System.Collections;
-using System.Runtime.ConstrainedExecution;
 
 namespace PacePalAPI.Services.UserService
 {

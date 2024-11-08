@@ -5,6 +5,8 @@ using Microsoft.OpenApi.Models;
 using PacePalAPI.Models;
 using PacePalAPI.Services.SocialService;
 using PacePalAPI.Services.TrackService;
+using PacePalAPI.Services.UserSearchService;
+using PacePalAPI.Services.UserSearchService.Impl;
 using PacePalAPI.Services.UserService;
 using System.Text;
 
@@ -30,6 +32,30 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
  });
 
 // Add services to the container.
+// Register RadixTree as Singleton
+builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
+{
+    // Resolve the database context
+    using var scope = provider.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<PacePalContext>();
+
+    // Retrieve the list of users from the database
+    var users = dbContext.Users.Include(u => u.Friendships).ToList();
+
+    // Retrieve or initialize Radix Trees (if not registered as singletons separately)
+    var usernamesRadixTree = new RadixTree();
+    var firstnameRadixTree = new RadixTree();
+    var lastnameRadixTree = new RadixTree();
+    var fullNameRadixTree = new RadixTree();
+
+    // Pass all dependencies to the UserSearchService
+    return new UserSearchService(
+        usernamesRadixTree,
+        firstnameRadixTree,
+        lastnameRadixTree,
+        fullNameRadixTree,
+        users);
+});
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
 builder.Services.AddScoped<ITrackCollectionService, TrackService>();
@@ -73,6 +99,12 @@ builder.Services.AddDbContext<PacePalContext>(options =>
 });
 
 var app = builder.Build();
+
+// Ensure UserSearchService is instantiated at startup
+using (var scope = app.Services.CreateScope())
+{
+    var userSearchService = scope.ServiceProvider.GetRequiredService<IUserSearchService>();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

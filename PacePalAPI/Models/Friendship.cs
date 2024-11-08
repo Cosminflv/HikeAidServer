@@ -22,7 +22,7 @@
             ReceiverId = receiverId;
             CreatedAt = createdAt;
             Requester = user;
-            Reciever = friend;
+            Receiver = friend;
             Status = status;
         }
 
@@ -30,6 +30,6 @@
 
         // Navigation properties
         public UserModel? Requester { get; set; }
-        public UserModel? Reciever { get; set; }
+        public UserModel? Receiver { get; set; }
     }
 }

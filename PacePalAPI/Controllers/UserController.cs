@@ -2,20 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
+using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
 
 namespace PacePalAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly IUserCollectionService _userCollectionService;
+        private readonly IUserSearchService _userSearchService;
 
-        public UserController(IUserCollectionService userService, IConfiguration config)
+        public UserController(IUserCollectionService userService, IUserSearchService userSearchService, IConfiguration config)
         {
             _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _userSearchService = userSearchService ?? throw new ArgumentNullException(nameof(_userSearchService));
         }
 
         // Get all users
@@ -117,6 +120,42 @@ namespace PacePalAPI.Controllers
             if (!hasCreated) return BadRequest("Username already exists.");
 
             return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
+        }
+
+        [HttpGet("searchUser")]
+        public async Task<List<SearchUserDto>> SearchUser(string querry, int userSearchingId)
+        {
+            var user = await _userCollectionService.Get(userSearchingId);
+
+            if (user == null)
+            {
+                return new List<SearchUserDto>();
+            }
+
+            List<(int userId, int commonFriendsNum)> foundUsers = _userSearchService.SearchUsers(querry, (user.Id, user.City, user.Country));
+
+            // Use Task.WhenAll to fetch each user from _userCollectionService asynchronously
+            var userTasks = foundUsers.Select(pair => _userCollectionService.Get(pair.userId));
+            var userResults = await Task.WhenAll(userTasks);
+
+            if(userResults == null) return new List<SearchUserDto>();
+
+            // Combine the fetched users with their common friends number
+            List<(UserModel? user, int commonFriendsNum)> usersWithCommonFriends = userResults
+                .Select((user, index) => (user, foundUsers[index].commonFriendsNum))
+                .ToList();
+
+            var users = (await Task.WhenAll(usersWithCommonFriends.Select(async pair => new SearchUserDto
+            {
+                Id = pair.user!.Id,
+                Name = pair.user.FirstName + pair.user.LastName,
+                City = pair.user.City,
+                Country = pair.user.Country,
+                CommonFriends = pair.commonFriendsNum,
+                ImageData = (await _userCollectionService.GetProfilePicture(pair.user.Id))!
+            }))).ToList();
+
+            return users;
         }
 
         [HttpGet("getFriendRequests")]
