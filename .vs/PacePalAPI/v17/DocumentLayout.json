@@ -3,36 +3,24 @@
   "WorkspaceRootPath": "D:\\Informatica\\Licenta\\PacePalServer.git\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\services\\userservice\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\services\\userservice\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\services\\usersearchservice\\impl\\searchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\services\\usersearchservice\\impl\\searchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\services\\userservice\\iusercollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\services\\userservice\\iusercollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\requests\\searchuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\requests\\searchuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\models\\friendship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\models\\friendship.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\models\\pacepalcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\models\\pacepalcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     }
   ],
   "DocumentGroupContainers": [
@@ -42,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -62,105 +50,67 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Friendship.cs",
+              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\Friendship.cs",
+              "RelativeDocumentMoniker": "PacePalAPI\\Models\\Friendship.cs",
+              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\Friendship.cs",
+              "RelativeToolTip": "PacePalAPI\\Models\\Friendship.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-09T15:19:26.574Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "IUserCollectionService.cs",
+              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
+              "RelativeDocumentMoniker": "PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
+              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
+              "RelativeToolTip": "PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAIA1wBEAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-09T15:10:32.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SearchUserDto.cs",
+              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Requests\\SearchUserDto.cs",
+              "RelativeDocumentMoniker": "PacePalAPI\\Requests\\SearchUserDto.cs",
+              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Requests\\SearchUserDto.cs",
+              "RelativeToolTip": "PacePalAPI\\Requests\\SearchUserDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAwAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-09T15:01:52.026Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "UserService.cs",
               "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\UserService.cs",
               "RelativeDocumentMoniker": "PacePalAPI\\Services\\UserService\\UserService.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\UserService.cs",
-              "RelativeToolTip": "PacePalAPI\\Services\\UserService\\UserService.cs",
-              "ViewState": "AgIAAJAAAAAAAAAAAAAEwMsAAAAAAAAAAAAAAA==",
+              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\UserService.cs*",
+              "RelativeToolTip": "PacePalAPI\\Services\\UserService\\UserService.cs*",
+              "ViewState": "AgIAAOUAAAAAAAAAAAAQwPQAAAB4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-09T10:22:20.159Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "PacePalAPI\\Controllers\\UserController.cs",
               "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\UserController.cs",
               "RelativeToolTip": "PacePalAPI\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAAwKkAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAIwKMAAACRAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-09T08:22:15.008Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "launchSettings.json",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Properties\\launchSettings.json",
-              "RelativeDocumentMoniker": "PacePalAPI\\Properties\\launchSettings.json",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Properties\\launchSettings.json",
-              "RelativeToolTip": "PacePalAPI\\Properties\\launchSettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-11-08T14:04:54.786Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "SearchService.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserSearchService\\Impl\\SearchService.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Services\\UserSearchService\\Impl\\SearchService.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserSearchService\\Impl\\SearchService.cs",
-              "RelativeToolTip": "PacePalAPI\\Services\\UserSearchService\\Impl\\SearchService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-08T07:57:43.654Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Friendship.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\Friendship.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Models\\Friendship.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\Friendship.cs",
-              "RelativeToolTip": "PacePalAPI\\Models\\Friendship.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBMAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-08T07:42:56.365Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "PacePalContext.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\PacePalContext.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Models\\PacePalContext.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\PacePalContext.cs",
-              "RelativeToolTip": "PacePalAPI\\Models\\PacePalContext.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAmwCgAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-08T07:27:43.478Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "User.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\User.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Models\\User.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\User.cs",
-              "RelativeToolTip": "PacePalAPI\\Models\\User.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAAAzwB8AAABFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-08T07:22:02.509Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Program.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Program.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Program.cs",
-              "RelativeToolTip": "PacePalAPI\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-07T09:03:01.643Z",
               "EditorCaption": ""
             }
           ]

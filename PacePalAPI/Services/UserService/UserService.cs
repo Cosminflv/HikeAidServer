@@ -1,8 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
 
 namespace PacePalAPI.Services.UserService
 {
+    public enum EFriendshipStatus
+    {
+        None,
+        Friends,
+        Pending
+    }
     public class UserService : IUserCollectionService
     {
         private readonly PacePalContext _context;
@@ -18,12 +25,12 @@ namespace PacePalAPI.Services.UserService
         public async Task<bool> AcceptFriendRequest(int requestId)
         {
             FriendshipModel? friendshipRequest = await _context.Friendships
-                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == EFriendshipStatus.Pending);
+                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == EFriendshipState.Pending);
 
             if (friendshipRequest == null) return false;
 
             // Update status to accepted
-            friendshipRequest.Status = EFriendshipStatus.Accepted;
+            friendshipRequest.Status = EFriendshipState.Accepted;
             _context.Friendships.Update(friendshipRequest);
             await _context.SaveChangesAsync();
 
@@ -33,12 +40,12 @@ namespace PacePalAPI.Services.UserService
         public async Task<bool> DeclineFriendRequest(int requestId)
         {
             FriendshipModel? friendshipRequest = await _context.Friendships
-                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == EFriendshipStatus.Pending);
+                .FirstOrDefaultAsync(f => f.Id == requestId && f.Status == EFriendshipState.Pending);
 
             if (friendshipRequest == null) return false;
 
             // Update status to accepted
-            friendshipRequest.Status = EFriendshipStatus.Declined;
+            friendshipRequest.Status = EFriendshipState.Declined;
             _context.Friendships.Update(friendshipRequest);
             await _context.SaveChangesAsync();
 
@@ -132,7 +139,7 @@ namespace PacePalAPI.Services.UserService
                 RequesterId = requesterId,
                 ReceiverId = receiverId,
                 CreatedAt = DateTime.UtcNow,
-                Status = EFriendshipStatus.Pending
+                Status = EFriendshipState.Pending
             };
 
             await _context.Friendships.AddAsync(friendshipRequest);
@@ -144,7 +151,7 @@ namespace PacePalAPI.Services.UserService
         public async Task<int> NumberOfFriends(int userId)
         {
             int number = await _context.Friendships
-                .Where(f => f.ReceiverId == userId && f.Status == EFriendshipStatus.Accepted)
+                .Where(f => (f.ReceiverId == userId || f.RequesterId == userId) && f.Status == EFriendshipState.Accepted)
                 .CountAsync();
 
             return number;
@@ -230,6 +237,32 @@ namespace PacePalAPI.Services.UserService
             string filePath = Path.Combine(uploadPath, fileName);
 
             return (filePath, fileName);
+        }
+
+        public async Task<EFriendshipStatus> GetFriendshipStatus(int user1, int user2)
+        {
+            FriendshipModel? friendshipRequest = await _context.Friendships
+                .FirstOrDefaultAsync(f => (f.ReceiverId == user1 && f.RequesterId == user2) || (f.ReceiverId == user2 && f.RequesterId == user1));
+
+            EFriendshipStatus status = EFriendshipStatus.None;
+
+            if (friendshipRequest == null) return status;
+
+
+            switch (friendshipRequest.Status)
+            {
+                case EFriendshipState.Accepted:
+                    status = EFriendshipStatus.Friends;
+                    break;
+                case EFriendshipState.Declined:
+                    status = EFriendshipStatus.None;
+                    break;
+                case EFriendshipState.Pending:
+                    status = EFriendshipStatus.Pending;
+                    break;
+            }
+
+            return status;
         }
     }
 }

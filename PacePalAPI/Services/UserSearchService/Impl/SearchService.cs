@@ -46,7 +46,7 @@ namespace PacePalAPI.Services.UserSearchService.Impl
                     City = user.City,
                     Country = user.Country,
                     Friends = combinedFriendships
-                        .Where(f => f.Status == EFriendshipStatus.Accepted)
+                        .Where(f => f.Status == EFriendshipState.Accepted)
                         .Select(f => f.ReceiverId == user.Id ? f.RequesterId : f.ReceiverId)
                         .ToList()
                 };

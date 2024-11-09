@@ -161,6 +161,7 @@ namespace PacePalAPI.Controllers
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
                     var scopedUserCollectionService = scope.ServiceProvider.GetRequiredService<IUserCollectionService>();
+                    EFriendshipStatus friendshipStatus = (await scopedUserCollectionService.GetFriendshipStatus(userSearchingId, pair.user!.Id));
 
                     return new SearchUserDto
                     {
@@ -169,6 +170,7 @@ namespace PacePalAPI.Controllers
                         City = pair.user.City,
                         Country = pair.user.Country,
                         CommonFriends = pair.commonFriendsNum,
+                        FriendshipStatus = friendshipStatus!,
                         ImageData = (await scopedUserCollectionService.GetProfilePicture(pair.user.Id))!
                     };
                 }
