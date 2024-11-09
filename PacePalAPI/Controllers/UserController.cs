@@ -14,11 +14,13 @@ namespace PacePalAPI.Controllers
     {
         private readonly IUserCollectionService _userCollectionService;
         private readonly IUserSearchService _userSearchService;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public UserController(IUserCollectionService userService, IUserSearchService userSearchService, IConfiguration config)
+        public UserController(IServiceScopeFactory serviceScopeFactory, IUserCollectionService userService, IUserSearchService userSearchService, IConfiguration config)
         {
             _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
             _userSearchService = userSearchService ?? throw new ArgumentNullException(nameof(_userSearchService));
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         // Get all users
@@ -134,8 +136,16 @@ namespace PacePalAPI.Controllers
 
             List<(int userId, int commonFriendsNum)> foundUsers = _userSearchService.SearchUsers(querry, (user.Id, user.City, user.Country));
 
+            var userTasks = foundUsers.Select(async pair =>
+            {
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var scopedUserCollectionService = scope.ServiceProvider.GetRequiredService<IUserCollectionService>();
+                    return await scopedUserCollectionService.Get(pair.userId);
+                }
+            });
+
             // Use Task.WhenAll to fetch each user from _userCollectionService asynchronously
-            var userTasks = foundUsers.Select(pair => _userCollectionService.Get(pair.userId));
             var userResults = await Task.WhenAll(userTasks);
 
             if(userResults == null) return new List<SearchUserDto>();
@@ -145,17 +155,26 @@ namespace PacePalAPI.Controllers
                 .Select((user, index) => (user, foundUsers[index].commonFriendsNum))
                 .ToList();
 
-            var users = (await Task.WhenAll(usersWithCommonFriends.Select(async pair => new SearchUserDto
+            // Create a new scope for each asynchronous operation while mapping the users to SearchUserDto
+            var users = await Task.WhenAll(usersWithCommonFriends.Select(async pair =>
             {
-                Id = pair.user!.Id,
-                Name = pair.user.FirstName + pair.user.LastName,
-                City = pair.user.City,
-                Country = pair.user.Country,
-                CommonFriends = pair.commonFriendsNum,
-                ImageData = (await _userCollectionService.GetProfilePicture(pair.user.Id))!
-            }))).ToList();
+                using (var scope = _serviceScopeFactory.CreateScope())
+                {
+                    var scopedUserCollectionService = scope.ServiceProvider.GetRequiredService<IUserCollectionService>();
 
-            return users;
+                    return new SearchUserDto
+                    {
+                        Id = pair.user!.Id,
+                        Name = pair.user.FirstName + " " + pair.user.LastName,
+                        City = pair.user.City,
+                        Country = pair.user.Country,
+                        CommonFriends = pair.commonFriendsNum,
+                        ImageData = (await scopedUserCollectionService.GetProfilePicture(pair.user.Id))!
+                    };
+                }
+            }));
+
+            return users.ToList();
         }
 
         [HttpGet("getFriendRequests")]
