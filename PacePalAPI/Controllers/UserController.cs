@@ -7,7 +7,7 @@ using PacePalAPI.Services.UserService;
 
 namespace PacePalAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -91,37 +91,6 @@ namespace PacePalAPI.Controllers
             {
                 return StatusCode(500, "An error occurred while processing your request.");
             }
-        }
-
-        // Create a new user
-        [HttpPost]
-        public IActionResult CreateUser([FromBody] UserDto userDto)
-        {
-            if (userDto == null)
-            {
-                return BadRequest("The user cannot be null.");
-            }
-
-            UserModel user = new UserModel();
-            user.Username = userDto.Username;
-            user.PasswordHash = userDto.PasswordHash;
-            user.FirstName = userDto.FirstName;
-            user.LastName = userDto.LastName;
-            //TODO Add those into UserDto by collecting data when user signs up
-            user.Bio = "";
-            user.ProfilePictureUrl = "";
-            user.City = "";
-            user.Country = "";
-            user.Age = 0;
-            user.Weight = 0;
-            user.Gender = EGender.Man;
-            user.BirthDate = DateTime.MinValue;
-
-           bool hasCreated = _userCollectionService.Create(user).Result;
-
-            if (!hasCreated) return BadRequest("Username already exists.");
-
-            return CreatedAtAction(nameof(GetUsers), new { id = user.Id }, user);
         }
 
         [HttpGet("searchUser")]

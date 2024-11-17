@@ -16,6 +16,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PacePalAPI.Controllers.LoginController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Login/register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "PacePalAPI.Requests.UserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SocialPostController",
     "Method": "GetPosts",
     "RelativePath": "api/SocialPost",
@@ -260,22 +276,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "CreateUser",
-    "RelativePath": "api/User",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userDto",
-        "Type": "PacePalAPI.Requests.UserDto",
-        "IsRequired": true
-      }
-    ],
     "ReturnTypes": []
   },
   {

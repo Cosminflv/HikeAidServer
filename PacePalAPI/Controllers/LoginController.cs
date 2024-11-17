@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserService;
 using System.IdentityModel.Tokens.Jwt;
@@ -46,7 +47,7 @@ namespace PacePalAPI.Controllers
             var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
               null,
-              expires: DateTime.Now.AddMinutes(120),
+              expires: DateTime.Now.AddMinutes(2),
               signingCredentials: credentials);
 
             var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
@@ -56,6 +57,34 @@ namespace PacePalAPI.Controllers
                 Token = token,
                 User = foundUser
             });
+        }
+        [HttpPost("register")]
+        public IActionResult CreateUser([FromBody] UserDto userDto)
+        {
+            if (userDto == null)
+            {
+                return BadRequest("The user cannot be null.");
+            }
+
+            UserModel user = new UserModel();
+            user.Username = userDto.Username;
+            user.PasswordHash = userDto.PasswordHash;
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.Bio = "";
+            user.ProfilePictureUrl = "";
+            user.City = userDto.City;
+            user.Country = userDto.Country;
+            user.Age = userDto.CalculateAge(); //TODO CALCULATE THE AGE OF USER
+            user.Weight = userDto.Weight;
+            user.Gender = userDto.EGender;
+            user.BirthDate = userDto.Birthdate;
+
+            bool hasCreated = _userCollectionService.Create(user).Result;
+
+            if (!hasCreated) return BadRequest("Username already exists.");
+
+            return CreatedAtAction(nameof(CreateUser), new { id = user.Id }, user);
         }
     }
 }
