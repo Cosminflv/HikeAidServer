@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PacePalAPI.Controllers.Attribute;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
+using System.Text.Json;
 
 namespace PacePalAPI.Controllers
 {
     [Authorize]
+    //[SessionCheck("User")]
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : ControllerBase
@@ -38,6 +41,23 @@ namespace PacePalAPI.Controllers
         [HttpGet("{id}/getUser")]
         public async Task<IActionResult> GetUser(int id)
         {
+            //var userJson = HttpContext.Session.GetString("User");
+
+            //if (userJson == null) return NotFound("No active session found.");
+            //UserModel user1;
+            //if (userJson != null)
+            //{
+            //    user1 = JsonSerializer.Deserialize<UserModel>(userJson);
+            //}
+
+
+            //if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(username))
+            //{
+            //    return Unauthorized("No active session found.");
+            //}
+            
+           
+
             UserModel? user = await _userCollectionService.Get(id);
 
             if (user == null) return NotFound("User not found");

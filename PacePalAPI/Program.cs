@@ -63,11 +63,20 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
 builder.Services.AddScoped<ITrackCollectionService, TrackService>();
+
+// Configure session services
+builder.Services.AddDistributedMemoryCache(); // In-memory cache for session storage
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(120); // Session timeout
+    options.Cookie.HttpOnly = true; // Enhance security by making the session cookie HttpOnly
+    options.Cookie.IsEssential = true; // Ensure the session cookie is always available
+});
+
 builder.Services.AddSingleton<IWebHostEnvironment>(builder.Environment);
 
 // Manually set the WebRootPath to ensure it's not null
 builder.Environment.WebRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -123,6 +132,7 @@ app.UseStaticFiles(); // Enable serving static files from wwwroot
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession(); // Add session middleware
 
 app.MapControllers();
 

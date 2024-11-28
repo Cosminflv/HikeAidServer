@@ -5,6 +5,7 @@ using PacePalAPI.Requests;
 using PacePalAPI.Services.UserService;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Json;
 
 namespace PacePalAPI.Controllers
 {
@@ -43,17 +44,35 @@ namespace PacePalAPI.Controllers
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var tokenExpiry = DateTime.Now.AddMinutes(120);
 
             var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
               null,
-              expires: DateTime.Now.AddMinutes(2),
+              expires: tokenExpiry,
               signingCredentials: credentials);
 
             var token = new JwtSecurityTokenHandler().WriteToken(Sectoken);
 
+            var sessionId = Guid.NewGuid().ToString();
+            var sessionData = new
+            {
+                Token = token,
+                User = foundUser,
+                ExpiresAt = tokenExpiry
+            };
+
+            // Store session (stateful)
+            var userJson = JsonSerializer.Serialize(foundUser);
+            HttpContext.Session.SetString("User", userJson);
+       
+            //HttpContext.Session.SetString("User", foundUser.ToString()!);
+            //HttpContext.Session.SetString("UserId", foundUser.Id.ToString());
+            //HttpContext.Session.SetString("Username", foundUser.Username);
+
             return Ok(new
             {
+                SessionId = sessionId,
                 Token = token,
                 User = foundUser
             });
