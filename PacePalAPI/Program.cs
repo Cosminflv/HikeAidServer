@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Models;
 using PacePalAPI.Services.SocialService;
 using PacePalAPI.Services.TrackService;
@@ -63,6 +64,9 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
 builder.Services.AddScoped<ITrackCollectionService, TrackService>();
+
+
+builder.Services.AddSingleton<MyWebSocketManager>();
 
 // Configure session services
 builder.Services.AddDistributedMemoryCache(); // In-memory cache for session storage
@@ -126,13 +130,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseStaticFiles(); // Enable serving static files from wwwroot
 
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession(); // Add session middleware
+
+app.UseWebSockets(); // Enable WebSockets
+app.UseMiddleware<WebSocketMiddleware>(); // Add WebSocket middleware
 
 app.MapControllers();
 

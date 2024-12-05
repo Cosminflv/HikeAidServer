@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Attribute;
+using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
@@ -9,7 +11,7 @@ using System.Text.Json;
 
 namespace PacePalAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     //[SessionCheck("User")]
     [ApiController]
     [Route("api/[controller]")]
@@ -18,9 +20,11 @@ namespace PacePalAPI.Controllers
         private readonly IUserCollectionService _userCollectionService;
         private readonly IUserSearchService _userSearchService;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly MyWebSocketManager _webSocketManager;
 
-        public UserController(IServiceScopeFactory serviceScopeFactory, IUserCollectionService userService, IUserSearchService userSearchService, IConfiguration config)
+        public UserController(IServiceScopeFactory serviceScopeFactory, IUserCollectionService userService, IUserSearchService userSearchService, MyWebSocketManager webSocketManager)
         {
+            _webSocketManager = webSocketManager;
             _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
             _userSearchService = userSearchService ?? throw new ArgumentNullException(nameof(_userSearchService));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
@@ -184,6 +188,12 @@ namespace PacePalAPI.Controllers
             bool result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
 
             if (!result) return BadRequest("Friendship request already exists or you are already friends.");
+
+            // Send WebSocket notification to the receiver
+            string message = $"User {requesterId} has sent you a friend request.";
+            await _webSocketManager.SendMessageAsync(receiverId.ToString(), message);
+
+
 
             return Ok(result);
         }
