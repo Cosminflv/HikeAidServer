@@ -124,14 +124,14 @@ namespace PacePalAPI.Services.UserService
             //}
         }
 
-        public async Task<bool> SendFriendRequest(int requesterId, int receiverId)
+        public async Task<int> SendFriendRequest(int requesterId, int receiverId)
         {
             // Check if the friendship already exists
             var existingFriendship = await _context.Friendships
                 .FirstOrDefaultAsync(f => (f.RequesterId == requesterId && f.ReceiverId == receiverId) ||
                                      (f.RequesterId == receiverId && f.ReceiverId == requesterId));
 
-            if (existingFriendship != null) return false;
+            if (existingFriendship != null) return -1;
 
             // Create a new friendship request
             var friendshipRequest = new FriendshipModel
@@ -145,7 +145,7 @@ namespace PacePalAPI.Services.UserService
             await _context.Friendships.AddAsync(friendshipRequest);
             await _context.SaveChangesAsync();
 
-            return true;
+            return friendshipRequest.Id;
         }
 
         public async Task<int> NumberOfFriends(int userId)

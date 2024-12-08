@@ -7,7 +7,7 @@ namespace PacePalAPI.Services.UserService
     {
         //TODO More complex methods than CRUD
 
-        Task<bool> SendFriendRequest(int requesterId, int recieverId);
+        Task<int> SendFriendRequest(int requesterId, int recieverId);
 
         Task<bool> AcceptFriendRequest(int requestId);
 

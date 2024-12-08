@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PacePalAPI.Controllers.Attribute;
+﻿using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
 using System.Text.Json;
+
 
 namespace PacePalAPI.Controllers
 {
@@ -185,15 +183,35 @@ namespace PacePalAPI.Controllers
         [HttpPost("sendFriendRequest")]
         public async Task<IActionResult> SendFriendRequest(int requesterId, int receiverId)
         {
-            bool result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
+            int result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
 
-            if (!result) return BadRequest("Friendship request already exists or you are already friends.");
+            UserModel? requester = await _userCollectionService.Get(requesterId);
+            if(requester == null) return BadRequest("User " +  requesterId + " does not exist");
+            UserModel? receiver = await _userCollectionService.Get(receiverId);
+            if (receiver == null) return BadRequest("User " + receiverId + " does not exist");
 
-            // Send WebSocket notification to the receiver
-            string message = $"User {requesterId} has sent you a friend request.";
-            await _webSocketManager.SendMessageAsync(receiverId.ToString(), message);
+            string requesterName = requester.FirstName + " " + requester.LastName;
+            string receiverName = receiver.FirstName + " " + receiver.LastName;
 
+            if (result == -1) return BadRequest("Friendship request already exists or you are already friends.");
 
+            // Create a message object to send as JSON
+            var message = new
+            {
+                requesterId = requesterId,
+                receiverId = receiverId,
+                id = result,
+                requesterName = requesterName,
+                receiverName = receiverName,
+                
+            };
+            
+
+            // Serialize the object to JSON
+            string jsonMessage = JsonSerializer.Serialize(message);
+
+            // Send the JSON message to the receiver using WebSocket
+            await _webSocketManager.SendMessageAsync(receiverId.ToString(), jsonMessage);
 
             return Ok(result);
         }
