@@ -171,13 +171,47 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("getFriendRequests")]
-        public async Task<List<FriendshipModel>> GetFriendshipRequests()
+        public async Task<List<FriendshipDto>> GetFriendshipRequests(string receiverId)
         {
-            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests();
+            if (receiverId == null || receiverId == "") return new List<FriendshipDto>();
+            int id;
 
-            if(friendships == null) return new List<FriendshipModel>();
+            try
+            {
+                id = int.Parse(receiverId);
+            }
+            catch (Exception ex)
+            {
+                return new List<FriendshipDto>();
+            }
 
-            return friendships;
+            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests(id);
+
+            if(friendships == null) return new List<FriendshipDto>();
+
+            var friendshipDtos = new List<FriendshipDto>();
+
+            foreach (var model in friendships)
+            {
+                if (model.Status != EFriendshipState.Pending) continue;
+                // Fetch the requester's full name asynchronously
+                var requester = await _userCollectionService.Get(model.RequesterId);
+                if(requester == null) continue;
+                var requesterName = $"{requester.FirstName} {requester.LastName}";
+
+                // Map the FriendshipModel to FriendshipDto
+                var dto = new FriendshipDto
+                {
+                    Id = model.Id,
+                    receiverId = model.ReceiverId,
+                    requesterId = model.RequesterId,
+                    requesterName = requesterName,
+                };
+
+                friendshipDtos.Add(dto);
+            }
+
+            return friendshipDtos;
         }
 
         [HttpPost("sendFriendRequest")]
@@ -202,8 +236,6 @@ namespace PacePalAPI.Controllers
                 receiverId = receiverId,
                 id = result,
                 requesterName = requesterName,
-                receiverName = receiverName,
-                
             };
             
 

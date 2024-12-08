@@ -90,9 +90,9 @@ namespace PacePalAPI.Services.UserService
             return await System.IO.File.ReadAllTextAsync(filePath);
         }
 
-        public async Task<List<FriendshipModel>?> GetFriendshipRequests()
+        public async Task<List<FriendshipModel>?> GetFriendshipRequests(int receiverId)
         {
-           return await _context.Friendships.ToListAsync();
+           return await _context.Friendships.Where(u => u.ReceiverId == receiverId).ToListAsync();
         }
 
         public async Task<string?> GetProfilePicture(int userId)

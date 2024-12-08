@@ -94,7 +94,7 @@ namespace PacePalAPI.Controllers
             user.ProfilePictureUrl = "";
             user.City = userDto.City;
             user.Country = userDto.Country;
-            user.Age = userDto.CalculateAge(); //TODO CALCULATE THE AGE OF USER
+            user.Age = userDto.CalculateAge();
             user.Weight = userDto.Weight;
             user.Gender = userDto.EGender;
             user.BirthDate = userDto.Birthdate;

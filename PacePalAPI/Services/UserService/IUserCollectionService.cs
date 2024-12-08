@@ -13,7 +13,7 @@ namespace PacePalAPI.Services.UserService
 
         Task<bool> DeclineFriendRequest(int requestId);
 
-        Task<List<FriendshipModel>?> GetFriendshipRequests();
+        Task<List<FriendshipModel>?> GetFriendshipRequests(int receiverId);
 
         Task<EFriendshipStatus> GetFriendshipStatus(int user1, int user2);
 
