@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
+using System.Security.Claims;
 using System.Text.Json;
 
 
 namespace PacePalAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     //[SessionCheck("User")]
     [ApiController]
     [Route("api/[controller]")]
@@ -67,20 +69,30 @@ namespace PacePalAPI.Controllers
             return Ok(user);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("updateUser")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto updateUserDto)
         {
             try
             {
                 // Validate the input DTO (for example, ensure required fields are present)
-                if (updateUserDto == null || updateUserDto.Id <= 0 ||
+                if (updateUserDto == null ||
                     string.IsNullOrWhiteSpace(updateUserDto.FirstName) ||
                     string.IsNullOrWhiteSpace(updateUserDto.LastName))
                 {
                     return BadRequest("Invalid input data");
                 }
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                if (userIdClaim == null)
+                {
+                    return BadRequest("Invalid user id");
+                }
 
-                UserModel? user = await _userCollectionService.Get(updateUserDto.Id);
+                if (!int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return BadRequest("Invalid user id");
+                }
+
+                UserModel? user = await _userCollectionService.Get(userId);
                 if (user == null) return NotFound("User not found");
 
                 user.FirstName = updateUserDto.FirstName;
@@ -95,16 +107,16 @@ namespace PacePalAPI.Controllers
 
                 byte[] imageBytes = Convert.FromBase64String(updateUserDto.imageData);
 
-                bool result1 = await _userCollectionService.Update(updateUserDto.Id, user);
+                bool result1 = await _userCollectionService.Update(userId, user);
                 bool result2 = false;
 
                 if (updateUserDto.hasDeletedImage)
                 {
-                   result2 = await _userCollectionService.DeleteProfilePicture(updateUserDto.Id);
+                   result2 = await _userCollectionService.DeleteProfilePicture(userId);
                 }
                 else
                 {
-                   result2 = await _userCollectionService.UploadProfilePicture(updateUserDto.Id, imageBytes);
+                   result2 = await _userCollectionService.UploadProfilePicture(userId, imageBytes);
                 }
 
                 return Ok(result1 && result2);
@@ -116,8 +128,20 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("searchUser")]
-        public async Task<List<SearchUserDto>> SearchUser(string querry, int userSearchingId)
+        public async Task<List<SearchUserDto>> SearchUser(string querry)
         {
+            // Retrieve the user's ID from claims
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return new List<SearchUserDto>();
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userSearchingId))
+            {
+                return new List<SearchUserDto>();
+            }
+
             var user = await _userCollectionService.Get(userSearchingId);
 
             if (user == null)
@@ -171,21 +195,21 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("getFriendRequests")]
-        public async Task<List<FriendshipDto>> GetFriendshipRequests(string receiverId)
+        public async Task<List<FriendshipDto>> GetFriendshipRequests()
         {
-            if (receiverId == null || receiverId == "") return new List<FriendshipDto>();
-            int id;
-
-            try
-            {
-                id = int.Parse(receiverId);
-            }
-            catch (Exception ex)
+            // Retrieve the user's ID from claims
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
             {
                 return new List<FriendshipDto>();
             }
 
-            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests(id);
+            if (!int.TryParse(userIdClaim.Value, out int receiverId))
+            {
+                return new List<FriendshipDto>();
+            }
+           
+            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests(receiverId);
 
             if(friendships == null) return new List<FriendshipDto>();
 
@@ -215,8 +239,20 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpPost("sendFriendRequest")]
-        public async Task<IActionResult> SendFriendRequest(int requesterId, int receiverId)
+        public async Task<IActionResult> SendFriendRequest(int receiverId)
         {
+            // Retrieve the user's ID from claims
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return BadRequest("Invalid user from claims.");
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int requesterId))
+            {
+                return BadRequest("Invalid user from claims.");
+            }
+
             int result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
 
             UserModel? requester = await _userCollectionService.Get(requesterId);
@@ -276,9 +312,21 @@ namespace PacePalAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{id}/uploadProfilePictureBase64")]
-        public async Task<IActionResult> UploadProfilePicture(int userId, byte[] file)
+        [HttpPost("uploadProfilePictureBase64")]
+        public async Task<IActionResult> UploadProfilePicture(byte[] file)
         {
+            // Retrieve the user's ID from claims
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return BadRequest("Invalid user from claims.");
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return BadRequest("Invalid user from claims.");
+            }
+
             bool result = await _userCollectionService.UploadProfilePicture(userId, file);
 
             if (!result) return BadRequest("Error while uploading picture.");
@@ -286,9 +334,21 @@ namespace PacePalAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("{id}/deleteProfilePicture")]
-        public async Task<IActionResult> DeleteProfilePicture(int userId)
+        [HttpPost("deleteProfilePicture")]
+        public async Task<IActionResult> DeleteProfilePicture()
         {
+            // Retrieve the user's ID from claims
+            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim == null)
+            {
+                return BadRequest("Invalid user from claims.");
+            }
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+            {
+                return BadRequest("Invalid user from claims.");
+            }
+
             bool result = await _userCollectionService.DeleteProfilePicture(userId);
 
             if (!result) return NotFound("User not found.");
@@ -306,7 +366,7 @@ namespace PacePalAPI.Controllers
             return bytes!;
         }
 
-        [HttpGet("/getDefaultProfilePicture")]
+        [HttpGet("getDefaultProfilePicture")]
         public async Task<IActionResult> GetDefaultProfilePicture()
         {
             string? bytes = await _userCollectionService.GetDefaultUserPicture();

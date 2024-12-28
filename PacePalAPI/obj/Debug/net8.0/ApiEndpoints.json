@@ -280,48 +280,6 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "UpdateUser",
-    "RelativePath": "api/User/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "updateUserDto",
-        "Type": "PacePalAPI.Requests.UpdateUserDto",
-        "IsRequired": true
-      },
-      {
-        "Name": "id",
-        "Type": "",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "DeleteProfilePicture",
-    "RelativePath": "api/User/{id}/deleteProfilePicture",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "id",
-        "Type": "",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetFriendsNumber",
     "RelativePath": "api/User/{id}/friendsNumber",
     "HttpMethod": "GET",
@@ -400,32 +358,6 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "UploadProfilePicture",
-    "RelativePath": "api/User/{id}/uploadProfilePictureBase64",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "file",
-        "Type": "System.Byte[]",
-        "IsRequired": true
-      },
-      {
-        "Name": "id",
-        "Type": "",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "AcceptFriendRequest",
     "RelativePath": "api/User/acceptFriendRequest",
     "HttpMethod": "POST",
@@ -458,18 +390,32 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "DeleteProfilePicture",
+    "RelativePath": "api/User/deleteProfilePicture",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "GetDefaultProfilePicture",
+    "RelativePath": "api/User/getDefaultProfilePicture",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetFriendshipRequests",
     "RelativePath": "api/User/getFriendRequests",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [
-      {
-        "Name": "receiverId",
-        "Type": "System.String",
-        "IsRequired": false
-      }
-    ],
+    "Parameters": [],
     "ReturnTypes": [
       {
         "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.FriendshipDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
@@ -494,11 +440,6 @@
         "Name": "querry",
         "Type": "System.String",
         "IsRequired": false
-      },
-      {
-        "Name": "userSearchingId",
-        "Type": "System.Int32",
-        "IsRequired": false
       }
     ],
     "ReturnTypes": [
@@ -522,11 +463,6 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "requesterId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "receiverId",
         "Type": "System.Int32",
         "IsRequired": false
@@ -536,12 +472,34 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "GetDefaultProfilePicture",
-    "RelativePath": "getDefaultProfilePicture",
-    "HttpMethod": "GET",
+    "Method": "UpdateUser",
+    "RelativePath": "api/User/updateUser",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "updateUserDto",
+        "Type": "PacePalAPI.Requests.UpdateUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "UploadProfilePicture",
+    "RelativePath": "api/User/uploadProfilePictureBase64",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "file",
+        "Type": "System.Byte[]",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]

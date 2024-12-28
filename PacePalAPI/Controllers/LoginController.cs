@@ -4,6 +4,7 @@ using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserService;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 
@@ -46,9 +47,16 @@ namespace PacePalAPI.Controllers
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var tokenExpiry = DateTime.Now.AddMinutes(120);
 
+            // Add claims to the token
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, foundUser.Id.ToString()), // Use the user's ID as the NameIdentifier
+                new Claim(ClaimTypes.Name, foundUser.Username), // Optionally add username
+    };
+
             var Sectoken = new JwtSecurityToken(_config["Jwt:Issuer"],
               _config["Jwt:Issuer"],
-              null,
+              claims,
               expires: tokenExpiry,
               signingCredentials: credentials);
 
