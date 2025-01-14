@@ -5,6 +5,8 @@ VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacePalAPI", "PacePalAPI\PacePalAPI.csproj", "{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RunningApp.Tests", "RunningApp.Tests\RunningApp.Tests.csproj", "{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
