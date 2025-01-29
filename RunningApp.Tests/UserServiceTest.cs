@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PacePalAPI.Models;
+using PacePalAPI.Models.Enums;
 using PacePalAPI.Services.UserService;
 using System.Collections.Generic;
 using System.IO;

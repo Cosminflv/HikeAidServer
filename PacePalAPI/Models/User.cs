@@ -1,14 +1,9 @@
 ﻿using Microsoft.Extensions.Hosting;
+using PacePalAPI.Models.Enums;
 using System.Text.Json.Serialization;
 
 namespace PacePalAPI.Models
 {
-    public enum EGender
-    {
-        Man,
-        Woman
-    }
-
     public class UserModel
     {
         public int Id { get; set; }  // Primary key
@@ -41,5 +36,12 @@ namespace PacePalAPI.Models
         public List<LikeModel> Likes { get; set; } = new List<LikeModel>();
         [JsonIgnore]
         public List<TrackModel> RecordedTracks { get; set; } = new List<TrackModel>();
+
+        // Navigation properties
+        [JsonIgnore]
+        public List<Alert> CreatedAlerts { get; set; } = new List<Alert>(); // Alerts created by this user
+
+        [JsonIgnore]
+        public List<Alert> ConfirmedAlerts { get; set; } = new List<Alert>(); // Alerts confirmed by this user
     }
 }

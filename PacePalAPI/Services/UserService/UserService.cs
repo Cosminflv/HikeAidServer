@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
+using PacePalAPI.Models.Enums;
 
 namespace PacePalAPI.Services.UserService
 {

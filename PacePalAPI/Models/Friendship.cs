@@ -1,12 +1,7 @@
-﻿namespace PacePalAPI.Models
-{
-    public enum EFriendshipState
-    {
-        Pending,
-        Accepted,
-        Declined
-    }
+﻿using PacePalAPI.Models.Enums;
 
+namespace PacePalAPI.Models
+{
     public class FriendshipModel
     {
         public int Id { get; set; }  // Primary key

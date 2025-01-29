@@ -1,4 +1,5 @@
 ﻿using PacePalAPI.Models;
+using PacePalAPI.Models.Enums;
 
 namespace PacePalAPI.Requests
 {

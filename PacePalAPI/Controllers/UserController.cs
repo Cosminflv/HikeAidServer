@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Models;
+using PacePalAPI.Models.Enums;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
