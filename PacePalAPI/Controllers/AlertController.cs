@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Middleware;
+using PacePalAPI.Converters;
+using PacePalAPI.Extensions;
 using PacePalAPI.Models;
 using PacePalAPI.Models.Enums;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.AlertService;
+using System.Security.Claims;
 
 namespace PacePalAPI.Controllers
 {
@@ -21,32 +24,37 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpPost("AddAlert")]
-        public async Task<IActionResult> AddAlert(AlertDto alertDto)
+        public async Task<IActionResult> AddAlert([FromForm] AlertDto alertDto)
         {
             try
             {
                 if (!ModelState.IsValid) return BadRequest("Invalid model state.");
 
-                var alert = new Alert
+                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+
+                int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
+                Alert alert = AlertConverter.ToModel(alertDto, userId);
+
+                bool result = await _alertCollectionService.AddAlert(alert);
+                if (!result) return BadRequest("Error while adding alert.");
+
+                bool hasUploaded = false;
+
+                // Save image only if a file is provided
+                if (alertDto.ImageFile != null && alertDto.ImageFile.Length > 0)
                 {
-                    AuthorId = alertDto.AuthorId,
-                    CreatedAt = alertDto.CreatedAt,
-                    ExpiresAt = alertDto.ExpiresAt,
-                    Title = alertDto.Title,
-                    Description = alertDto.Description,
-                    AlertType = EAlertTypeExtensions.FromString(alertDto.AlertType),
-                    IsActive = alertDto.IsActive,
-                    LocationCoords = new Coordinates
-                    {
-                        Latitude = alertDto.Latitude,
-                        Longitude = alertDto.Longitude
-                    }
-                };
+                    using var memoryStream = new MemoryStream();
+                    await alertDto.ImageFile.CopyToAsync(memoryStream);
+                    byte[] imageBytes = memoryStream.ToArray();
 
-            bool result = await _alertCollectionService.AddAlert(alert);
-            if (!result) return BadRequest("Error while adding alert.");
-            return Ok(true);
+                    hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
+                }
 
+                // Save image
+                //byte[] imageBytes = Convert.FromBase64String(alertDto.ImageData ?? "");
+                //hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
+
+                return Ok(result && hasUploaded);
             }
             catch (Exception)
             {

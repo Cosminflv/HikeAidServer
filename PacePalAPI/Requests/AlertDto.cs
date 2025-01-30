@@ -5,8 +5,6 @@ namespace PacePalAPI.Requests
     public class AlertDto
     {
         [Required]
-        public int AuthorId { get; set; }
-        [Required]
         public DateTime CreatedAt { get; set; }
         [Required]
         public DateTime ExpiresAt { get; set; }
@@ -23,7 +21,8 @@ namespace PacePalAPI.Requests
         [Required]
         public double Longitude { get; set; }
 
-        [Required]
-        public string ImageData { get; set; }
+        // Change ImageData from Base64 to IFormFile for file uploads
+        public IFormFile ImageFile { get; set; }
+        //public string? ImageData { get; set; }
     }
 }

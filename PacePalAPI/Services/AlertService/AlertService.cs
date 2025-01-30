@@ -66,5 +66,49 @@ namespace PacePalAPI.Services.AlertService
         {
             throw new NotImplementedException();
         }
+
+        public async Task<bool> UploadAlertImage(int alertId, byte[] imageData)
+        {
+            Alert? foundAlert = await _context.Alerts.FirstOrDefaultAsync((alert) => alert.Id == alertId);
+
+            if (foundAlert == null) return false;
+
+            // Case where there is not any image data
+            if (imageData.Length == 0)
+            {
+                string defaultFilePath = Path.Combine(_environment.WebRootPath, "uploads\\alert_pictures\\default.base64");
+                foundAlert.ImageUrl = defaultFilePath;
+                _context.Alerts.Update(foundAlert);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+
+            (string filePath, string fileName) = CreateAlertImageFilePath(alertId);
+
+            lock (_fileLock)
+            {
+                System.IO.File.WriteAllBytes(filePath, imageData);
+            }
+
+            var alertPictureUrl = $"uploads\\alert_pictures\\{fileName}";
+
+            foundAlert.ImageUrl = alertPictureUrl;
+            _context.Update(foundAlert);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        private (string, string) CreateAlertImageFilePath(int userId)
+        {
+            string fileName = $"{userId}_{Guid.NewGuid()}.base64";
+
+            string uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "alert_pictures");
+
+            if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+
+            string filePath = Path.Combine(uploadPath, fileName);
+
+            return (filePath, fileName);
+        }
     }
 }

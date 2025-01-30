@@ -11,5 +11,7 @@ namespace PacePalAPI.Services.AlertService
         Task<List<Alert>> GetAllAlerts();
 
         Task<bool> ConfirmAlert(int userId, int alertId);
+
+        Task<bool> UploadAlertImage(int alertId, byte[] imageData);
     }
 }

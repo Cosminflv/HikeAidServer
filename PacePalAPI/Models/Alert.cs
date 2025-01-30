@@ -25,7 +25,7 @@ namespace PacePalAPI.Models
 
         public int CoordinatesId { get; set; } // Foreign key reference
 
-        public Coordinates LocationCoords { get; set; } 
+        public Coordinates LocationCoords { get; set; } //TODO: CHANGE COORDINATES WITH LATITUDE AND LONGITUDE
 
         public List<int> ConfirmedUserIds { get; set; }
 

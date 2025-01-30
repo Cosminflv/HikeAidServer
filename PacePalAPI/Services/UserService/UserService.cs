@@ -163,7 +163,7 @@ namespace PacePalAPI.Services.UserService
 
             if (user == null) return false;
 
-            var (filePath, fileName) = _createFilePath(userId);
+            var (filePath, fileName) = CreateUserImageFilePath(userId);
 
             string base64String = Convert.ToBase64String(imageData);
 
@@ -226,7 +226,7 @@ namespace PacePalAPI.Services.UserService
             return true;
         }
 
-        private (string, string) _createFilePath(int userId)
+        private (string, string) CreateUserImageFilePath(int userId)
         {
             string fileName = $"{userId}_{Guid.NewGuid()}.base64";
 

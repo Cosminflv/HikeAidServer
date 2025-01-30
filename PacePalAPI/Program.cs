@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Models;
+using PacePalAPI.Services.AlertService;
 using PacePalAPI.Services.SocialService;
 using PacePalAPI.Services.TrackService;
 using PacePalAPI.Services.UserSearchService;
@@ -64,6 +65,7 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
 builder.Services.AddScoped<ITrackCollectionService, TrackService>();
+builder.Services.AddScoped<IAlertCollectionService, AlertService>();
 
 
 builder.Services.AddSingleton<MyWebSocketManager>();

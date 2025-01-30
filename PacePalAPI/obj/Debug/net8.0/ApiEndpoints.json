@@ -8,11 +8,6 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "AuthorId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
         "Name": "CreatedAt",
         "Type": "System.DateTime",
         "IsRequired": false
@@ -53,8 +48,8 @@
         "IsRequired": false
       },
       {
-        "Name": "ImageData",
-        "Type": "System.String",
+        "Name": "ImageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
       }
     ],
