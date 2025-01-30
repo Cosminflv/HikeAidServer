@@ -1,5 +1,66 @@
 [
   {
+    "ContainingType": "PacePalAPI.Controllers.AlertController",
+    "Method": "AddAlert",
+    "RelativePath": "AddAlert",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "AuthorId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "CreatedAt",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "ExpiresAt",
+        "Type": "System.DateTime",
+        "IsRequired": false
+      },
+      {
+        "Name": "Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Description",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AlertType",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsActive",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "Latitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "Longitude",
+        "Type": "System.Double",
+        "IsRequired": false
+      },
+      {
+        "Name": "ImageData",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "PacePalAPI.Controllers.LoginController",
     "Method": "Login",
     "RelativePath": "api/Login/login",

@@ -27,10 +27,7 @@ namespace PacePalAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginInfo)
         {
-            if (loginInfo == null || string.IsNullOrEmpty(loginInfo.Username) || string.IsNullOrEmpty(loginInfo.Password))
-            {
-                return BadRequest("Username and password are required.");
-            }
+            if (!ModelState.IsValid) return BadRequest("Invalid model state.");
 
             var users = await _userCollectionService.GetAll();
 
@@ -88,10 +85,7 @@ namespace PacePalAPI.Controllers
         [HttpPost("register")]
         public IActionResult CreateUser([FromBody] UserDto userDto)
         {
-            if (userDto == null)
-            {
-                return BadRequest("The user cannot be null.");
-            }
+            if(!ModelState.IsValid) return BadRequest("Invalid model state.");
 
             UserModel user = new UserModel();
             user.Username = userDto.Username;

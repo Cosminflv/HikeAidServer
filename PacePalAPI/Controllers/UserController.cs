@@ -75,13 +75,8 @@ namespace PacePalAPI.Controllers
         {
             try
             {
-                // Validate the input DTO (for example, ensure required fields are present)
-                if (updateUserDto == null ||
-                    string.IsNullOrWhiteSpace(updateUserDto.FirstName) ||
-                    string.IsNullOrWhiteSpace(updateUserDto.LastName))
-                {
-                    return BadRequest("Invalid input data");
-                }
+                if (!ModelState.IsValid) return BadRequest("Invalid input data.");
+
                 var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
                 if (userIdClaim == null)
                 {
