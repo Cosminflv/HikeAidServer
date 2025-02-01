@@ -11,7 +11,6 @@ namespace PacePalAPI.Models
         public DbSet<LikeModel> Likes { get; set; }
         public DbSet<TrackModel> RecordedTracks { get; set; }
         public DbSet<Alert> Alerts { get; set; }
-        public DbSet<Coordinates> Coordinates { get; set; }
 
         public PacePalContext(DbContextOptions options) : base(options)
         {
@@ -95,13 +94,6 @@ namespace PacePalAPI.Models
                 .WithMany(u => u.CreatedAlerts) // A user can create multiple alerts
                 .HasForeignKey(a => a.AuthorId)
                 .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
-
-            // Alert and Coordinates (One-to-One)
-            modelBuilder.Entity<Alert>()
-                .HasOne(a => a.LocationCoords)
-                .WithOne()
-                .HasForeignKey<Alert>(a => a.CoordinatesId)
-                .OnDelete(DeleteBehavior.Cascade); // If an alert is deleted, remove the coordinates
 
             // Many-to-Many relationship between Alerts and Confirmed Users
             modelBuilder.Entity<Alert>()

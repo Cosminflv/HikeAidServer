@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Middleware;
 using PacePalAPI.Converters;
 using PacePalAPI.Extensions;
 using PacePalAPI.Models;
-using PacePalAPI.Models.Enums;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.AlertService;
-using System.Security.Claims;
 
 namespace PacePalAPI.Controllers
 {
+    [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
     public class AlertController : ControllerBase
     {
         private readonly MyWebSocketManager _webSocketManager;
@@ -30,8 +32,6 @@ namespace PacePalAPI.Controllers
             {
                 if (!ModelState.IsValid) return BadRequest("Invalid model state.");
 
-                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-
                 int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
                 Alert alert = AlertConverter.ToModel(alertDto, userId);
 
@@ -41,7 +41,7 @@ namespace PacePalAPI.Controllers
                 bool hasUploaded = false;
 
                 // Save image only if a file is provided
-                if (alertDto.ImageFile != null && alertDto.ImageFile.Length > 0)
+                if (alertDto.ImageFile != null)
                 {
                     using var memoryStream = new MemoryStream();
                     await alertDto.ImageFile.CopyToAsync(memoryStream);
@@ -49,10 +49,6 @@ namespace PacePalAPI.Controllers
 
                     hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
                 }
-
-                // Save image
-                //byte[] imageBytes = Convert.FromBase64String(alertDto.ImageData ?? "");
-                //hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
 
                 return Ok(result && hasUploaded);
             }

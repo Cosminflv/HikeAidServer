@@ -23,9 +23,9 @@ namespace PacePalAPI.Models
 
         public string ImageUrl { get; set; } 
 
-        public int CoordinatesId { get; set; } // Foreign key reference
+        public double Latitude { get; set; }
 
-        public Coordinates LocationCoords { get; set; } //TODO: CHANGE COORDINATES WITH LATITUDE AND LONGITUDE
+        public double Longitude { get; set; }
 
         public List<int> ConfirmedUserIds { get; set; }
 

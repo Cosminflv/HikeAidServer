@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PacePalAPI.Controllers.Middleware;
+using PacePalAPI.Extensions;
 using PacePalAPI.Models;
 using PacePalAPI.Models.Enums;
 using PacePalAPI.Requests;
@@ -127,16 +128,7 @@ namespace PacePalAPI.Controllers
         public async Task<List<SearchUserDto>> SearchUser(string querry)
         {
             // Retrieve the user's ID from claims
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                return new List<SearchUserDto>();
-            }
-
-            if (!int.TryParse(userIdClaim.Value, out int userSearchingId))
-            {
-                return new List<SearchUserDto>();
-            }
+            int userSearchingId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
             var user = await _userCollectionService.Get(userSearchingId);
 
@@ -194,18 +186,9 @@ namespace PacePalAPI.Controllers
         public async Task<List<FriendshipDto>> GetFriendshipRequests()
         {
             // Retrieve the user's ID from claims
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                return new List<FriendshipDto>();
-            }
+            int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
-            if (!int.TryParse(userIdClaim.Value, out int receiverId))
-            {
-                return new List<FriendshipDto>();
-            }
-           
-            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests(receiverId);
+            List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests(userId);
 
             if(friendships == null) return new List<FriendshipDto>();
 
@@ -312,16 +295,7 @@ namespace PacePalAPI.Controllers
         public async Task<IActionResult> UploadProfilePicture(byte[] file)
         {
             // Retrieve the user's ID from claims
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                return BadRequest("Invalid user from claims.");
-            }
-
-            if (!int.TryParse(userIdClaim.Value, out int userId))
-            {
-                return BadRequest("Invalid user from claims.");
-            }
+            int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
             bool result = await _userCollectionService.UploadProfilePicture(userId, file);
 
@@ -334,16 +308,7 @@ namespace PacePalAPI.Controllers
         public async Task<IActionResult> DeleteProfilePicture()
         {
             // Retrieve the user's ID from claims
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                return BadRequest("Invalid user from claims.");
-            }
-
-            if (!int.TryParse(userIdClaim.Value, out int userId))
-            {
-                return BadRequest("Invalid user from claims.");
-            }
+            int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
             bool result = await _userCollectionService.DeleteProfilePicture(userId);
 

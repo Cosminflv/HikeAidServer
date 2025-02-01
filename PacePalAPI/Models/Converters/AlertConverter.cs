@@ -16,8 +16,8 @@ namespace PacePalAPI.Converters
                 Description = alert.Description,
                 AlertType = alert.AlertType.ToString(),
                 IsActive = alert.IsActive,
-                Latitude = alert.LocationCoords?.Latitude ?? 0.0,
-                Longitude = alert.LocationCoords?.Longitude ?? 0.0
+                Latitude = alert.Latitude,
+                Longitude = alert.Longitude
             };
         }
 
@@ -32,13 +32,11 @@ namespace PacePalAPI.Converters
                 Description = alertDto.Description,
                 AlertType = EAlertTypeExtensions.FromString(alertDto.AlertType),
                 IsActive = alertDto.IsActive,
-                LocationCoords = new Coordinates
-                {
-                    Latitude = alertDto.Latitude,
-                    Longitude = alertDto.Longitude
-                },
+                Latitude = alertDto.Latitude,
+                Longitude = alertDto.Longitude,
                 ConfirmedUsers = new List<UserModel>(), // Initial empty list
-                ConfirmedUserIds = new List<int>()
+                ConfirmedUserIds = new List<int>(),
+                ImageUrl = ""
             };
         }
     }

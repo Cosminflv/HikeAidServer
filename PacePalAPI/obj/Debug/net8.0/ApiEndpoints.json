@@ -2,7 +2,7 @@
   {
     "ContainingType": "PacePalAPI.Controllers.AlertController",
     "Method": "AddAlert",
-    "RelativePath": "AddAlert",
+    "RelativePath": "api/Alert/AddAlert",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PacePalAPI.Models;
 
@@ -11,9 +12,11 @@ using PacePalAPI.Models;
 namespace PacePalAPI.Migrations
 {
     [DbContext(typeof(PacePalContext))]
-    partial class PacePalContextModelSnapshot : ModelSnapshot
+    [Migration("20250201065846_RemovedCoordinates")]
+    partial class RemovedCoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,7 +89,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.ToTable("Alerts", (string)null);
+                    b.ToTable("Alerts");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.CommentModel", b =>
@@ -116,7 +119,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.FriendshipModel", b =>
@@ -145,7 +148,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasIndex("RequesterId");
 
-                    b.ToTable("Friendships", (string)null);
+                    b.ToTable("Friendships");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.LikeModel", b =>
@@ -168,7 +171,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes", (string)null);
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.SocialPostModel", b =>
@@ -197,7 +200,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SocialPosts", (string)null);
+                    b.ToTable("SocialPosts");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.TrackModel", b =>
@@ -223,7 +226,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RecordedTracks", (string)null);
+                    b.ToTable("RecordedTracks");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.UserModel", b =>
@@ -280,7 +283,7 @@ namespace PacePalAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("AlertUserModel", b =>
