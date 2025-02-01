@@ -493,7 +493,7 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "querry",
+        "Name": "query",
         "Type": "System.String",
         "IsRequired": false
       }

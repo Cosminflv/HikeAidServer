@@ -61,8 +61,8 @@ namespace PacePalAPI.Controllers
             //{
             //    return Unauthorized("No active session found.");
             //}
-            
-           
+
+
 
             UserModel? user = await _userCollectionService.Get(id);
 
@@ -109,11 +109,11 @@ namespace PacePalAPI.Controllers
 
                 if (updateUserDto.hasDeletedImage)
                 {
-                   result2 = await _userCollectionService.DeleteProfilePicture(userId);
+                    result2 = await _userCollectionService.DeleteProfilePicture(userId);
                 }
                 else
                 {
-                   result2 = await _userCollectionService.UploadProfilePicture(userId, imageBytes);
+                    result2 = await _userCollectionService.UploadProfilePicture(userId, imageBytes);
                 }
 
                 return Ok(result1 && result2);
@@ -125,61 +125,17 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("searchUser")]
-        public async Task<List<SearchUserDto>> SearchUser(string querry)
+        public async Task<List<SearchUserDto>> SearchUser(string query)
         {
-            // Retrieve the user's ID from claims
             int userSearchingId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
+            UserModel user = await _userCollectionService.Get(userSearchingId) ?? throw new UnauthorizedAccessException();
 
-            var user = await _userCollectionService.Get(userSearchingId);
+            List<(int userId, int commonFriendsNum)> foundUsers = _userSearchService.SearchUsers(query, (user.Id, user.City, user.Country));
 
-            if (user == null)
-            {
-                return new List<SearchUserDto>();
-            }
+            List<UserModel?> userModels = await FetchUsersAsync(foundUsers);
+            if (userModels == null || userModels.Count == 0) return new List<SearchUserDto>();
 
-            List<(int userId, int commonFriendsNum)> foundUsers = _userSearchService.SearchUsers(querry, (user.Id, user.City, user.Country));
-
-            var userTasks = foundUsers.Select(async pair =>
-            {
-                using (var scope = _serviceScopeFactory.CreateScope())
-                {
-                    var scopedUserCollectionService = scope.ServiceProvider.GetRequiredService<IUserCollectionService>();
-                    return await scopedUserCollectionService.Get(pair.userId);
-                }
-            });
-
-            // Use Task.WhenAll to fetch each user from _userCollectionService asynchronously
-            var userResults = await Task.WhenAll(userTasks);
-
-            if(userResults == null) return new List<SearchUserDto>();
-
-            // Combine the fetched users with their common friends number
-            List<(UserModel? user, int commonFriendsNum)> usersWithCommonFriends = userResults
-                .Select((user, index) => (user, foundUsers[index].commonFriendsNum))
-                .ToList();
-
-            // Create a new scope for each asynchronous operation while mapping the users to SearchUserDto
-            var users = await Task.WhenAll(usersWithCommonFriends.Select(async pair =>
-            {
-                using (var scope = _serviceScopeFactory.CreateScope())
-                {
-                    var scopedUserCollectionService = scope.ServiceProvider.GetRequiredService<IUserCollectionService>();
-                    EFriendshipStatus friendshipStatus = (await scopedUserCollectionService.GetFriendshipStatus(userSearchingId, pair.user!.Id));
-
-                    return new SearchUserDto
-                    {
-                        Id = pair.user!.Id,
-                        Name = pair.user.FirstName + " " + pair.user.LastName,
-                        City = pair.user.City,
-                        Country = pair.user.Country,
-                        CommonFriends = pair.commonFriendsNum,
-                        FriendshipStatus = friendshipStatus!,
-                        ImageData = (await scopedUserCollectionService.GetProfilePicture(pair.user.Id))!
-                    };
-                }
-            }));
-
-            return users.ToList();
+            return await MapToSearchUserDto(userSearchingId, foundUsers, userModels);
         }
 
         [HttpGet("getFriendRequests")]
@@ -190,7 +146,7 @@ namespace PacePalAPI.Controllers
 
             List<FriendshipModel>? friendships = await _userCollectionService.GetFriendshipRequests(userId);
 
-            if(friendships == null) return new List<FriendshipDto>();
+            if (friendships == null) return new List<FriendshipDto>();
 
             var friendshipDtos = new List<FriendshipDto>();
 
@@ -199,7 +155,7 @@ namespace PacePalAPI.Controllers
                 if (model.Status != EFriendshipState.Pending) continue;
                 // Fetch the requester's full name asynchronously
                 var requester = await _userCollectionService.Get(model.RequesterId);
-                if(requester == null) continue;
+                if (requester == null) continue;
                 var requesterName = $"{requester.FirstName} {requester.LastName}";
 
                 // Map the FriendshipModel to FriendshipDto
@@ -221,21 +177,12 @@ namespace PacePalAPI.Controllers
         public async Task<IActionResult> SendFriendRequest(int receiverId)
         {
             // Retrieve the user's ID from claims
-            var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null)
-            {
-                return BadRequest("Invalid user from claims.");
-            }
-
-            if (!int.TryParse(userIdClaim.Value, out int requesterId))
-            {
-                return BadRequest("Invalid user from claims.");
-            }
+            int requesterId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
             int result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
 
             UserModel? requester = await _userCollectionService.Get(requesterId);
-            if(requester == null) return BadRequest("User " +  requesterId + " does not exist");
+            if (requester == null) return BadRequest("User " + requesterId + " does not exist");
             UserModel? receiver = await _userCollectionService.Get(receiverId);
             if (receiver == null) return BadRequest("User " + receiverId + " does not exist");
 
@@ -252,7 +199,7 @@ namespace PacePalAPI.Controllers
                 id = result,
                 requesterName = requesterName,
             };
-            
+
 
             // Serialize the object to JSON
             string jsonMessage = JsonSerializer.Serialize(message);
@@ -335,6 +282,42 @@ namespace PacePalAPI.Controllers
             if (bytes == null) return NotFound("Default image not found.");
 
             return Ok(bytes);
+        }
+
+        // Utils Methods    
+        private async Task<List<UserModel?>> FetchUsersAsync(List<(int userId, int commonFriendsNum)> foundUsers)
+        {
+            var userTasks = foundUsers.Select(pair => _userCollectionService.Get(pair.userId));
+            return (await Task.WhenAll(userTasks)).ToList();
+        }
+
+        private async Task<List<SearchUserDto>> MapToSearchUserDto(
+    int userSearchingId,
+    List<(int userId, int commonFriendsNum)> foundUsers,
+    List<UserModel?> userModels)
+        {
+            var dtoTasks = userModels
+                .Select(async (user, index) =>
+                {
+                    if (user == null) return null;
+
+                    var friendshipStatus = await _userCollectionService.GetFriendshipStatus(userSearchingId, user.Id);
+                    var profilePicture = await _userCollectionService.GetProfilePicture(user.Id);
+
+                    return new SearchUserDto
+                    {
+                        Id = user.Id,
+                        Name = $"{user.FirstName} {user.LastName}",
+                        City = user.City,
+                        Country = user.Country,
+                        CommonFriends = foundUsers[index].commonFriendsNum,
+                        FriendshipStatus = friendshipStatus,
+                        ImageData = profilePicture
+                    };
+                });
+
+            var result = await Task.WhenAll(dtoTasks);
+            return result.Where(dto => dto != null).ToList()!;
         }
     }
 }
