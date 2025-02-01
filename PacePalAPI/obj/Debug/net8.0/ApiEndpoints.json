@@ -18,7 +18,7 @@
   {
     "ContainingType": "PacePalAPI.Controllers.AlertController",
     "Method": "AddAlert",
-    "RelativePath": "api/Alert/addAlert/{alertId}",
+    "RelativePath": "api/Alert/addAlert",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -64,14 +64,9 @@
         "IsRequired": false
       },
       {
-        "Name": "ImageData",
-        "Type": "System.String",
+        "Name": "ImageFile",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
         "IsRequired": false
-      },
-      {
-        "Name": "alertId",
-        "Type": "",
-        "IsRequired": true
       }
     ],
     "ReturnTypes": []

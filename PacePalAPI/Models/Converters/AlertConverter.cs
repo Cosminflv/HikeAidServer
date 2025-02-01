@@ -18,7 +18,7 @@ namespace PacePalAPI.Converters
                 IsActive = alert.IsActive,
                 Latitude = alert.Latitude,
                 Longitude = alert.Longitude,
-                ImageData = alert.ImageUrl
+                //ImageData = alert.ImageUrl
             };
         }
 

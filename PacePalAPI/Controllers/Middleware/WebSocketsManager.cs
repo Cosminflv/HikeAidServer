@@ -36,5 +36,26 @@ namespace PacePalAPI.Controllers.Middleware
                 await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
             }
         }
+
+        public async Task SendMessageToAllAsync(string message)
+        {
+            List<Task> sendTasks = new List<Task>();
+
+            lock (_connections)
+            {
+                foreach (var webSocket in _connections.Values)
+                {
+                    if (webSocket.State == WebSocketState.Open)
+                    {
+                        var bytes = Encoding.UTF8.GetBytes(message);
+                        var buffer = new ArraySegment<byte>(bytes);
+                        sendTasks.Add(webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None));
+                    }
+                }
+            }
+
+            await Task.WhenAll(sendTasks);
+        }
+
     }
 }

@@ -6,10 +6,11 @@ using PacePalAPI.Extensions;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.AlertService;
+using System.Text.Json;
 
 namespace PacePalAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AlertController : ControllerBase
@@ -25,7 +26,7 @@ namespace PacePalAPI.Controllers
             _alertCollectionService = alertCollectionService ?? throw new ArgumentNullException(nameof(alertCollectionService));
         }
 
-        [HttpPost("addAlert/{alertId}")]
+        [HttpPost("addAlert")]
         public async Task<IActionResult> AddAlert([FromForm] AlertDto alertDto)
         {
             try
@@ -55,6 +56,30 @@ namespace PacePalAPI.Controllers
                 //    byte[] imageBytes = Convert.FromBase64String(alertDto.ImageData);
                 //    hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
                 //}
+
+                var message = new
+                {
+                    alertId = alert.Id,
+                    authorId = alert.AuthorId,
+                    alertTitle = alert.Title,
+                    alertDescription = alert.Description,
+                    alertType = alert.AlertType.ToString(),
+                    alertLatitude = alert.Latitude,
+                    alertLongitude = alert.Longitude,
+                    alertCreatedAt = alert.CreatedAt,
+                    alertExpiresAt = alert.ExpiresAt,
+                    alertIsActive = alert.IsActive,
+                    alertImageUrl = await _alertCollectionService.GetAlertImageData(alert.Id),
+                    confirmations = alert.ConfirmedUserIds.Count,
+                };
+
+
+                // Serialize the object to JSON
+                string jsonMessage = JsonSerializer.Serialize(message);
+
+                // Send the JSON message to the receiver using WebSocket
+                await _webSocketManager.SendMessageToAllAsync(jsonMessage);
+
 
                 return Ok(result && hasUploaded);
             }
