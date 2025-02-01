@@ -95,6 +95,7 @@ namespace PacePalAPI.Services.UserService
            return await _context.Friendships.Where(u => u.ReceiverId == receiverId).ToListAsync();
         }
 
+        // TODO EVALUATE PERFORMANCE AND CHANGE ACCORDINGLY
         public async Task<string?> GetProfilePicture(int userId)
         {
             UserModel? userFound = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -103,8 +104,6 @@ namespace PacePalAPI.Services.UserService
 
             string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
 
-            //lock (_fileLock)
-            //{
                 try
                 {
                     if (!System.IO.File.Exists(filePath)) return null;
@@ -121,7 +120,6 @@ namespace PacePalAPI.Services.UserService
                     Console.WriteLine($"Error reading the file: {ex.Message}");
                     return null;
                 }
-            //}
         }
 
         public async Task<int> SendFriendRequest(int requesterId, int receiverId)

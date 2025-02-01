@@ -78,16 +78,7 @@ namespace PacePalAPI.Controllers
             {
                 if (!ModelState.IsValid) return BadRequest("Invalid input data.");
 
-                var userIdClaim = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-                if (userIdClaim == null)
-                {
-                    return BadRequest("Invalid user id");
-                }
-
-                if (!int.TryParse(userIdClaim.Value, out int userId))
-                {
-                    return BadRequest("Invalid user id");
-                }
+                int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
                 UserModel? user = await _userCollectionService.Get(userId);
                 if (user == null) return NotFound("User not found");
@@ -102,7 +93,7 @@ namespace PacePalAPI.Controllers
                 user.Country = updateUserDto.Country;
                 user.Weight = updateUserDto.Weight;
 
-                byte[] imageBytes = Convert.FromBase64String(updateUserDto.imageData);
+                byte[] imageBytes = Convert.FromBase64String(updateUserDto.ImageData);
 
                 bool result1 = await _userCollectionService.Update(userId, user);
                 bool result2 = false;

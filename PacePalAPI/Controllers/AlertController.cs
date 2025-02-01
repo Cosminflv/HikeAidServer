@@ -9,7 +9,7 @@ using PacePalAPI.Services.AlertService;
 
 namespace PacePalAPI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class AlertController : ControllerBase
@@ -25,7 +25,7 @@ namespace PacePalAPI.Controllers
             _alertCollectionService = alertCollectionService ?? throw new ArgumentNullException(nameof(alertCollectionService));
         }
 
-        [HttpPost("AddAlert")]
+        [HttpPost("addAlert/{alertId}")]
         public async Task<IActionResult> AddAlert([FromForm] AlertDto alertDto)
         {
             try
@@ -50,11 +50,54 @@ namespace PacePalAPI.Controllers
                     hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
                 }
 
+                //if (alertDto.ImageData != null)
+                //{
+                //    byte[] imageBytes = Convert.FromBase64String(alertDto.ImageData);
+                //    hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
+                //}
+
                 return Ok(result && hasUploaded);
             }
             catch (Exception)
             {
                 return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpGet("GetAllAlerts")]
+        public async Task<IActionResult> GetAllAlerts()
+        {
+            try
+            {
+                List<AlertDto> alerts = (await _alertCollectionService.GetAllAlerts())
+                                        .AsParallel()
+                                        .Select(a => AlertConverter.ToDto(a))
+                                        .ToList();
+
+                return Ok(alerts);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpGet("{alertId}/image")]
+        public async Task<IActionResult> GetAlertImage(int alertId)
+        {
+            try
+            {
+                byte[] imageData = await _alertCollectionService.GetAlertImageData(alertId);
+                return File(imageData, "image/jpeg"); // Set correct MIME type
+            }
+            catch (FileNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, "Internal Server Error");
             }
         }
     }

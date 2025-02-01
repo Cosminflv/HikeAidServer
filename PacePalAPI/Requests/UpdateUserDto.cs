@@ -7,17 +7,17 @@ namespace PacePalAPI.Requests
     public class UpdateUserDto
     {
         [Required]
-        public string FirstName { get; set; }
+        required public string FirstName { get; set; }
         [Required]
-        public string LastName { get; set; }
+        required public string LastName { get; set; }
         [Required]
-        public string Bio { get; set; }
+        required public string Bio { get; set; }
         [Required]
         public int Age {  get; set; }
         [Required]
-        public string Country { get; set; }
+        required public string Country { get; set; }
         [Required]
-        public string City { get; set; }
+        required public string City { get; set; }
         [Required]
         public EGender Gender { get; set; }
         [Required]
@@ -27,7 +27,7 @@ namespace PacePalAPI.Requests
         [Required]
         public bool hasDeletedImage { get; set; }
         [Required]
-        public string imageData { get; set; }
+        required public string ImageData { get; set; }
 
     }
 }

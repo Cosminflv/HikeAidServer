@@ -23,6 +23,6 @@ namespace PacePalAPI.Requests
 
         // Change ImageData from Base64 to IFormFile for file uploads
         public IFormFile ImageFile { get; set; }
-        //public string? ImageData { get; set; }
+       //public string? ImageData { get; set; }
     }
 }

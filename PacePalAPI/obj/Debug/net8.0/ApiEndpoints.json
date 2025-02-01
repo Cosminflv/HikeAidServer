@@ -1,8 +1,24 @@
 [
   {
     "ContainingType": "PacePalAPI.Controllers.AlertController",
+    "Method": "GetAlertImage",
+    "RelativePath": "api/Alert/{alertId}/image",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "alertId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.AlertController",
     "Method": "AddAlert",
-    "RelativePath": "api/Alert/AddAlert",
+    "RelativePath": "api/Alert/addAlert/{alertId}",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -48,11 +64,26 @@
         "IsRequired": false
       },
       {
-        "Name": "ImageFile",
-        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "Name": "ImageData",
+        "Type": "System.String",
         "IsRequired": false
+      },
+      {
+        "Name": "alertId",
+        "Type": "",
+        "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.AlertController",
+    "Method": "GetAllAlerts",
+    "RelativePath": "api/Alert/GetAllAlerts",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

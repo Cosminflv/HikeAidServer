@@ -51,9 +51,9 @@ namespace PacePalAPI.Services.AlertService
             throw new NotImplementedException();
         }
 
-        public Task<List<Alert>?> GetAll()
+        public async Task<List<Alert>?> GetAll()
         {
-            throw new NotImplementedException();
+           return await _context.Alerts.ToListAsync();
         }
 
         public async Task<List<Alert>> GetAllAlerts()
@@ -108,6 +108,17 @@ namespace PacePalAPI.Services.AlertService
             string filePath = Path.Combine(uploadPath, fileName);
 
             return (filePath, fileName);
+        }
+
+        public async Task<byte[]> GetAlertImageData(int alertId)
+        {
+            Alert alert = await _context.Alerts.FirstOrDefaultAsync(a => a.Id == alertId) ?? throw new InvalidOperationException();
+
+            string filePath = Path.Combine(_environment.WebRootPath, alert.ImageUrl);
+
+            if (!File.Exists(filePath)) throw new FileNotFoundException();
+
+            return await System.IO.File.ReadAllBytesAsync(filePath);
         }
     }
 }
