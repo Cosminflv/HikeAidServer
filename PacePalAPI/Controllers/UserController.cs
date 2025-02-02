@@ -7,7 +7,6 @@ using PacePalAPI.Models.Enums;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
-using System.Security.Claims;
 using System.Text.Json;
 
 
@@ -165,38 +164,34 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpPost("sendFriendRequest")]
-        public async Task<IActionResult> SendFriendRequest(int receiverId)
+        public async Task<IActionResult> SendFriendRequest(int recivId)
         {
             // Retrieve the user's ID from claims
-            int requesterId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
+            int reqId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
 
-            int result = await _userCollectionService.SendFriendRequest(requesterId, receiverId);
+            int result = await _userCollectionService.SendFriendRequest(reqId, recivId);
 
-            UserModel? requester = await _userCollectionService.Get(requesterId);
-            if (requester == null) return BadRequest("User " + requesterId + " does not exist");
-            UserModel? receiver = await _userCollectionService.Get(receiverId);
-            if (receiver == null) return BadRequest("User " + receiverId + " does not exist");
+            UserModel? requester = await _userCollectionService.Get(reqId);
+            if (requester == null) return BadRequest("User " + reqId + " does not exist");
 
-            string requesterName = requester.FirstName + " " + requester.LastName;
-            string receiverName = receiver.FirstName + " " + receiver.LastName;
+            string reqName = requester.FirstName + " " + requester.LastName;
 
             if (result == -1) return BadRequest("Friendship request already exists or you are already friends.");
 
             // Create a message object to send as JSON
             var message = new
             {
-                requesterId = requesterId,
-                receiverId = receiverId,
+                requesterId = reqId,
+                recieverId = recivId,
                 id = result,
-                requesterName = requesterName,
+                requesterName = reqName,
             };
-
 
             // Serialize the object to JSON
             string jsonMessage = JsonSerializer.Serialize(message);
 
             // Send the JSON message to the receiver using WebSocket
-            await _webSocketManager.SendMessageAsync(receiverId.ToString(), jsonMessage);
+            await _webSocketManager.SendMessageAsync(recivId.ToString(), jsonMessage);
 
             return Ok(result);
         }
@@ -283,9 +278,9 @@ namespace PacePalAPI.Controllers
         }
 
         private async Task<List<SearchUserDto>> MapToSearchUserDto(
-    int userSearchingId,
-    List<(int userId, int commonFriendsNum)> foundUsers,
-    List<UserModel?> userModels)
+            int userSearchingId,
+            List<(int userId, int commonFriendsNum)> foundUsers,
+            List<UserModel?> userModels)
         {
             var dtoTasks = userModels
                 .Select(async (user, index) =>
@@ -303,7 +298,7 @@ namespace PacePalAPI.Controllers
                         Country = user.Country,
                         CommonFriends = foundUsers[index].commonFriendsNum,
                         FriendshipStatus = friendshipStatus,
-                        ImageData = profilePicture
+                        ImageData = profilePicture ?? ""
                     };
                 });
 

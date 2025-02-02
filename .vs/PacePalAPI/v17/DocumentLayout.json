@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\Informatica\\Licenta\\PacePalServer.git\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\controllers\\alertcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\controllers\\alertcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\controllers\\middleware\\websocketsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\controllers\\middleware\\websocketsmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\requests\\alertdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 6,
           "Children": [
             {
               "$type": "Bookmark",
@@ -46,7 +46,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AlertConverter.cs",
               "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Models\\Converters\\AlertConverter.cs",
               "RelativeDocumentMoniker": "PacePalAPI\\Models\\Converters\\AlertConverter.cs",
@@ -72,33 +72,33 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "AlertController.cs",
               "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\AlertController.cs",
               "RelativeDocumentMoniker": "PacePalAPI\\Controllers\\AlertController.cs",
               "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\AlertController.cs",
               "RelativeToolTip": "PacePalAPI\\Controllers\\AlertController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAEwCEAAAAQAAAAAAAAAA==",
+              "ViewState": "AgIAADQAAAAAAAAAAAAAAHIAAABSAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-01T19:33:02.667Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "UserController.cs",
               "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "PacePalAPI\\Controllers\\UserController.cs",
               "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\UserController.cs",
               "RelativeToolTip": "PacePalAPI\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAK8AAAAAAAAAAAAYwLkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAALIAAAAAAAAAAAAQwLwAAAAOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-01T19:31:48.122Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "WebSocketsManager.cs",
               "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\Middleware\\WebSocketsManager.cs",
               "RelativeDocumentMoniker": "PacePalAPI\\Controllers\\Middleware\\WebSocketsManager.cs",
@@ -106,8 +106,7 @@
               "RelativeToolTip": "PacePalAPI\\Controllers\\Middleware\\WebSocketsManager.cs",
               "ViewState": "AgIAACAAAAAAAAAAAAAgwCcAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-01T19:31:16.539Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-01T19:31:16.539Z"
             }
           ]
         },

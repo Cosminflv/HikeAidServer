@@ -89,7 +89,7 @@ namespace PacePalAPI.Controllers
             }
         }
 
-        [HttpGet("GetAllAlerts")]
+        [HttpGet("getAllAlerts")]
         public async Task<IActionResult> GetAllAlerts()
         {
             try
