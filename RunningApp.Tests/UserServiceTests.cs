@@ -1,15 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PacePalAPI.Models;
 using PacePalAPI.Models.Enums;
 using PacePalAPI.Services.UserService;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PacePalAPI.Tests
 {
