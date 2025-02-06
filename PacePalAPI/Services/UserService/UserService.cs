@@ -13,7 +13,7 @@ namespace PacePalAPI.Services.UserService
     public class UserService : IUserCollectionService
     {
         private readonly PacePalContext _context;
-        //sprivate readonly IDbContextFactory<PacePalContext> _contextFactory;
+        private readonly IDbContextFactory<PacePalContext> _contextFactory;
         private readonly IWebHostEnvironment _environment;
         private static readonly object _fileLock = new object();
 
@@ -21,7 +21,7 @@ namespace PacePalAPI.Services.UserService
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _environment = environment ?? throw new ArgumentNullException(nameof(environment));
-            //_contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            _contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
         }
 
         public async Task<bool> AcceptFriendRequest(int requestId)
@@ -64,24 +64,24 @@ namespace PacePalAPI.Services.UserService
 
             //lock (_fileLock)
             //{
-                if (!File.Exists(filePath) || user.ProfilePictureUrl.Contains("default")) return false;
+            if (!File.Exists(filePath) || user.ProfilePictureUrl.Contains("default")) return false;
 
-                try
-                {
-                    System.IO.File.Delete(filePath);
-                }
-                catch (IOException ex)
-                {
-                    Console.WriteLine($"Error deleting the file: {ex.Message}");
-                    return false;
-                }
+            try
+            {
+                System.IO.File.Delete(filePath);
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Error deleting the file: {ex.Message}");
+                return false;
+            }
 
-                user.ProfilePictureUrl = "uploads\\profile_pictures\\default.base64";
+            user.ProfilePictureUrl = "uploads\\profile_pictures\\default.base64";
 
-                _context.Users.Update(user);
-                _context.SaveChanges();
+            _context.Users.Update(user);
+            _context.SaveChanges();
 
-                return true;
+            return true;
             //}
         }
 
@@ -94,7 +94,7 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<List<FriendshipModel>?> GetFriendshipRequests(int receiverId)
         {
-           return await _context.Friendships.Where(u => u.ReceiverId == receiverId).ToListAsync();
+            return await _context.Friendships.Where(u => u.ReceiverId == receiverId).ToListAsync();
         }
 
         public async Task<byte[]> GetProfilePicture(int userId)
@@ -107,34 +107,6 @@ namespace PacePalAPI.Services.UserService
 
             return await System.IO.File.ReadAllBytesAsync(filePath);
         }
-
-        // TODO EVALUATE PERFORMANCE AND CHANGE ACCORDINGLY
-        //public async Task<string?> GetProfilePicture(int userId)
-        //{
-        //    UserModel? userFound = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-        //    if (userFound == null) return null;
-
-        //    string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
-
-        //        try
-        //        {
-        //            if (!System.IO.File.Exists(filePath)) return null;
-
-        //            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-        //            using (StreamReader reader = new StreamReader(fs))
-        //            {
-        //                return reader.ReadToEnd(); // Use synchronous read in the lock
-        //            }
-        //        }
-        //        catch (IOException ex)
-        //        {
-        //            // Log the exception for debugging
-        //            Console.WriteLine($"Error reading the file: {ex.Message}");
-        //            return null;
-        //        }
-        //}
-
         public async Task<int> SendFriendRequest(int requesterId, int receiverId)
         {
             // Check if the friendship already exists
@@ -196,7 +168,7 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<bool> Create(UserModel model)
         {
-            UserModel? foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Username ==  model.Username);
+            UserModel? foundUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == model.Username);
 
             if (foundUser != null) return false;
 
@@ -213,7 +185,7 @@ namespace PacePalAPI.Services.UserService
 
             string filePath = Path.Combine(_environment.WebRootPath, userToDelete.ProfilePictureUrl);
 
-            if(File.Exists(filePath) && !userToDelete.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(filePath);
+            if (File.Exists(filePath) && !userToDelete.ProfilePictureUrl.Contains("default")) System.IO.File.Delete(filePath);
 
             _context.Users.Remove(userToDelete);
             return true;
@@ -221,10 +193,10 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<UserModel?> Get(int id)
         {
-            //using (var context = _contextFactory.CreateDbContext()) // Creates a fresh instance
-            //{
-                return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            //}
+            using (var factoryContext = _contextFactory.CreateDbContext()) // Creates a fresh instance
+            {
+                return await factoryContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            }
         }
 
         public async Task<List<UserModel>?> GetAll()
@@ -256,8 +228,12 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<EFriendshipStatus> GetFriendshipStatus(int user1, int user2)
         {
-            FriendshipModel? friendshipRequest = await _context.Friendships
-                .FirstOrDefaultAsync(f => (f.ReceiverId == user1 && f.RequesterId == user2) || (f.ReceiverId == user2 && f.RequesterId == user1));
+            FriendshipModel? friendshipRequest = null;
+            using (var factoryContext = _contextFactory.CreateDbContext())
+            {
+                friendshipRequest = await factoryContext.Friendships
+                    .FirstOrDefaultAsync(f => (f.ReceiverId == user1 && f.RequesterId == user2) || (f.ReceiverId == user2 && f.RequesterId == user1));
+            }
 
             EFriendshipStatus status = EFriendshipStatus.None;
 

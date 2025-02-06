@@ -11,20 +11,8 @@
       "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\services\\userservice\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\services\\userservice\\iusercollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\services\\userservice\\iusercollectionservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}|RunningApp.Tests\\RunningApp.Tests.csproj|d:\\informatica\\licenta\\pacepalserver.git\\runningapp.tests\\userservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C39E04F8-7FD5-426C-80B4-CA2590F09A8F}|RunningApp.Tests\\RunningApp.Tests.csproj|solutionrelative:runningapp.tests\\userservicetests.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\requests\\searchuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\requests\\searchuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|d:\\informatica\\licenta\\pacepalserver.git\\pacepalapi\\services\\usersearchservice\\iusersearchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{68244A4E-E8C6-48D5-9EAD-FECD368FCD98}|PacePalAPI\\PacePalAPI.csproj|solutionrelative:pacepalapi\\services\\usersearchservice\\iusersearchservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -34,7 +22,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 224,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -51,53 +39,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Program.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Program.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Program.cs",
-              "RelativeToolTip": "PacePalAPI\\Program.cs",
-              "ViewState": "AgIAAGcAAAAAAAAAAAAAAHkAAACfAAAAAAAAAA==",
+              "Title": "IUserSearchService.cs",
+              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserSearchService\\IUserSearchService.cs",
+              "RelativeDocumentMoniker": "PacePalAPI\\Services\\UserSearchService\\IUserSearchService.cs",
+              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserSearchService\\IUserSearchService.cs",
+              "RelativeToolTip": "PacePalAPI\\Services\\UserSearchService\\IUserSearchService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T08:44:40.435Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "SearchUserDto.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Requests\\SearchUserDto.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Requests\\SearchUserDto.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Requests\\SearchUserDto.cs",
-              "RelativeToolTip": "PacePalAPI\\Requests\\SearchUserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBIAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T08:02:54.649Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "UserServiceTests.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\RunningApp.Tests\\UserServiceTests.cs",
-              "RelativeDocumentMoniker": "RunningApp.Tests\\UserServiceTests.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\RunningApp.Tests\\UserServiceTests.cs",
-              "RelativeToolTip": "RunningApp.Tests\\UserServiceTests.cs",
-              "ViewState": "AgIAAI0AAAAAAAAAAAAswKIAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T07:56:47.826Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IUserCollectionService.cs",
-              "DocumentMoniker": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
-              "RelativeDocumentMoniker": "PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
-              "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
-              "RelativeToolTip": "PacePalAPI\\Services\\UserService\\IUserCollectionService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAawBEAAAAgAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T07:44:09.356Z",
+              "WhenOpened": "2025-02-06T14:56:24.595Z",
               "EditorCaption": ""
             },
             {
@@ -108,9 +57,9 @@
               "RelativeDocumentMoniker": "PacePalAPI\\Services\\UserService\\UserService.cs",
               "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Services\\UserService\\UserService.cs",
               "RelativeToolTip": "PacePalAPI\\Services\\UserService\\UserService.cs",
-              "ViewState": "AgIAAEsAAAAAAAAAAAAMwFwAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAANAAAAAAAAAAAAArwOcAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T07:33:12.509Z",
+              "WhenOpened": "2025-02-06T14:54:18.97Z",
               "EditorCaption": ""
             },
             {
@@ -121,7 +70,7 @@
               "RelativeDocumentMoniker": "PacePalAPI\\Controllers\\UserController.cs",
               "ToolTip": "D:\\Informatica\\Licenta\\PacePalServer.git\\PacePalAPI\\Controllers\\UserController.cs",
               "RelativeToolTip": "PacePalAPI\\Controllers\\UserController.cs",
-              "ViewState": "AgIAAPcAAAAAAAAAAAAMwAIBAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAABEBAAAAAAAAAAASwCQBAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-06T07:32:16.796Z",
               "EditorCaption": ""
