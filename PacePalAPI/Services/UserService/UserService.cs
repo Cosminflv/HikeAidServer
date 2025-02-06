@@ -204,11 +204,13 @@ namespace PacePalAPI.Services.UserService
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<bool> Update(int id, UserModel model)
+        public async Task<bool> Update(int id, UserModel modifiedUser)
         {
-            UserModel? userToUpdate = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            if (userToUpdate == null) return false;
-            _context.Users.Update(userToUpdate);
+            _context.Attach(modifiedUser);
+
+            // Mark it as Modified so that EF Core will update all properties.
+            _context.Entry(modifiedUser).State = EntityState.Modified;
+
             await _context.SaveChangesAsync();
             return true;
         }
