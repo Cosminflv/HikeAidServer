@@ -10,7 +10,7 @@ namespace PacePalAPI.Requests
         required public string FirstName { get; set; }
         [Required]
         required public string LastName { get; set; }
-        [Required]
+ 
         required public string Bio { get; set; }
         [Required]
         public int Age {  get; set; }

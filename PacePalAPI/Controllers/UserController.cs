@@ -20,15 +20,13 @@ namespace PacePalAPI.Controllers
     {
         private readonly IUserCollectionService _userCollectionService;
         private readonly IUserSearchService _userSearchService;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly MyWebSocketManager _webSocketManager;
 
-        public UserController(IServiceScopeFactory serviceScopeFactory, IUserCollectionService userService, IUserSearchService userSearchService, MyWebSocketManager webSocketManager)
+        public UserController(IUserCollectionService userService, IUserSearchService userSearchService, MyWebSocketManager webSocketManager)
         {
             _webSocketManager = webSocketManager;
             _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
             _userSearchService = userSearchService ?? throw new ArgumentNullException(nameof(_userSearchService));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
         }
 
         // Get all users
