@@ -13,7 +13,7 @@ namespace PacePalAPI.Services.UserService
     public class UserService : IUserCollectionService
     {
         private readonly PacePalContext _context;
-        private readonly IDbContextFactory<PacePalContext> _contextFactory;
+        //sprivate readonly IDbContextFactory<PacePalContext> _contextFactory;
         private readonly IWebHostEnvironment _environment;
         private static readonly object _fileLock = new object();
 
@@ -21,7 +21,7 @@ namespace PacePalAPI.Services.UserService
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _environment = environment ?? throw new ArgumentNullException(nameof(environment));
-            _contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
+            //_contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
         }
 
         public async Task<bool> AcceptFriendRequest(int requestId)
@@ -221,10 +221,10 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<UserModel?> Get(int id)
         {
-            using (var context = _contextFactory.CreateDbContext()) // Creates a fresh instance
-            {
-                return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
-            }
+            //using (var context = _contextFactory.CreateDbContext()) // Creates a fresh instance
+            //{
+                return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            //}
         }
 
         public async Task<List<UserModel>?> GetAll()
@@ -237,6 +237,7 @@ namespace PacePalAPI.Services.UserService
             UserModel? userToUpdate = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
             if (userToUpdate == null) return false;
             _context.Users.Update(userToUpdate);
+            await _context.SaveChangesAsync();
             return true;
         }
 

@@ -259,14 +259,6 @@ namespace PacePalAPI.Controllers
             return File(bytes, "image/jpeg");
         }
 
-        [HttpGet("getDefaultProfilePicture")]
-        public async Task<IActionResult> GetDefaultProfilePicture()
-        {
-            byte[] bytes = await _userCollectionService.GetDefaultUserPicture();
-
-            return File(bytes, "image/jpeg");
-        }
-
         // Utils Methods    
         private async Task<List<UserModel?>> FetchUsersAsync(List<(int userId, int commonFriendsNum)> foundUsers)
         {

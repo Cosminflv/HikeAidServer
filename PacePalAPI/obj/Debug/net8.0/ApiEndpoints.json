@@ -467,16 +467,6 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "GetDefaultProfilePicture",
-    "RelativePath": "api/User/getDefaultProfilePicture",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetFriendshipRequests",
     "RelativePath": "api/User/getFriendRequests",
     "HttpMethod": "GET",
