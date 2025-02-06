@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PacePalAPI.Controllers.Middleware;
@@ -116,6 +117,9 @@ builder.Services.AddDbContext<PacePalContext>(options =>
 {
     options.UseSqlServer("Server=DESKTOP-RTM4QH7\\SQLEXPRESS;Database=PacePalDb;TrustServerCertificate=True;Integrated Security=True;");
 });
+
+builder.Services.AddDbContextFactory<PacePalContext>(options =>
+    options.UseSqlServer("Server=DESKTOP-RTM4QH7\\SQLEXPRESS;Database=PacePalDb;TrustServerCertificate=True;Integrated Security=True;"), ServiceLifetime.Scoped);
 
 var app = builder.Build();
 

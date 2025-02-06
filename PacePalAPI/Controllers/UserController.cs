@@ -250,24 +250,21 @@ namespace PacePalAPI.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}/getProfilePicture")]
-        public async Task<string> GetProfilePicture(int userId)
+        [HttpGet("{userId}/getProfilePicture")]
+
+        public async Task<IActionResult> GetProfilePicture(int userId)
         {
-            string? bytes = await _userCollectionService.GetProfilePicture(userId);
+            byte[] bytes = await _userCollectionService.GetProfilePicture(userId);
 
-            if (bytes == null) return await _userCollectionService.GetDefaultUserPicture();
-
-            return bytes!;
+            return File(bytes, "image/jpeg");
         }
 
         [HttpGet("getDefaultProfilePicture")]
         public async Task<IActionResult> GetDefaultProfilePicture()
         {
-            string? bytes = await _userCollectionService.GetDefaultUserPicture();
+            byte[] bytes = await _userCollectionService.GetDefaultUserPicture();
 
-            if (bytes == null) return NotFound("Default image not found.");
-
-            return Ok(bytes);
+            return File(bytes, "image/jpeg");
         }
 
         // Utils Methods    
@@ -288,7 +285,6 @@ namespace PacePalAPI.Controllers
                     if (user == null) return null;
 
                     var friendshipStatus = await _userCollectionService.GetFriendshipStatus(userSearchingId, user.Id);
-                    var profilePicture = await _userCollectionService.GetProfilePicture(user.Id);
 
                     return new SearchUserDto
                     {
@@ -298,7 +294,6 @@ namespace PacePalAPI.Controllers
                         Country = user.Country,
                         CommonFriends = foundUsers[index].commonFriendsNum,
                         FriendshipStatus = friendshipStatus,
-                        ImageData = profilePicture ?? ""
                     };
                 });
 

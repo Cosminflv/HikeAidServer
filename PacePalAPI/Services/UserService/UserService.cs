@@ -13,13 +13,15 @@ namespace PacePalAPI.Services.UserService
     public class UserService : IUserCollectionService
     {
         private readonly PacePalContext _context;
+        private readonly IDbContextFactory<PacePalContext> _contextFactory;
         private readonly IWebHostEnvironment _environment;
         private static readonly object _fileLock = new object();
 
-        public UserService(PacePalContext context, IWebHostEnvironment environment)
+        public UserService(PacePalContext context, IDbContextFactory<PacePalContext> contextFactory, IWebHostEnvironment environment)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _environment = environment ?? throw new ArgumentNullException(nameof(environment));
+            _contextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
         }
 
         public async Task<bool> AcceptFriendRequest(int requestId)
@@ -83,11 +85,11 @@ namespace PacePalAPI.Services.UserService
             //}
         }
 
-        public async Task<string> GetDefaultUserPicture()
+        public async Task<byte[]> GetDefaultUserPicture()
         {
             string filePath = Path.Combine(_environment.WebRootPath, "uploads\\profile_pictures\\default.base64");
 
-            return await System.IO.File.ReadAllTextAsync(filePath);
+            return await System.IO.File.ReadAllBytesAsync(filePath);
         }
 
         public async Task<List<FriendshipModel>?> GetFriendshipRequests(int receiverId)
@@ -95,32 +97,43 @@ namespace PacePalAPI.Services.UserService
            return await _context.Friendships.Where(u => u.ReceiverId == receiverId).ToListAsync();
         }
 
-        // TODO EVALUATE PERFORMANCE AND CHANGE ACCORDINGLY
-        public async Task<string?> GetProfilePicture(int userId)
+        public async Task<byte[]> GetProfilePicture(int userId)
         {
-            UserModel? userFound = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            UserModel user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId) ?? throw new InvalidOperationException();
 
-            if (userFound == null) return null;
+            string filePath = Path.Combine(_environment.WebRootPath, user.ProfilePictureUrl);
 
-            string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
+            if (!System.IO.File.Exists(filePath)) return await GetDefaultUserPicture();
 
-                try
-                {
-                    if (!System.IO.File.Exists(filePath)) return null;
-
-                    using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                    using (StreamReader reader = new StreamReader(fs))
-                    {
-                        return reader.ReadToEnd(); // Use synchronous read in the lock
-                    }
-                }
-                catch (IOException ex)
-                {
-                    // Log the exception for debugging
-                    Console.WriteLine($"Error reading the file: {ex.Message}");
-                    return null;
-                }
+            return await System.IO.File.ReadAllBytesAsync(filePath);
         }
+
+        // TODO EVALUATE PERFORMANCE AND CHANGE ACCORDINGLY
+        //public async Task<string?> GetProfilePicture(int userId)
+        //{
+        //    UserModel? userFound = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+        //    if (userFound == null) return null;
+
+        //    string filePath = Path.Combine(_environment.WebRootPath, userFound.ProfilePictureUrl);
+
+        //        try
+        //        {
+        //            if (!System.IO.File.Exists(filePath)) return null;
+
+        //            using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+        //            using (StreamReader reader = new StreamReader(fs))
+        //            {
+        //                return reader.ReadToEnd(); // Use synchronous read in the lock
+        //            }
+        //        }
+        //        catch (IOException ex)
+        //        {
+        //            // Log the exception for debugging
+        //            Console.WriteLine($"Error reading the file: {ex.Message}");
+        //            return null;
+        //        }
+        //}
 
         public async Task<int> SendFriendRequest(int requesterId, int receiverId)
         {
@@ -208,7 +221,10 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<UserModel?> Get(int id)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            using (var context = _contextFactory.CreateDbContext()) // Creates a fresh instance
+            {
+                return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            }
         }
 
         public async Task<List<UserModel>?> GetAll()

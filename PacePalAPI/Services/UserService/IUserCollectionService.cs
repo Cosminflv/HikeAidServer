@@ -23,8 +23,8 @@ namespace PacePalAPI.Services.UserService
 
         Task<bool> DeleteProfilePicture(int userId);
 
-        Task<string?> GetProfilePicture(int userId);
+        Task<byte[]> GetProfilePicture(int userId);
 
-        Task<string> GetDefaultUserPicture();
+        Task<byte[]> GetDefaultUserPicture();
     }
 }

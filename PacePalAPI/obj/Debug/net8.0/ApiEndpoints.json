@@ -74,7 +74,7 @@
   {
     "ContainingType": "PacePalAPI.Controllers.AlertController",
     "Method": "GetAllAlerts",
-    "RelativePath": "api/Alert/GetAllAlerts",
+    "RelativePath": "api/Alert/getAllAlerts",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -393,37 +393,6 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "GetProfilePicture",
-    "RelativePath": "api/User/{id}/getProfilePicture",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": false
-      },
-      {
-        "Name": "id",
-        "Type": "",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "System.String",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetUser",
     "RelativePath": "api/User/{id}/getUser",
     "HttpMethod": "GET",
@@ -432,6 +401,22 @@
     "Parameters": [
       {
         "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "GetProfilePicture",
+    "RelativePath": "api/User/{userId}/getProfilePicture",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
         "Type": "System.Int32",
         "IsRequired": true
       }

@@ -1,5 +1,4 @@
-﻿using PacePalAPI.Models;
-using PacePalAPI.Services.UserService;
+﻿using PacePalAPI.Services.UserService;
 using System.ComponentModel.DataAnnotations;
 
 namespace PacePalAPI.Requests
@@ -18,7 +17,5 @@ namespace PacePalAPI.Requests
         public int CommonFriends {  get; set; }
         [Required]
         public EFriendshipStatus FriendshipStatus { get; set; }
-        [Required]
-        public string ImageData { get; set; }
     }
 }
