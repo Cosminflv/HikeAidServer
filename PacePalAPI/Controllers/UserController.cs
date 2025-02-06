@@ -92,7 +92,7 @@ namespace PacePalAPI.Controllers
 
                 byte[] imageBytes = Convert.FromBase64String(updateUserDto.ImageData);
 
-                bool result1 = await _userCollectionService.Update(userId, user);
+                bool result1 = await _userCollectionService.Update(user);
                 bool result2 = false;
 
                 if (updateUserDto.hasDeletedImage)

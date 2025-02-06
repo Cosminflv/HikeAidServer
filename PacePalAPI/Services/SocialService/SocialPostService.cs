@@ -158,7 +158,7 @@ namespace PacePalAPI.Services.SocialService
             return true;
         }
 
-        public Task<bool> Update(int id, SocialPostModel model)
+        public Task<bool> Update(SocialPostModel model)
         {
             throw new NotImplementedException();
         }

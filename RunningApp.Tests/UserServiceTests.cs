@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Moq;
 using PacePalAPI.Models;
 using PacePalAPI.Models.Enums;
@@ -13,6 +14,7 @@ namespace PacePalAPI.Tests
         private UserService _userService;
         private DbContextOptions<PacePalContext> _dbContextOptions;
         private Mock<IWebHostEnvironment> _environmentMock;
+        private IDbContextFactory<PacePalContext> _contextFactory;
 
         [TestInitialize]
         public void Setup()
@@ -24,8 +26,13 @@ namespace PacePalAPI.Tests
             _environmentMock = new Mock<IWebHostEnvironment>();
             _environmentMock.Setup(e => e.WebRootPath).Returns(Directory.GetCurrentDirectory());
 
+            // Initialize the context factory
+            var contextFactoryMock = new Mock<IDbContextFactory<PacePalContext>>();
+            contextFactoryMock.Setup(f => f.CreateDbContext()).Returns(new PacePalContext(_dbContextOptions));
+            _contextFactory = contextFactoryMock.Object;
+
             var context = new PacePalContext(_dbContextOptions);
-            _userService = new UserService(context, _environmentMock.Object);
+            _userService = new UserService(context, _contextFactory, _environmentMock.Object);
         }
 
         [TestCleanup]
@@ -50,7 +57,7 @@ namespace PacePalAPI.Tests
             context.Friendships.Add(friendship);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.AcceptFriendRequest(friendship.Id);
@@ -76,7 +83,7 @@ namespace PacePalAPI.Tests
             context.Friendships.Add(friendship);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.DeclineFriendRequest(friendship.Id);
@@ -92,7 +99,7 @@ namespace PacePalAPI.Tests
         {
             // Arrange
             using var context = new PacePalContext(_dbContextOptions);
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.DeleteProfilePicture(1);
@@ -133,7 +140,7 @@ namespace PacePalAPI.Tests
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.DeleteProfilePicture(user.Id);
@@ -154,7 +161,7 @@ namespace PacePalAPI.Tests
             Directory.CreateDirectory(Path.GetDirectoryName(defaultImagePath));
             File.WriteAllText(defaultImagePath, defaultImageContent);
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory,_environmentMock.Object);
 
             // Act
             var result = await userService.GetDefaultUserPicture();
@@ -176,7 +183,7 @@ namespace PacePalAPI.Tests
             context.Friendships.AddRange(friendshipRequests);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.GetFriendshipRequests(2);
@@ -200,7 +207,7 @@ namespace PacePalAPI.Tests
             context.Friendships.Add(existingFriendship);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.SendFriendRequest(1, 2);
@@ -214,7 +221,7 @@ namespace PacePalAPI.Tests
         {
             // Arrange
             using var context = new PacePalContext(_dbContextOptions);
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.SendFriendRequest(1, 2);
@@ -240,7 +247,7 @@ namespace PacePalAPI.Tests
             context.Friendships.AddRange(friendships);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory,     _environmentMock.Object);
 
             // Act
             var result = await userService.NumberOfFriends(1);
@@ -254,7 +261,7 @@ namespace PacePalAPI.Tests
         {
             // Arrange
             using var context = new PacePalContext(_dbContextOptions);
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.UploadProfilePicture(1, new byte[] { 0x01, 0x02 });
@@ -287,7 +294,7 @@ namespace PacePalAPI.Tests
             context.Users.Add(user);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.UploadProfilePicture(user.Id, new byte[] { 0x01, 0x02 });
@@ -303,7 +310,7 @@ namespace PacePalAPI.Tests
         {
             // Arrange
             using var context = new PacePalContext(_dbContextOptions);
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.GetFriendshipStatus(1, 2);
@@ -327,7 +334,7 @@ namespace PacePalAPI.Tests
             context.Friendships.Add(friendship);
             await context.SaveChangesAsync();
 
-            var userService = new UserService(context, _environmentMock.Object);
+            var userService = new UserService(context, _contextFactory, _environmentMock.Object);
 
             // Act
             var result = await userService.GetFriendshipStatus(1, 2);

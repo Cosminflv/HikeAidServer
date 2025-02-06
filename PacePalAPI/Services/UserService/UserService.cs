@@ -204,7 +204,7 @@ namespace PacePalAPI.Services.UserService
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<bool> Update(int id, UserModel modifiedUser)
+        public async Task<bool> Update(UserModel modifiedUser)
         {
             _context.Attach(modifiedUser);
 

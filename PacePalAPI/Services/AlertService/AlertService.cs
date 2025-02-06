@@ -61,7 +61,7 @@ namespace PacePalAPI.Services.AlertService
             return await _context.Alerts.ToListAsync();
         }
 
-        public Task<bool> Update(int id, Alert model)
+        public Task<bool> Update(Alert model)
         {
             throw new NotImplementedException();
         }

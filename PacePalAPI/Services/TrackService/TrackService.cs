@@ -86,9 +86,9 @@ namespace PacePalAPI.Services.TrackService
             return dtoList;           
         }
 
-        public async Task<bool> Update(int id, TrackModel model)
+        public async Task<bool> Update(TrackModel model)
         {
-            TrackModel? trackToUpdate = await _context.RecordedTracks.FirstOrDefaultAsync(x => x.Id == id);
+            TrackModel? trackToUpdate = await _context.RecordedTracks.FirstOrDefaultAsync(x => x.Id == model.Id);
 
             if (trackToUpdate == null) return false;
 
