@@ -111,6 +111,9 @@ builder.Services.AddSwaggerGen(options =>
             Array.Empty<string>()
         }
     });
+
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "HikeAidAPI", Version = "v1" });
+    options.OperationFilter<ImageResponseOperationFilter>();
 });
 
 builder.Services.AddDbContext<PacePalContext>(options =>

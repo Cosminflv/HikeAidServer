@@ -97,9 +97,9 @@ namespace PacePalAPI.Services.AlertService
             return true;
         }
 
-        private (string, string) CreateAlertImageFilePath(int userId)
+        private (string, string) CreateAlertImageFilePath(int alertId)
         {
-            string fileName = $"{userId}_{Guid.NewGuid()}.base64";
+            string fileName = $"{alertId}_{Guid.NewGuid()}.base64";
 
             string uploadPath = Path.Combine(_environment.WebRootPath, "uploads", "alert_pictures");
 

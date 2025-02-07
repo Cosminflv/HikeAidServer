@@ -94,9 +94,7 @@ namespace PacePalAPI.Controllers
         {
             try
             {
-                List<AlertDto> alerts = (await _alertCollectionService.GetAllAlerts())
-                                        .AsParallel()
-                                        .Select(a => AlertConverter.ToDto(a))
+                List<Alert> alerts = (await _alertCollectionService.GetAllAlerts())
                                         .ToList();
 
                 return Ok(alerts);
@@ -108,6 +106,7 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("{alertId}/image")]
+        [Produces("image/jpeg")]
         public async Task<IActionResult> GetAlertImage(int alertId)
         {
             try
