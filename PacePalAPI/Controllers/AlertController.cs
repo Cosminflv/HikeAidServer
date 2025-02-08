@@ -69,7 +69,6 @@ namespace PacePalAPI.Controllers
                     alertCreatedAt = alert.CreatedAt,
                     alertExpiresAt = alert.ExpiresAt,
                     alertIsActive = alert.IsActive,
-                    alertImageUrl = await _alertCollectionService.GetAlertImageData(alert.Id),
                     confirmations = alert.ConfirmedUserIds.Count,
                 };
 

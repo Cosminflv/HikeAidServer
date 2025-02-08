@@ -10,6 +10,7 @@ namespace PacePalAPI.Requests
         public DateTime ExpiresAt { get; set; }
         [Required]
         public string Title { get; set; }
+
         [Required]
         public string Description { get; set; }
         [Required]
