@@ -63,7 +63,7 @@ namespace PacePalAPI.Controllers
                     authorId = alert.AuthorId,
                     alertTitle = alert.Title,
                     alertDescription = alert.Description,
-                    alertType = alert.AlertType.ToString(),
+                    alertType = (int)alert.AlertType,
                     alertLatitude = alert.Latitude,
                     alertLongitude = alert.Longitude,
                     alertCreatedAt = alert.CreatedAt,
