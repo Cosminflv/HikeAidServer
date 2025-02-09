@@ -72,13 +72,8 @@ namespace PacePalAPI.Controllers
                     confirmations = alert.ConfirmedUserIds.Count,
                 };
 
-
-                // Serialize the object to JSON
-                string jsonMessage = JsonSerializer.Serialize(message);
-
-                // Send the JSON message to the receiver using WebSocket
-                await _webSocketManager.SendMessageToAllAsync(jsonMessage);
-
+                // Send message via SSE
+                EventsController.SendSseMessage(message);
 
                 return Ok(result && hasUploaded);
             }

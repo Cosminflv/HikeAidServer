@@ -558,5 +558,21 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "EventsController",
+    "Method": "StreamEvents",
+    "RelativePath": "Events/stream",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
   }
 ]

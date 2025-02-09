@@ -116,6 +116,17 @@ builder.Services.AddSwaggerGen(options =>
     options.OperationFilter<ImageResponseOperationFilter>();
 });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("SSEPolicy", policy =>
+    {
+        policy.AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials()
+              .SetIsOriginAllowed(_ => true);
+    });
+});
+
 builder.Services.AddDbContext<PacePalContext>(options =>
 {
     options.UseSqlServer("Server=DESKTOP-RTM4QH7\\SQLEXPRESS;Database=PacePalDb;TrustServerCertificate=True;Integrated Security=True;");
@@ -146,6 +157,7 @@ app.UseStaticFiles(); // Enable serving static files from wwwroot
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession(); // Add session middleware
+app.UseCors("SSEPolicy"); // For Server-Sent Events
 
 app.UseWebSockets(); // Enable WebSockets
 app.UseMiddleware<WebSocketMiddleware>(); // Add WebSocket middleware

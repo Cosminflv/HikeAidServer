@@ -37,7 +37,7 @@ namespace PacePalAPI.Converters
                 Longitude = alertDto.Longitude,
                 ConfirmedUsers = new List<UserModel>(), // Initial empty list
                 ConfirmedUserIds = new List<int>(),
-                ImageUrl = ""
+                ImageUrl = "uploads\\alert_pictures\\default_alert_image.base64"
             };
         }
     }
