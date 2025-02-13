@@ -82,6 +82,23 @@ namespace PacePalAPI.Controllers
             }
         }
 
+        [HttpPost("{alertId}/confirmAlert")]
+        public async Task<IActionResult> ConfirmAlert(int alertId)
+        {
+            try
+            {
+                int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
+
+                bool result = await _alertCollectionService.ConfirmAlert(userId, alertId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("getAllAlerts")]
         public async Task<IActionResult> GetAllAlerts()
         {
