@@ -368,5 +368,41 @@ namespace PacePalAPI.Tests
 
             // Assert is handled by ExpectedException
         }
+
+        [TestMethod]
+        public async Task GetConfirmations_ShouldReturnNonEmptyListAfterUserConfirmed()
+        {
+            // Arrange
+
+            var alert = new Alert
+            {
+                // Initialize properties as needed
+                Id = 1,
+                ImageUrl = "uploads\\alert_pictures\\testImage.base64",
+                ConfirmedUserIds = new List<int>(),
+                AuthorId = 1,
+                CreatedAt = DateTime.Now,
+                ExpiresAt = DateTime.Now.AddDays(1),
+                Title = "Test Alert",
+                Description = "This is a test alert",
+                AlertType = EAlertType.Other,
+                IsActive = true,
+                Latitude = 0.0,
+                Longitude = 0.0,
+                ConfirmedUsers = new List<UserModel>(),
+            };
+            using var context = new PacePalContext(_dbContextOptions);
+            context.Alerts.Add(alert);
+            await context.SaveChangesAsync();
+
+            var alertService = new AlertService(context, _environmentMock.Object);
+
+            await alertService.ConfirmAlert(3, 1);
+
+            List<int> confirmations = await alertService.GetConfirmations(1);
+
+            Assert.IsTrue(confirmations.Count == 1);
+            Assert.IsTrue(confirmations.First() == 3);
+        }
     }
 }

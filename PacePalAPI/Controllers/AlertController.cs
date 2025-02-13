@@ -99,13 +99,28 @@ namespace PacePalAPI.Controllers
             }
         }
 
+        [HttpGet("{alertId}/confirmations")]
+        public async Task<IActionResult> GetConfirmations(int alertId)
+        {
+            try
+            {
+                List<int> confirmations = await _alertCollectionService.GetConfirmations(alertId);
+
+                return Ok(confirmations);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
         [HttpGet("getAllAlerts")]
         public async Task<IActionResult> GetAllAlerts()
         {
             try
             {
-                List<Alert> alerts = (await _alertCollectionService.GetAllAlerts())
-                                        .ToList();
+                List<Alert> alerts = await _alertCollectionService.GetAllAlerts();
+                            
 
                 return Ok(alerts);
             }

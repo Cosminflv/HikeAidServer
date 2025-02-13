@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.AlertController",
+    "Method": "GetConfirmations",
+    "RelativePath": "api/Alert/{alertId}/confirmations",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "alertId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.AlertController",
     "Method": "GetAlertImage",
     "RelativePath": "api/Alert/{alertId}/image",
     "HttpMethod": "GET",

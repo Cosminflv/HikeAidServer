@@ -120,5 +120,12 @@ namespace PacePalAPI.Services.AlertService
 
             return await System.IO.File.ReadAllBytesAsync(filePath);
         }
+
+        public async Task<List<int>> GetConfirmations(int alertId)
+        {
+            Alert alert = await _context.Alerts.FirstOrDefaultAsync(a => a.Id == alertId) ?? throw new InvalidOperationException();
+
+            return alert.ConfirmedUserIds;
+        }
     }
 }
