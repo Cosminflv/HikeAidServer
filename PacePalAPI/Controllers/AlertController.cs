@@ -6,7 +6,6 @@ using PacePalAPI.Extensions;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.AlertService;
-using System.Text.Json;
 
 namespace PacePalAPI.Controllers
 {
@@ -101,6 +100,7 @@ namespace PacePalAPI.Controllers
 
         [HttpGet("{alertId}/image")]
         [Produces("image/jpeg")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAlertImage(int alertId)
         {
             try
