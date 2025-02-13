@@ -475,7 +475,6 @@ namespace PacePalAPI.Tests
             await alertService.ConfirmAlert(3, 1);
 
             Alert? retrievedAlert = await alertService.Get(1);
-            DateTime date = retrievedAlert.ExpiresAt;
             Assert.IsTrue(retrievedAlert != null);
             Assert.IsTrue(retrievedAlert.ExpiresAt.Day > expiringDate.Day);
         }
