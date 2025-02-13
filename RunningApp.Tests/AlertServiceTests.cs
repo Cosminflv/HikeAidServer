@@ -404,5 +404,80 @@ namespace PacePalAPI.Tests
             Assert.IsTrue(confirmations.Count == 1);
             Assert.IsTrue(confirmations.First() == 3);
         }
+
+        [TestMethod]
+        public async Task SetConfirmations_ShouldNotConfirmWithSameIdTwice()
+        {
+            // Arrange
+
+            var alert = new Alert
+            {
+                // Initialize properties as needed
+                Id = 1,
+                ImageUrl = "uploads\\alert_pictures\\testImage.base64",
+                ConfirmedUserIds = new List<int>(),
+                AuthorId = 1,
+                CreatedAt = DateTime.Now,
+                ExpiresAt = DateTime.Now.AddDays(1),
+                Title = "Test Alert",
+                Description = "This is a test alert",
+                AlertType = EAlertType.Other,
+                IsActive = true,
+                Latitude = 0.0,
+                Longitude = 0.0,
+                ConfirmedUsers = new List<UserModel>(),
+            };
+            using var context = new PacePalContext(_dbContextOptions);
+            context.Alerts.Add(alert);
+            await context.SaveChangesAsync();
+
+            var alertService = new AlertService(context, _environmentMock.Object);
+
+            await alertService.ConfirmAlert(3, 1);
+            await alertService.ConfirmAlert(3, 1);
+
+            List<int> confirmations = await alertService.GetConfirmations(1);
+
+            Assert.IsTrue(confirmations.Count == 1);
+            Assert.IsTrue(confirmations.First() == 3);
+        }
+
+        [TestMethod]
+        public async Task SetConfirmations_ShouldExtendExpireDateWhenConfirmed()
+        {
+            // Arrange
+
+            DateTime expiringDate = new DateTime(2023, 10, 5);
+
+            var alert = new Alert
+            {
+                // Initialize properties as needed
+                Id = 1,
+                ImageUrl = "uploads\\alert_pictures\\testImage.base64",
+                ConfirmedUserIds = new List<int>(),
+                AuthorId = 1,
+                CreatedAt = DateTime.Now,
+                ExpiresAt = expiringDate,
+                Title = "Test Alert",
+                Description = "This is a test alert",
+                AlertType = EAlertType.Other,
+                IsActive = true,
+                Latitude = 0.0,
+                Longitude = 0.0,
+                ConfirmedUsers = new List<UserModel>(),
+            };
+            using var context = new PacePalContext(_dbContextOptions);
+            context.Alerts.Add(alert);
+            await context.SaveChangesAsync();
+
+            var alertService = new AlertService(context, _environmentMock.Object);
+
+            await alertService.ConfirmAlert(3, 1);
+
+            Alert? retrievedAlert = await alertService.Get(1);
+            DateTime date = retrievedAlert.ExpiresAt;
+            Assert.IsTrue(retrievedAlert != null);
+            Assert.IsTrue(retrievedAlert.ExpiresAt.Day > expiringDate.Day);
+        }
     }
 }

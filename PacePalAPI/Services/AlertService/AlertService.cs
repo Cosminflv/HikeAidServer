@@ -29,6 +29,10 @@ namespace PacePalAPI.Services.AlertService
             {
                 return false;
             }
+            List<int> confirmedUserIds = foundAlert.ConfirmedUserIds;
+            if (confirmedUserIds.Contains(userId)) return false;
+
+            foundAlert.ExpiresAt = foundAlert.ExpiresAt.AddDays(1);
 
             foundAlert.ConfirmedUserIds.Add(userId);
             _context.Alerts.Update(foundAlert);
@@ -46,9 +50,9 @@ namespace PacePalAPI.Services.AlertService
             throw new NotImplementedException();
         }
 
-        public Task<Alert?> Get(int id)
+        public async Task<Alert?> Get(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Alerts.FirstOrDefaultAsync((alert) => alert.Id == id);
         }
 
         public async Task<List<Alert>?> GetAll()
