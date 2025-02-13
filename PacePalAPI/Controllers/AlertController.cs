@@ -100,6 +100,7 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpGet("{alertId}/confirmations")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetConfirmations(int alertId)
         {
             try
