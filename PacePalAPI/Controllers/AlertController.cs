@@ -40,15 +40,15 @@ namespace PacePalAPI.Controllers
 
                 bool hasUploaded = false;
 
-                // Save image only if a file is provided
                 if (alertDto.ImageFile != null)
                 {
-                    using var memoryStream = new MemoryStream();
-                    await alertDto.ImageFile.CopyToAsync(memoryStream);
-                    byte[] imageBytes = memoryStream.ToArray();
-
-                    hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, imageBytes);
+                    hasUploaded = await _alertCollectionService.UploadAlertImage(alert.Id, alertDto.ImageFile);
                 }
+                else
+                {
+                    hasUploaded = await _alertCollectionService.SetDefaultAlertImage(alert.Id);
+                }
+
 
                 //if (alertDto.ImageData != null)
                 //{
@@ -120,8 +120,7 @@ namespace PacePalAPI.Controllers
         {
             try
             {
-                List<Alert> alerts = await _alertCollectionService.GetAllAlerts();
-                            
+                List<Alert> alerts = await _alertCollectionService.GetAllAlerts();   
 
                 return Ok(alerts);
             }

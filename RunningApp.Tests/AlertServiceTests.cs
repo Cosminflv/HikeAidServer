@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using PacePalAPI.Models;
@@ -185,17 +186,21 @@ namespace PacePalAPI.Tests
             using var context = new PacePalContext(_dbContextOptions);
             var alertService = new AlertService(context, _environmentMock.Object);
             int nonExistingAlertId = 999;
-            var imageData = new byte[] { 0x01, 0x02 };
+
+            // Create a fake IFormFile
+            var imageContent = new byte[] { 0x01, 0x02 };
+            using var stream = new MemoryStream(imageContent);
+            IFormFile formFile = new FormFile(stream, 0, imageContent.Length, "image", "test.jpg");
 
             // Act
-            var result = await alertService.UploadAlertImage(nonExistingAlertId, imageData);
+            var result = await alertService.UploadAlertImage(nonExistingAlertId, formFile);
 
             // Assert
             Assert.IsFalse(result);
         }
 
         [TestMethod]
-        public async Task UploadAlertImage_ShouldSetDefaultImage_WhenImageDataEmpty()
+        public async Task SetDefaultAlertImage_ShouldSetDefaultImage()
         {
             // Arrange
             using var context = new PacePalContext(_dbContextOptions);
@@ -220,10 +225,9 @@ namespace PacePalAPI.Tests
             await context.SaveChangesAsync();
 
             var alertService = new AlertService(context, _environmentMock.Object);
-            var emptyImageData = new byte[0];
 
             // Act
-            var result = await alertService.UploadAlertImage(alert.Id, emptyImageData);
+            var result = await alertService.SetDefaultAlertImage(alert.Id);
 
             // Assert
             Assert.IsTrue(result);
@@ -239,9 +243,8 @@ namespace PacePalAPI.Tests
             using var context = new PacePalContext(_dbContextOptions);
             var alert = new Alert
             {
-                // Initialize properties as needed
                 Id = 1,
-                ImageUrl = "",
+                ImageUrl = string.Empty,
                 ConfirmedUserIds = new List<int>(),
                 AuthorId = 1,
                 CreatedAt = DateTime.Now,
@@ -257,23 +260,37 @@ namespace PacePalAPI.Tests
             context.Alerts.Add(alert);
             await context.SaveChangesAsync();
 
+            // Ensure that the environment has a valid WebRootPath (for example, via your mock)
+            // For instance: _environmentMock.Setup(e => e.WebRootPath).Returns("path/to/webroot");
+
             var alertService = new AlertService(context, _environmentMock.Object);
-            var imageData = new byte[] { 0x01, 0x02, 0x03 };
+
+            // Create a test IFormFile with some dummy content
+            var imageContent = new byte[] { 0x01, 0x02 };
+            using var stream = new MemoryStream(imageContent);
+            IFormFile formFile = new FormFile(stream, 0, imageContent.Length, "image", "test.jpg");
 
             // Act
-            var result = await alertService.UploadAlertImage(alert.Id, imageData);
+            var result = await alertService.UploadAlertImage(alert.Id, formFile);
 
             // Assert
             Assert.IsTrue(result);
+
+            // Retrieve the updated alert from the database
             var updatedAlert = await context.Alerts.FirstOrDefaultAsync(a => a.Id == alert.Id);
+            Assert.IsNotNull(updatedAlert);
             Assert.IsNotNull(updatedAlert.ImageUrl);
-            Assert.IsTrue(updatedAlert.ImageUrl.StartsWith("uploads\\alert_pictures\\"));
+            Assert.IsTrue(updatedAlert.ImageUrl.StartsWith("uploads/alert_pictures/"),
+                "The image URL does not start with the expected folder path.");
 
             // Verify that the file was created and contains the correct data.
-            string filePath = Path.Combine(_webRootPath, updatedAlert.ImageUrl);
-            Assert.IsTrue(File.Exists(filePath));
+            // Combine the web root path with the relative image URL
+            string webRootPath = _environmentMock.Object.WebRootPath;
+            string filePath = Path.Combine(webRootPath, updatedAlert.ImageUrl);
+            Assert.IsTrue(File.Exists(filePath), "The image file was not created at the expected location.");
+
             var fileData = File.ReadAllBytes(filePath);
-            CollectionAssert.AreEqual(imageData, fileData);
+            CollectionAssert.AreEqual(imageContent, fileData, "The uploaded image content does not match the expected data.");
         }
 
         [TestMethod]

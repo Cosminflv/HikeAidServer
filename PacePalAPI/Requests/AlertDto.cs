@@ -23,7 +23,7 @@ namespace PacePalAPI.Requests
         public double Longitude { get; set; }
 
         // Change ImageData from Base64 to IFormFile for file uploads
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
        //public string? ImageData { get; set; }
     }
 }

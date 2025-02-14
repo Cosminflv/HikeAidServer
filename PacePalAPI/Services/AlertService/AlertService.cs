@@ -25,7 +25,7 @@ namespace PacePalAPI.Services.AlertService
         {
             Alert? foundAlert = await _context.Alerts.FirstOrDefaultAsync((alert) => alert.Id == alertId);
 
-            if(foundAlert == null)
+            if (foundAlert == null)
             {
                 return false;
             }
@@ -57,12 +57,14 @@ namespace PacePalAPI.Services.AlertService
 
         public async Task<List<Alert>?> GetAll()
         {
-           return await _context.Alerts.ToListAsync();
+            return await _context.Alerts.ToListAsync();
         }
 
         public async Task<List<Alert>> GetAllAlerts()
         {
-            return await _context.Alerts.ToListAsync();
+            return await _context.Alerts
+                    .Where(alert => alert.ExpiresAt >= DateTime.Today)
+                    .ToListAsync();
         }
 
         public Task<bool> Update(Alert model)
@@ -70,36 +72,42 @@ namespace PacePalAPI.Services.AlertService
             throw new NotImplementedException();
         }
 
-        public async Task<bool> UploadAlertImage(int alertId, byte[] imageData)
+        public async Task<bool> UploadAlertImage(int alertId, IFormFile imageFile)
         {
-            Alert? foundAlert = await _context.Alerts.FirstOrDefaultAsync((alert) => alert.Id == alertId);
+            var foundAlert = await _context.Alerts.FindAsync(alertId);
+            if (foundAlert == null)
+                return false;
 
-            if (foundAlert == null) return false;
-
-            // Case where there is not any image data
-            if (imageData.Length == 0)
-            {
-                string defaultFilePath = Path.Combine(_environment.WebRootPath, "uploads\\alert_pictures\\default.base64");
-                foundAlert.ImageUrl = defaultFilePath;
-                _context.Alerts.Update(foundAlert);
-                await _context.SaveChangesAsync();
-                return true;
-            }
-
+            // Generate file path and file name (ensure this method creates a unique path)
             (string filePath, string fileName) = CreateAlertImageFilePath(alertId);
 
-            lock (_fileLock)
+            // Use asynchronous file writing with a FileStream
+            await using (var stream = new FileStream(filePath, FileMode.Create))
             {
-                System.IO.File.WriteAllBytes(filePath, imageData);
+                await imageFile.CopyToAsync(stream);
             }
 
-            var alertPictureUrl = $"uploads\\alert_pictures\\{fileName}";
+            // Set the URL relative to your web root (use forward slashes for URLs)
+            foundAlert.ImageUrl = $"uploads/alert_pictures/{fileName}";
 
-            foundAlert.ImageUrl = alertPictureUrl;
-            _context.Update(foundAlert);
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<bool> SetDefaultAlertImage(int alertId)
+        {
+            var foundAlert = await _context.Alerts.FindAsync(alertId);
+            if (foundAlert == null)
+                return false;
+
+            // Get the default image path from configuration or hard-coded value
+            string defaultFilePath = Path.Combine(_environment.WebRootPath, "uploads", "alert_pictures", "default.base64");
+            foundAlert.ImageUrl = defaultFilePath;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
 
         private (string, string) CreateAlertImageFilePath(int alertId)
         {
