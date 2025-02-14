@@ -72,8 +72,7 @@ namespace PacePalAPI.Controllers
                 };
 
                 // Send message via SSE
-                EventsController.SendSseMessage(message);
-
+                await EventsController.SendSseMessageAsync(message);
                 return Ok(result && hasUploaded);
             }
             catch (Exception)

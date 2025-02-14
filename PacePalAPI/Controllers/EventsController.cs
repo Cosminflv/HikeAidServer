@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Text;
 using System.Text.Json;
 
@@ -26,10 +27,11 @@ public class EventsController : ControllerBase
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await Task.Delay(1000, cancellationToken); // Keep connection alive
+
+                await Task.Delay(1000, cancellationToken); // Delay 1000ms
             }
         }
-        catch (Exception)
+        catch (TaskCanceledException)
         {
             // Handle disconnections
         }
@@ -67,6 +69,50 @@ public class EventsController : ControllerBase
             foreach (var client in disconnectedClients)
             {
                 Clients.Remove(client);
+            }
+        }
+    }
+
+    public static async Task SendSseMessageAsync(object message)
+    {
+        string jsonMessage = $"{JsonSerializer.Serialize(message)}\n\n";
+
+        // Create a snapshot of clients to iterate safely
+        List<StreamWriter> clientsSnapshot;
+        lock (Clients)
+        {
+            clientsSnapshot = Clients.ToList(); // Copy while locked
+        }
+
+        var disconnectedClients = new List<StreamWriter>();
+
+        // Process the snapshot asynchronously (no lock held here)
+        foreach (var client in clientsSnapshot)
+        {
+            try
+            {
+                await client.WriteLineAsync(jsonMessage).ConfigureAwait(false);
+                await client.FlushAsync().ConfigureAwait(false);
+            }
+            catch (IOException) // Detect broken pipes
+            {
+                disconnectedClients.Add(client);
+            }
+            catch (ObjectDisposedException) // Client already disposed
+            {
+                disconnectedClients.Add(client);
+            }
+        }
+
+        // Remove disconnected clients from the original list
+        if (disconnectedClients.Count > 0)
+        {
+            lock (Clients)
+            {
+                foreach (var client in disconnectedClients)
+                {
+                    Clients.Remove(client);
+                }
             }
         }
     }
