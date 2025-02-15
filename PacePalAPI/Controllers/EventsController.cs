@@ -11,8 +11,11 @@ public class EventsController : ControllerBase
 
     [HttpGet]
     [Route("stream")]
-    public async Task StreamEvents(CancellationToken cancellationToken)
+    public async Task StreamEvents()
     {
+        // Use the request's cancellation token
+        var cancellationToken = HttpContext.RequestAborted;
+
         Response.Headers.Add("Content-Type", "text/event-stream");
         Response.Headers.Add("Cache-Control", "no-cache");
         Response.Headers.Add("Connection", "keep-alive");
@@ -25,18 +28,19 @@ public class EventsController : ControllerBase
 
         try
         {
+            // Loop until the client disconnects (token is canceled)
             while (!cancellationToken.IsCancellationRequested)
             {
-
-                await Task.Delay(1000, cancellationToken); // Delay 1000ms
+                await Task.Delay(1000, cancellationToken); // Check cancellation
             }
         }
         catch (TaskCanceledException)
         {
-            // Handle disconnections
+            // Client disconnected
         }
         finally
         {
+            // Ensure client is removed even if the loop exits
             lock (Clients)
             {
                 Clients.Remove(streamWriter);
