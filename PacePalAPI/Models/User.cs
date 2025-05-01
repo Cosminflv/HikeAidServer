@@ -35,7 +35,7 @@ namespace PacePalAPI.Models
         [JsonIgnore]
         public List<LikeModel> Likes { get; set; } = new List<LikeModel>();
         [JsonIgnore]
-        public List<TrackModel> RecordedTracks { get; set; } = new List<TrackModel>();
+        public List<TourModel> RecordedTracks { get; set; } = new List<TourModel>();
 
         // Navigation properties
         [JsonIgnore]

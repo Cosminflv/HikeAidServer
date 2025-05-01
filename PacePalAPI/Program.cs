@@ -65,7 +65,7 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
 
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
-builder.Services.AddScoped<ITrackCollectionService, TrackService>();
+//builder.Services.AddScoped<ITrackCollectionService, TrackService>();
 builder.Services.AddScoped<IAlertCollectionService, AlertService>();
 
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace PacePalAPI.Models
 {

@@ -8,31 +8,31 @@ namespace PacePalAPI.Controllers
     [Route("api/[controller]")]
     public class TrackController : ControllerBase
     {
-        private readonly ITrackCollectionService _trackCollectionService;
+        //private readonly ITrackCollectionService _trackCollectionService;
 
-        public TrackController(ITrackCollectionService trackCollectionService)
-        {
-            _trackCollectionService = trackCollectionService ?? throw new ArgumentNullException(nameof(trackCollectionService));
-        }
+        //public TrackController(ITrackCollectionService trackCollectionService)
+        //{
+        //    _trackCollectionService = trackCollectionService ?? throw new ArgumentNullException(nameof(trackCollectionService));
+        //}
 
-        [HttpGet("{id}/userTracks")]
-        public async Task<List<TrackDto>> GetUserTracks(int userId)
-        {
-            List<TrackDto>? recordedTracks = await _trackCollectionService.GetUserRecordedTracks(userId);
+        //[HttpGet("{id}/userTracks")]
+        //public async Task<List<TrackDto>> GetUserTracks(int userId)
+        //{
+        //    List<TrackDto>? recordedTracks = await _trackCollectionService.GetUserRecordedTracks(userId);
 
-            if (recordedTracks == null) return new List<TrackDto>();
+        //    if (recordedTracks == null) return new List<TrackDto>();
 
-            return recordedTracks;
-        }
+        //    return recordedTracks;
+        //}
 
-        [HttpPost("{id}/uploadTrack")]
-        public async Task<IActionResult> UploadTrackBase64(TrackDto track)
-        {
-            bool result = await _trackCollectionService.UploadTrackBase64(track.UserId, track.GpxData, track.LogData);
+        //[HttpPost("{id}/uploadTrack")]
+        //public async Task<IActionResult> UploadTrackBase64(TrackDto track)
+        //{
+        //    bool result = await _trackCollectionService.UploadTrackBase64(track.UserId, track.GpxData, track.LogData);
 
-            if (!result) return BadRequest("Error while uploading track."); ;
+        //    if (!result) return BadRequest("Error while uploading track."); ;
 
-            return Ok(true);  
-        }
+        //    return Ok(true);  
+        //}
     }
 }

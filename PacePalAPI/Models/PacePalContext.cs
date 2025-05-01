@@ -9,7 +9,8 @@ namespace PacePalAPI.Models
         public DbSet<SocialPostModel> SocialPosts { get; set; }
         public DbSet<CommentModel> Comments { get; set; }
         public DbSet<LikeModel> Likes { get; set; }
-        public DbSet<TrackModel> RecordedTracks { get; set; }
+        public DbSet<TourModel> Tours { get; set; }
+        public DbSet<CoordinatesWithTimestamp> TourCoordinates { get; set; }
         public DbSet<Alert> Alerts { get; set; }
 
         public PacePalContext(DbContextOptions options) : base(options)
@@ -20,19 +21,6 @@ namespace PacePalAPI.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //// User and Friendships
-            //modelBuilder.Entity<FriendshipModel>()
-            //    .HasOne(f => f.Requester)
-            //    .WithMany(u => u.Friendships)
-            //    .HasForeignKey(f => f.RequesterId)
-            //    .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
-
-            //modelBuilder.Entity<FriendshipModel>()
-            //    .HasOne(f => f.Receiver)
-            //    .WithMany()
-            //    .HasForeignKey(f => f.ReceiverId)
-            //    .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
 
             modelBuilder.Entity<FriendshipModel>()
                 .HasOne(f => f.Requester)
@@ -46,12 +34,28 @@ namespace PacePalAPI.Models
                 .HasForeignKey(f => f.ReceiverId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // User and Tracks
-            modelBuilder.Entity<TrackModel>()
-                .HasOne(u => u.UserModel)
-                .WithMany(t => t.RecordedTracks)
-                .HasForeignKey(track => track.UserId)
-                .OnDelete(DeleteBehavior.NoAction); // Avoid cascade delete
+            // User and Tours
+            modelBuilder.Entity<UserModel>(entity =>
+            {
+                entity.HasMany(u => u.RecordedTracks)
+                      .WithOne(t => t.Author)
+                      .HasForeignKey(t => t.AuthorId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<TourModel>(entity =>
+            {
+                entity.HasMany(t => t.Coordinates)
+                      .WithOne(c => c.Tour)
+                      .HasForeignKey(c => c.TourId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<CoordinatesWithTimestamp>(entity =>
+            {
+                entity.Property(c => c.Latitude).IsRequired();
+                entity.Property(c => c.Longitude).IsRequired();
+            });
 
             // User and Posts
             modelBuilder.Entity<SocialPostModel>()
