@@ -38,6 +38,6 @@ namespace PacePalAPI.Models
         [MaxLength(500)]
         public string PreviewImageUrl { get; set; } = string.Empty;
 
-        public ICollection<CoordinatesWithTimestamp> Coordinates { get; set; } = new List<CoordinatesWithTimestamp>();
+        public ICollection<TourCoordinates> Coordinates { get; set; } = new List<TourCoordinates>();
     }
 }

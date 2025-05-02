@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using PacePalAPI.Controllers.Middleware;
@@ -65,7 +64,7 @@ builder.Services.AddSingleton<IUserSearchService, UserSearchService>(provider =>
 
 builder.Services.AddScoped<IUserCollectionService, UserService>();
 builder.Services.AddScoped<ISocialPostCollectionService, SocialPostService>();
-//builder.Services.AddScoped<ITrackCollectionService, TrackService>();
+builder.Services.AddScoped<ITourCollectionService, TourService>();
 builder.Services.AddScoped<IAlertCollectionService, AlertService>();
 
 

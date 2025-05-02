@@ -331,6 +331,58 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "PacePalAPI.Controllers.TourController",
+    "Method": "UploadTourBase64",
+    "RelativePath": "api/Tour/{id}/uploadTour",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tour",
+        "Type": "PacePalAPI.Requests.TourDto",
+        "IsRequired": true
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.TourController",
+    "Method": "GetUserTours",
+    "RelativePath": "api/Tour/{id}/userTours",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "id",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.TourDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
     "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetUsers",
     "RelativePath": "api/User",

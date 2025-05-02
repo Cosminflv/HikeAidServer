@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace PacePalAPI.Models
 {
     [Table("TourCoordinates")]
-    public class CoordinatesWithTimestamp
+    public class TourCoordinates
     {
         [Key]
         public int Id { get; set; }

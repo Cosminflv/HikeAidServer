@@ -10,7 +10,7 @@ namespace PacePalAPI.Models
         public DbSet<CommentModel> Comments { get; set; }
         public DbSet<LikeModel> Likes { get; set; }
         public DbSet<TourModel> Tours { get; set; }
-        public DbSet<CoordinatesWithTimestamp> TourCoordinates { get; set; }
+        public DbSet<TourCoordinates> TourCoordinates { get; set; }
         public DbSet<Alert> Alerts { get; set; }
 
         public PacePalContext(DbContextOptions options) : base(options)
@@ -51,7 +51,7 @@ namespace PacePalAPI.Models
                       .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<CoordinatesWithTimestamp>(entity =>
+            modelBuilder.Entity<TourCoordinates>(entity =>
             {
                 entity.Property(c => c.Latitude).IsRequired();
                 entity.Property(c => c.Longitude).IsRequired();
