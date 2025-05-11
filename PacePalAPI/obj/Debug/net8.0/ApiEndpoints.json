@@ -519,6 +519,22 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "PredictDistance",
+    "RelativePath": "api/User/predictDistance",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "trackPoints",
+        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Controllers.TrackPointDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "SearchUser",
     "RelativePath": "api/User/searchUser",
     "HttpMethod": "GET",
