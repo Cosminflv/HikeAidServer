@@ -166,16 +166,13 @@ namespace PacePalAPI.Controllers
             var message = new
             {
                 requesterId = reqId,
-                recieverId = recivId,
+                receiverId = recivId,
                 id = result,
                 requesterName = reqName,
             };
 
-            // Serialize the object to JSON
-            string jsonMessage = JsonSerializer.Serialize(message);
-
             // Send the JSON message to the receiver using WebSocket
-            await _webSocketManager.SendMessageAsync(recivId.ToString(), jsonMessage);
+            await EventsController.SendFriendshipRequest(recivId.ToString(), message);
 
             return Ok(result);
         }

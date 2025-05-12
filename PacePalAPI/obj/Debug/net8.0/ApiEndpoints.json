@@ -527,7 +527,7 @@
     "Parameters": [
       {
         "Name": "trackPoints",
-        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Controllers.TrackPointDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.TrackPointDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "IsRequired": true
       }
     ],
@@ -610,11 +610,22 @@
   {
     "ContainingType": "EventsController",
     "Method": "StreamEvents",
-    "RelativePath": "Events/stream",
+    "RelativePath": "Events/stream/{channel}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "channel",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": [
       {
         "Type": "System.Void",
