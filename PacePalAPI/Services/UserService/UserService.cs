@@ -263,7 +263,7 @@ namespace PacePalAPI.Services.UserService
             ConfirmedCurrentHike? confirmedCurrentHike = await _context.ConfirmedCurrentHikes
                 .FirstOrDefaultAsync(h => h.UserId == userId && h.IsActive);
 
-            if(confirmedCurrentHike == null) return false;
+            if (confirmedCurrentHike == null) return false;
 
             // Add the coordinates to the existing list
             confirmedCurrentHike.UserProgressCoordinates.AddRange(coordinates);
@@ -311,5 +311,32 @@ namespace PacePalAPI.Services.UserService
                 throw; // Or handle exception as needed
             }
         }
+
+        public async Task<ConfirmedCurrentHike> GetActiveHike(int userId)
+        {
+            var userWithHikes = await _context.Users
+                    .Include(u => u.ConfirmedCurrentHikes)
+                    .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (userWithHikes == null)
+                throw new InvalidOperationException($"Unable to retrieve user; no user with ID '{userId}'.");
+
+
+            ConfirmedCurrentHike? activeHike = userWithHikes.ConfirmedCurrentHikes.FirstOrDefault(hike => hike.IsActive == true);
+
+            if (activeHike == null)
+                throw new InvalidOperationException($"Unable to retrieve active hike; no active hike for user with ID '{userId}'.");
+
+            return activeHike;
+        }
+
+        public async Task<bool> UpdateHikeProgress(ConfirmedCurrentHike hike)
+        {
+            _context.ConfirmedCurrentHikes.Update(hike);
+
+            var affected = await _context.SaveChangesAsync();
+            return affected > 0;
+        }
+
     }
 }

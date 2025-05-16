@@ -11,6 +11,10 @@ namespace PacePalAPI.Services.UserService
 
         Task<bool> ConfirmHike(int userId, List<Coordinate> trackCoordinates);
 
+        Task<ConfirmedCurrentHike> GetActiveHike(int userId);
+
+        Task<bool> UpdateHikeProgress(ConfirmedCurrentHike hike);
+
         Task<int> SendFriendRequest(int requesterId, int recieverId);
 
         Task<bool> AcceptFriendRequest(int requestId);
