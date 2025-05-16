@@ -257,5 +257,59 @@ namespace PacePalAPI.Services.UserService
 
             return status;
         }
+
+        public async Task<bool> AddProgressCoordinates(int userId, List<Coordinate> coordinates)
+        {
+            ConfirmedCurrentHike? confirmedCurrentHike = await _context.ConfirmedCurrentHikes
+                .FirstOrDefaultAsync(h => h.UserId == userId && h.IsActive);
+
+            if(confirmedCurrentHike == null) return false;
+
+            // Add the coordinates to the existing list
+            confirmedCurrentHike.UserProgressCoordinates.AddRange(coordinates);
+            // Save the changes to the database
+            _context.ConfirmedCurrentHikes.Update(confirmedCurrentHike);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> ConfirmHike(int userId, List<Coordinate> trackCoordinates)
+        {
+            // Check if user exists using async method
+            UserModel? userModel = await _context.Users.FindAsync(userId);
+            if (userModel == null) return false;
+
+            // Create transaction for atomic operations
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                // Efficiently deactivate all existing active hikes for this user
+                await _context.ConfirmedCurrentHikes
+                    .Where(h => h.UserId == userId && h.IsActive)
+                    .ExecuteUpdateAsync(setters => setters
+                        .SetProperty(h => h.IsActive, false));
+
+                // Create and add new active hike
+                var newHike = new ConfirmedCurrentHike
+                {
+                    UserId = userId,
+                    TrackCoordinates = trackCoordinates,
+                    IsActive = true
+                };
+
+                await _context.ConfirmedCurrentHikes.AddAsync(newHike);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+                return true;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw; // Or handle exception as needed
+            }
+        }
     }
 }

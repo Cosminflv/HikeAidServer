@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PacePalAPI.Models;
 
@@ -11,9 +12,11 @@ using PacePalAPI.Models;
 namespace PacePalAPI.Migrations
 {
     [DbContext(typeof(PacePalContext))]
-    partial class PacePalContextModelSnapshot : ModelSnapshot
+    [Migration("20250516130550_Added_current_hike")]
+    partial class Added_current_hike
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -148,8 +151,8 @@ namespace PacePalAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Elevation")
-                        .HasColumnType("float");
+                    b.Property<int>("ConfirmedCurrentHikeId")
+                        .HasColumnType("int");
 
                     b.Property<double>("Latitude")
                         .HasColumnType("float");
@@ -157,20 +160,9 @@ namespace PacePalAPI.Migrations
                     b.Property<double>("Longitude")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("TrackCoordinatesConfirmedCurrentHikeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserProgressCoordinatesConfirmedCurrentHikeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("TrackCoordinatesConfirmedCurrentHikeId");
-
-                    b.HasIndex("UserProgressCoordinatesConfirmedCurrentHikeId");
+                    b.HasIndex("ConfirmedCurrentHikeId");
 
                     b.ToTable("Coordinate");
                 });
@@ -447,19 +439,13 @@ namespace PacePalAPI.Migrations
 
             modelBuilder.Entity("PacePalAPI.Models.Coordinate", b =>
                 {
-                    b.HasOne("PacePalAPI.Models.ConfirmedCurrentHike", "TrackCoordinatesConfirmedCurrentHike")
-                        .WithMany("TrackCoordinates")
-                        .HasForeignKey("TrackCoordinatesConfirmedCurrentHikeId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("PacePalAPI.Models.ConfirmedCurrentHike", "ConfirmedCurrentHike")
+                        .WithMany("Coordinates")
+                        .HasForeignKey("ConfirmedCurrentHikeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("PacePalAPI.Models.ConfirmedCurrentHike", "UserProgressCoordinatesConfirmedCurrentHike")
-                        .WithMany("UserProgressCoordinates")
-                        .HasForeignKey("UserProgressCoordinatesConfirmedCurrentHikeId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.Navigation("TrackCoordinatesConfirmedCurrentHike");
-
-                    b.Navigation("UserProgressCoordinatesConfirmedCurrentHike");
+                    b.Navigation("ConfirmedCurrentHike");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.FriendshipModel", b =>
@@ -535,9 +521,7 @@ namespace PacePalAPI.Migrations
 
             modelBuilder.Entity("PacePalAPI.Models.ConfirmedCurrentHike", b =>
                 {
-                    b.Navigation("TrackCoordinates");
-
-                    b.Navigation("UserProgressCoordinates");
+                    b.Navigation("Coordinates");
                 });
 
             modelBuilder.Entity("PacePalAPI.Models.SocialPostModel", b =>

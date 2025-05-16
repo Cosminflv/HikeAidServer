@@ -473,6 +473,22 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "ConfirmHike",
+    "RelativePath": "api/User/confirmHike",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hikeCoordinates",
+        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.CoordinatesDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "DeclineFriendRequest",
     "RelativePath": "api/User/declineFriendRequest",
     "HttpMethod": "POST",

@@ -43,5 +43,8 @@ namespace PacePalAPI.Models
 
         [JsonIgnore]
         public List<Alert> ConfirmedAlerts { get; set; } = new List<Alert>(); // Alerts confirmed by this user
+
+        [JsonIgnore]
+        public List<ConfirmedCurrentHike> ConfirmedCurrentHikes { get; set; } = new List<ConfirmedCurrentHike>();
     }
 }

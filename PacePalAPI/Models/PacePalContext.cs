@@ -12,6 +12,7 @@ namespace PacePalAPI.Models
         public DbSet<TourModel> Tours { get; set; }
         public DbSet<TourCoordinates> TourCoordinates { get; set; }
         public DbSet<Alert> Alerts { get; set; }
+        public DbSet<ConfirmedCurrentHike> ConfirmedCurrentHikes { get; set; }
 
         public PacePalContext(DbContextOptions options) : base(options)
         {
@@ -104,6 +105,28 @@ namespace PacePalAPI.Models
                 .HasMany(a => a.ConfirmedUsers)
                 .WithMany(u => u.ConfirmedAlerts)
                 .UsingEntity(j => j.ToTable("AlertConfirmedUsers"));
+
+            // User ↔ ConfirmedCurrentHike
+            modelBuilder.Entity<ConfirmedCurrentHike>()
+                .HasOne(c => c.User)
+                .WithMany(u => u.ConfirmedCurrentHikes)
+                .HasForeignKey(c => c.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            // ConfirmedCurrentHike ↔ TrackCoordinates
+            modelBuilder.Entity<ConfirmedCurrentHike>()
+                .HasMany(c => c.TrackCoordinates)
+                .WithOne(c => c.TrackCoordinatesConfirmedCurrentHike)
+                .HasForeignKey(c => c.TrackCoordinatesConfirmedCurrentHikeId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // ConfirmedCurrentHike ↔ UserProgressCoordinates
+            modelBuilder.Entity<ConfirmedCurrentHike>()
+                .HasMany(c => c.UserProgressCoordinates)
+                .WithOne(c => c.UserProgressCoordinatesConfirmedCurrentHike)
+                .HasForeignKey(c => c.UserProgressCoordinatesConfirmedCurrentHikeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

@@ -7,6 +7,10 @@ namespace PacePalAPI.Services.UserService
     {
         //TODO More complex methods than CRUD
 
+        Task<bool> AddProgressCoordinates(int userId, List<Coordinate> coordinates);
+
+        Task<bool> ConfirmHike(int userId, List<Coordinate> trackCoordinates);
+
         Task<int> SendFriendRequest(int requesterId, int recieverId);
 
         Task<bool> AcceptFriendRequest(int requestId);

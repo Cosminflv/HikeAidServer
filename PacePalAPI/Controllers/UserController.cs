@@ -281,6 +281,33 @@ namespace PacePalAPI.Controllers
             }
         }
 
+        [HttpPost("confirmHike")]
+        public async Task<IActionResult> ConfirmHike([FromBody] List<CoordinatesDto> hikeCoordinates)
+        {
+            if (hikeCoordinates == null || hikeCoordinates.Count == 0)
+                return BadRequest("Track coordinates payload is empty or invalid.");
+
+            // Retrieve the user's ID from claims
+            int userId = HttpContextExtensions.GetUserId(HttpContext) ?? throw new UnauthorizedAccessException();
+
+
+            List<Coordinate> coords = new List<Coordinate>();
+            hikeCoordinates.ForEach(coord =>
+            {
+                coords.Add(new Coordinate
+                {
+                    Latitude = coord.Latitude,
+                    Longitude = coord.Longitude
+                });
+            });
+
+            bool result = await _userCollectionService.ConfirmHike(userId, coords);
+
+            if (!result) return BadRequest("Error while confirming hike.");
+
+            return Ok(result);
+        }
+
         // Utils Methods    
         private async Task<List<UserModel?>> FetchUsersAsync(List<(int userId, int commonFriendsNum)> foundUsers)
         {
