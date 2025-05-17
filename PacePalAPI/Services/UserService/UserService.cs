@@ -320,18 +320,16 @@ namespace PacePalAPI.Services.UserService
 
         public async Task<ConfirmedCurrentHike> GetActiveHike(int userId)
         {
-            var userWithHikes = await _context.Users
-                    .Include(u => u.ConfirmedCurrentHikes)
-                    .FirstOrDefaultAsync(u => u.Id == userId);
-
-            if (userWithHikes == null)
-                throw new InvalidOperationException($"Unable to retrieve user; no user with ID '{userId}'.");
-
-
-            ConfirmedCurrentHike? activeHike = userWithHikes.ConfirmedCurrentHikes.FirstOrDefault(hike => hike.IsActive == true);
+            var activeHike = await _context.ConfirmedCurrentHikes
+                .Where(h => h.UserId == userId && h.IsActive)
+                .Include(h => h.TrackCoordinates)
+                .Include(h => h.UserProgressCoordinates)
+                // if you also want the User nav‑prop:
+                .Include(h => h.User)
+                .FirstOrDefaultAsync();
 
             if (activeHike == null)
-                throw new InvalidOperationException($"Unable to retrieve active hike; no active hike for user with ID '{userId}'.");
+                throw new InvalidOperationException($"No active hike for user {userId}.");
 
             return activeHike;
         }

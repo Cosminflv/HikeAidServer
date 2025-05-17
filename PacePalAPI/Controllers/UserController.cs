@@ -240,48 +240,7 @@ namespace PacePalAPI.Controllers
             return File(bytes, "image/jpeg");
         }
 
-        //[HttpPost("predictDistance")]
-        //public async Task<IActionResult> PredictDistance([FromBody] List<TrackPointDto> trackPoints)
-        //{
-        //    if (trackPoints == null || trackPoints.Count == 0)
-        //        return BadRequest("Track points payload is empty or invalid.");
-
-        //    try
-        //    {
-        //        // Serialize payload
-        //        var json = JsonSerializer.Serialize(trackPoints);
-        //        var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-        //        // Call Flask service
-        //        var response = await _httpClient.PostAsync("http://localhost:5000/predict", content);
-
-        //        // Forward errors
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            var error = await response.Content.ReadAsStringAsync();
-        //            return StatusCode((int)response.StatusCode, error);
-        //        }
-
-        //        // Parse and return result with case-insensitive property mapping
-        //        var responseJson = await response.Content.ReadAsStringAsync();
-        //        var options = new JsonSerializerOptions
-        //        {
-        //            PropertyNameCaseInsensitive = true
-        //        };
-        //        var result = JsonSerializer.Deserialize<PositionPredictResponse>(responseJson, options);
-        //        return Ok(result);
-        //    }
-        //    catch (JsonException jex)
-        //    {
-        //        return StatusCode(500, $"JSON parse error: {jex.Message}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(500, $"Error calling prediction service: {ex.Message}");
-        //    }
-        //}
-
-        [HttpPost("predictDistance")]
+        [HttpPost("{userId}/predictDistance")]
         public async Task<IActionResult> PredictDistance([FromBody] int userId)
         {
             List<double> prediction = await _userCollectionService.PredictUserPosition(userId);
@@ -299,7 +258,7 @@ namespace PacePalAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("confirmHike")]
+        [HttpPost("{userId}/confirmHike")]
         public async Task<IActionResult> ConfirmHike([FromBody] List<CoordinatesDto> hikeCoordinates)
         {
             if (hikeCoordinates == null || hikeCoordinates.Count == 0)
@@ -324,6 +283,42 @@ namespace PacePalAPI.Controllers
             if (!result) return BadRequest("Error while confirming hike.");
 
             return Ok(result);
+        }
+
+        [HttpGet("{userId}/getUserConfirmedHike")]
+        public async Task<IActionResult> GetUserConfirmedHike(int userId)
+        {
+
+            ConfirmedCurrentHike? hike = await _userCollectionService.GetActiveHike(userId);
+
+            if (hike == null) return NotFound("No active hike found.");
+
+            // Convert the coordinates to a list of CoordinatesDto
+            List<CoordinatesDto> trackCoordinatesDtos = hike.TrackCoordinates
+                .Select(coord => new CoordinatesDto
+                {
+                    Latitude = coord.Latitude,
+                    Longitude = coord.Longitude
+                })
+                .ToList();
+            // Convert the user progress coordinates to a list of CoordinatesDto
+            List<CoordinatesDto> userProgressDto = hike.UserProgressCoordinates
+                .Select(coord => new CoordinatesDto
+                {
+                    Latitude = coord.Latitude,
+                    Longitude = coord.Longitude
+                })
+                .ToList();
+            // Create a response object
+            HikeDto response = new HikeDto
+            {
+                TrackCoordinates = trackCoordinatesDtos,
+                UserProgressCoordinates = userProgressDto,
+                LastCoordinateTimeStamp = hike.UserProgressCoordinates.Last().Timestamp
+
+            };
+
+            return Ok(response);
         }
 
         // Utils Methods    

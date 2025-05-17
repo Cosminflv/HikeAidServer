@@ -441,6 +441,27 @@
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "ConfirmHike",
+    "RelativePath": "api/User/{userId}/confirmHike",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "hikeCoordinates",
+        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.CoordinatesDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
     "Method": "GetProfilePicture",
     "RelativePath": "api/User/{userId}/getProfilePicture",
     "HttpMethod": "GET",
@@ -450,6 +471,43 @@
       {
         "Name": "userId",
         "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "GetUserConfirmedHike",
+    "RelativePath": "api/User/{userId}/getUserConfirmedHike",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "PacePalAPI.Controllers.UserController",
+    "Method": "PredictDistance",
+    "RelativePath": "api/User/{userId}/predictDistance",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "userId",
+        "Type": "",
         "IsRequired": true
       }
     ],
@@ -467,22 +525,6 @@
         "Name": "requestId",
         "Type": "System.Int32",
         "IsRequired": false
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "ConfirmHike",
-    "RelativePath": "api/User/confirmHike",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "hikeCoordinates",
-        "Type": "System.Collections.Generic.List\u00601[[PacePalAPI.Requests.CoordinatesDto, PacePalAPI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "IsRequired": true
       }
     ],
     "ReturnTypes": []
@@ -532,22 +574,6 @@
         "StatusCode": 200
       }
     ]
-  },
-  {
-    "ContainingType": "PacePalAPI.Controllers.UserController",
-    "Method": "PredictDistance",
-    "RelativePath": "api/User/predictDistance",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "userId",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
   },
   {
     "ContainingType": "PacePalAPI.Controllers.UserController",
