@@ -258,7 +258,7 @@ namespace PacePalAPI.Controllers
             return Ok(response);
         }
 
-        [HttpPost("{userId}/confirmHike")]
+        [HttpPost("confirmHike")]
         public async Task<IActionResult> ConfirmHike([FromBody] List<CoordinatesDto> hikeCoordinates)
         {
             if (hikeCoordinates == null || hikeCoordinates.Count == 0)
