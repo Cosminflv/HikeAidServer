@@ -23,7 +23,7 @@ namespace PacePalAPI.Controllers
         private readonly IUserSearchService _userSearchService;
         private readonly MyWebSocketManager _webSocketManager;
 
-        private static readonly HttpClient _httpClient = new HttpClient();
+        //private static readonly HttpClient _httpClient = new HttpClient();
 
         public UserController(IUserCollectionService userService, IUserSearchService userSearchService, MyWebSocketManager webSocketManager)
         {
@@ -240,45 +240,63 @@ namespace PacePalAPI.Controllers
             return File(bytes, "image/jpeg");
         }
 
+        //[HttpPost("predictDistance")]
+        //public async Task<IActionResult> PredictDistance([FromBody] List<TrackPointDto> trackPoints)
+        //{
+        //    if (trackPoints == null || trackPoints.Count == 0)
+        //        return BadRequest("Track points payload is empty or invalid.");
+
+        //    try
+        //    {
+        //        // Serialize payload
+        //        var json = JsonSerializer.Serialize(trackPoints);
+        //        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        //        // Call Flask service
+        //        var response = await _httpClient.PostAsync("http://localhost:5000/predict", content);
+
+        //        // Forward errors
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            var error = await response.Content.ReadAsStringAsync();
+        //            return StatusCode((int)response.StatusCode, error);
+        //        }
+
+        //        // Parse and return result with case-insensitive property mapping
+        //        var responseJson = await response.Content.ReadAsStringAsync();
+        //        var options = new JsonSerializerOptions
+        //        {
+        //            PropertyNameCaseInsensitive = true
+        //        };
+        //        var result = JsonSerializer.Deserialize<PositionPredictResponse>(responseJson, options);
+        //        return Ok(result);
+        //    }
+        //    catch (JsonException jex)
+        //    {
+        //        return StatusCode(500, $"JSON parse error: {jex.Message}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, $"Error calling prediction service: {ex.Message}");
+        //    }
+        //}
+
         [HttpPost("predictDistance")]
-        public async Task<IActionResult> PredictDistance([FromBody] List<TrackPointDto> trackPoints)
+        public async Task<IActionResult> PredictDistance([FromBody] int userId)
         {
-            if (trackPoints == null || trackPoints.Count == 0)
-                return BadRequest("Track points payload is empty or invalid.");
+            List<double> prediction = await _userCollectionService.PredictUserPosition(userId);
 
-            try
+            if (prediction == null || prediction.Count == 0)
+                return BadRequest("Prediction failed or no data available.");
+
+            // Create a response object
+            var response = new PositionPredictResponse
             {
-                // Serialize payload
-                var json = JsonSerializer.Serialize(trackPoints);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
+                prediction = prediction,
+                points_processed = prediction.Count
+            };
 
-                // Call Flask service
-                var response = await _httpClient.PostAsync("http://localhost:5000/predict", content);
-
-                // Forward errors
-                if (!response.IsSuccessStatusCode)
-                {
-                    var error = await response.Content.ReadAsStringAsync();
-                    return StatusCode((int)response.StatusCode, error);
-                }
-
-                // Parse and return result with case-insensitive property mapping
-                var responseJson = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                var result = JsonSerializer.Deserialize<PositionPredictResponse>(responseJson, options);
-                return Ok(result);
-            }
-            catch (JsonException jex)
-            {
-                return StatusCode(500, $"JSON parse error: {jex.Message}");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error calling prediction service: {ex.Message}");
-            }
+            return Ok(response);
         }
 
         [HttpPost("confirmHike")]

@@ -1,6 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PacePalAPI.Models;
 using PacePalAPI.Models.Enums;
+using PacePalAPI.Requests;
+using System.Net.Http;
+using System.Text.Json;
+using System.Text;
+using System.Xml.Linq;
 
 namespace PacePalAPI.Services.UserService
 {
@@ -16,6 +21,7 @@ namespace PacePalAPI.Services.UserService
         private readonly IDbContextFactory<PacePalContext> _contextFactory;
         private readonly IWebHostEnvironment _environment;
         private static readonly object _fileLock = new object();
+        private static readonly HttpClient _httpClient = new HttpClient();
 
         public UserService(PacePalContext context, IDbContextFactory<PacePalContext> contextFactory, IWebHostEnvironment environment)
         {
@@ -338,5 +344,112 @@ namespace PacePalAPI.Services.UserService
             return affected > 0;
         }
 
+        public async Task<List<double>> PredictUserPosition(int userId)
+        {
+            // 1. Load the user’s track points
+            var path = Path.Combine(_environment.ContentRootPath, "points.gpx");
+            var trackPoints =  LoadTrackPointsFromGpx(path);
+            if (trackPoints == null || !trackPoints.Any())
+                throw new ArgumentException($"No track points found for user {userId}", nameof(userId));
+
+            try
+            {
+                // 2. Serialize to JSON
+                var json = JsonSerializer.Serialize(trackPoints);
+                using var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                // 3. Call the Flask service
+                var response = await _httpClient.PostAsync("http://localhost:5000/predict", content);
+
+                // 4. Bubble up any non-success
+                if (!response.IsSuccessStatusCode)
+                {
+                    var error = await response.Content.ReadAsStringAsync();
+                    throw new InvalidOperationException(
+                        $"Prediction service returned {(int)response.StatusCode}: {error}");
+                }
+
+                // 5. Deserialize, case‐insensitive
+                var responseJson = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var result = JsonSerializer.Deserialize<PositionPredictResponse>(responseJson, options);
+
+                if(result == null) return new List<double>(0);
+
+
+                // 6. Return the raw list of doubles
+                return result.prediction;
+            }
+            catch (JsonException jex)
+            {
+                // wrap or rethrow as desired
+                throw new ApplicationException("Error parsing prediction response JSON.", jex);
+            }
+            catch (Exception ex) when (!(ex is ApplicationException))
+            {
+                throw new ApplicationException("Error calling prediction service.", ex);
+            }
+        }
+        /// <summary>
+        /// Loads track points from a GPX file and maps them to a list of TrackPointDto.
+        /// </summary>
+        /// <param name="filePath">The path to the GPX file.</param>
+        /// <returns>List of TrackPointDto parsed from the GPX.</returns>
+        private List<TrackPointDto> LoadTrackPointsFromGpx(string filePath)
+        {
+            if (string.IsNullOrWhiteSpace(filePath))
+                throw new ArgumentException("File path must be provided.", nameof(filePath));
+
+            if (!File.Exists(filePath))
+                throw new FileNotFoundException("GPX file not found.", filePath);
+
+            XDocument gpx;
+            try
+            {
+                gpx = XDocument.Load(filePath);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to load or parse the GPX file.", ex);
+            }
+
+            // GPX uses a default namespace, so we need to capture it
+            XNamespace ns = gpx.Root.GetDefaultNamespace();
+
+            // Extract all <trkpt> elements
+            var trackPoints = gpx
+                .Descendants(ns + "trkpt")
+                .Select(element =>
+                {
+                    var latAttr = element.Attribute("lat")?.Value;
+                    var lonAttr = element.Attribute("lon")?.Value;
+                    var eleElem = element.Element(ns + "ele")?.Value;
+                    var timeElem = element.Element(ns + "time")?.Value;
+
+                    if (latAttr == null || lonAttr == null)
+                        throw new FormatException("Track point missing latitude or longitude attributes.");
+
+                    return new TrackPointDto
+                    {
+                        latitude = double.Parse(latAttr, System.Globalization.CultureInfo.InvariantCulture),
+                        longitude = double.Parse(lonAttr, System.Globalization.CultureInfo.InvariantCulture),
+                        elevation = eleElem != null
+                            ? double.Parse(eleElem, System.Globalization.CultureInfo.InvariantCulture)
+                            : 0,
+                        time = timeElem != null
+                            ? DateTimeOffset.Parse(timeElem, System.Globalization.CultureInfo.InvariantCulture)
+                            : DateTimeOffset.MinValue
+                    };
+                })
+                .ToList();
+
+            return trackPoints;
+        }
+
     }
+
+
 }
