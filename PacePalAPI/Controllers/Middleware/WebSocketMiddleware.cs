@@ -89,7 +89,7 @@ namespace PacePalAPI.Controllers.Middleware
                             Latitude = coordinate!.Latitude,
                             Longitude = coordinate.Longitude,
                             Elevation = coordinate.Elevation,
-                            Timestamp = DateTime.UtcNow,
+                            Timestamp = coordinate.Time,
                             TrackCoordinatesConfirmedCurrentHikeId = activeHike.Id
                         };
 
