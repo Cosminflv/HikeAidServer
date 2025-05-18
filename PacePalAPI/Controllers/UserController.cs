@@ -241,7 +241,7 @@ namespace PacePalAPI.Controllers
         }
 
         [HttpPost("{userId}/predictDistance")]
-        public async Task<IActionResult> PredictDistance([FromBody] int userId)
+        public async Task<IActionResult> PredictDistance(int userId)
         {
             List<double> prediction = await _userCollectionService.PredictUserPosition(userId);
 
