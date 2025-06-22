@@ -136,8 +136,11 @@ namespace PacePalAPI.Services.UserSearchService.Impl
         // First int is the user id, and second one is mutual friends count
         private List<(int, int)> RankUsers(IEnumerable<int> usersIds, (int, String, String) searcher)
         {
+            // Step 0: Remove duplicates
+            var distinctUserIds = usersIds.Distinct();
+
             // Step 1: Cache mutual friends count for efficiency
-            var mutualFriendsCount = usersIds.ToDictionary(
+            var mutualFriendsCount = distinctUserIds.ToDictionary(
                 id => id,
                 id => _usersById[id].GetMutualFriends(searcher.Item1, GetFriends)
                 );
@@ -152,7 +155,7 @@ namespace PacePalAPI.Services.UserSearchService.Impl
                 : new HashSet<int>();
 
             // Step 3: Sort by mutual friends, then by city, then by country
-            var result = usersIds
+            var result = distinctUserIds
                 .OrderByDescending(id => mutualFriendsCount[id])                   // Primary: mutual friends count
                 .ThenByDescending(id => cityMatches.Contains(id) ? 1 : 0)          // Secondary: city match
                 .ThenByDescending(id => countryMatches.Contains(id) ? 1 : 0)       // Tertiary: country match
