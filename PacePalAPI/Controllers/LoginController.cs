@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using PacePalAPI.Models;
 using PacePalAPI.Requests;
@@ -15,11 +16,13 @@ namespace PacePalAPI.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserCollectionService _userCollectionService;
+        private readonly IPasswordHasher<UserModel> _hasher;
         private IConfiguration _config;
 
-        public LoginController(IUserCollectionService userService, IConfiguration config)
+        public LoginController(IUserCollectionService userService, IConfiguration config, IPasswordHasher<UserModel> hasher)
         {
             _userCollectionService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _hasher = hasher;
             _config = config;
         }
 
@@ -33,12 +36,16 @@ namespace PacePalAPI.Controllers
 
             if (users == null || !users.Any()) return NotFound("There are no users available.");
 
-            var foundUser = users.FirstOrDefault(x => x.Username == loginInfo.Username && x.PasswordHash == loginInfo.Password);
+            var foundUser = users.FirstOrDefault(x => x.Username == loginInfo.Username);
 
             if (foundUser == null)
             {
-                return BadRequest("Invalid username or password.");
+                return BadRequest("Invalid username.");
             }
+
+            var result = _hasher.VerifyHashedPassword(foundUser, foundUser.PasswordHash, loginInfo.Password);
+            if (result == PasswordVerificationResult.Failed)
+                return BadRequest("Invalid username or password.");
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -100,6 +107,8 @@ namespace PacePalAPI.Controllers
             user.Weight = userDto.Weight;
             user.Gender = userDto.EGender;
             user.BirthDate = userDto.Birthdate;
+
+            user.PasswordHash = _hasher.HashPassword(user, userDto.PasswordHash);
 
             bool hasCreated = _userCollectionService.Create(user).Result;
 

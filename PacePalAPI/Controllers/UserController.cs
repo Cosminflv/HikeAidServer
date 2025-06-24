@@ -7,8 +7,6 @@ using PacePalAPI.Models.Enums;
 using PacePalAPI.Requests;
 using PacePalAPI.Services.UserSearchService;
 using PacePalAPI.Services.UserService;
-using System.Text;
-using System.Text.Json;
 
 
 namespace PacePalAPI.Controllers
